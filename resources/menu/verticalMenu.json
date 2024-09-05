@@ -1,0 +1,82 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Tổng quan",
+      "icon": "menu-icon tf-icons bx bxs-dashboard",
+      "slug": "dashboard"
+    },
+    {
+      "menuHeader": "Quản lý hệ thống"
+    },
+    {
+      "name": "Tài khoản",
+      "url": "/users",
+      "icon": "menu-icon tf-icons bx bx-user",
+      "slug": "users.index"
+    },
+    {
+      "name": "Bộ phận",
+      "url": "/department",
+      "icon": "menu-icon tf-icons bx bx-user",
+      "slug": "department.index"
+    },
+    {
+      "name": "Nhóm quyền",
+      "url": "/role",
+      "icon": "menu-icon tf-icons bx bx-group",
+      "slug": "role.index"
+    },
+    {
+      "name": "Quyền",
+      "url": "/users",
+      "icon": "menu-icon tf-icons bx bx-check-shield",
+      "slug": "users"
+    },
+    {
+      "menuHeader": "Quản lý khoá học"
+    },
+    {
+      "url": "/courses-category",
+      "name": "Danh mục khoá học",
+      "icon": "menu-icon tf-icons bx bx-category",
+      "slug": "courses-category.index"
+    },
+    {
+      "url": "/course",
+      "name": "Khoá học",
+      "icon": "menu-icon tf-icons bx bx-book-open",
+      "slug": "course.index"
+    },
+    {
+      "menuHeader": "Quản lý đơn hàng"
+    },
+    {
+      "url": "/order",
+      "name": "Đơn hàng",
+      "icon": "menu-icon tf-icons bx bx-book-open",
+      "slug": "order.index"
+    },
+    {
+      "menuHeader": "Thiết Lập"
+    },
+    {
+      "name": "Banner",
+      "url": "/banner",
+      "icon": "menu-icon tf-icons bx bx-image",
+      "slug": "banner.index"
+    },
+    {
+      "name": "Thanh toán",
+      "url": "/payment",
+      "icon": "menu-icon tf-icons bx bx-credit-card",
+      "slug": "payment"
+    },
+    {
+      "name": "Hệ thống",
+      "url": "/setting",
+      "icon": "menu-icon tf-icons bx bx-cog",
+      "slug": "setting"
+    }
+  ]
+}
