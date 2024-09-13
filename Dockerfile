@@ -19,10 +19,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Sao chép toàn bộ mã nguồn Laravel vào container
-COPY ./ /var/www/backend
+COPY ./ /var/www/html
 
 # Đặt thư mục làm việc
-WORKDIR /var/www/backend
+WORKDIR /var/www/html
 
 # Cài đặt Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -31,8 +31,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN composer install --optimize-autoloader --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-gd --ignore-platform-req=ext-exif --ignore-platform-req=ext-zip
 
 # Phân quyền cho thư mục storage và bootstrap/cache
-RUN chown -R www-data:www-data /var/www/backend/storage /var/www/backend/bootstrap/cache
-RUN chmod -R 775 /var/www/backend/storage /var/www/backend/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 0777 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Mở cổng cho PHP-FPM
 EXPOSE 9000
