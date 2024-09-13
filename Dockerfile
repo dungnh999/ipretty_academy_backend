@@ -1,5 +1,8 @@
-# Sử dụng image PHP với FPM (FastCGI Process Manager)
+# Sử dụng PHP-FPM image với phiên bản PHP cần thiết
 FROM php:8.2-fpm
+
+# Cài đặt các extension PHP cần thiết
+RUN docker-php-ext-install pdo pdo_mysql
 
 # Cài đặt các tiện ích hệ thống cần thiết
 RUN apt-get update && apt-get install -y \
@@ -15,28 +18,24 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
+# Sao chép toàn bộ mã nguồn Laravel vào container
+COPY ./ /var/www/backend
+
+# Đặt thư mục làm việc
+WORKDIR /var/www/backend
+
 # Cài đặt Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Sao chép mã nguồn Laravel vào Docker image
-COPY . /var/www
+# Cài đặt các gói PHP thông qua Composer
+RUN composer install --optimize-autoloader --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-gd --ignore-platform-req=ext-exif --ignore-platform-req=ext-zip
 
-# Thiết lập thư mục làm việc
-WORKDIR /var/www
+# Phân quyền cho thư mục storage và bootstrap/cache
+RUN chown -R www-data:www-data /var/www/backend/storage /var/www/backend/bootstrap/cache
+RUN chmod -R 775 /var/www/backend/storage /var/www/backend/bootstrap/cache
 
-RUN composer install --optimize-autoloader  --ignore-platform-req=ext-zip
-
-# Cấp quyền cho thư mục lưu trữ và cache
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 /var/www/storage \
-    && chmod -R 775 /var/www/bootstrap/cache
-
-# Sao chép file .env.example và thiết lập các biến môi trường
-COPY .env.example .env
-
-# Thiết lập quyền cho thư mục lưu trữ và cache
-RUN php artisan key:generate
-
-# Expose port 9000 và sử dụng PHP-FPM
+# Mở cổng cho PHP-FPM
 EXPOSE 9000
+
+# Chạy PHP-FPM
 CMD ["php-fpm"]
