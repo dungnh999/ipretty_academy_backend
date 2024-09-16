@@ -1,41 +1,63 @@
-# Sử dụng PHP-FPM image với phiên bản PHP cần thiết
-FROM php:8.2-fpm
+# Used for prod build.
+FROM php:8.2-fpm as php
 
-# Cài đặt các extension PHP cần thiết
-RUN docker-php-ext-install pdo pdo_mysql
+# Set environment variables
+ENV PHP_OPCACHE_ENABLE=1
+ENV PHP_OPCACHE_ENABLE_CLI=1
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+ENV PHP_OPCACHE_REVALIDATE_FREQ=1
 
-# Cài đặt các tiện ích hệ thống cần thiết
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Install dependencies.
+RUN apt-get update && apt-get install -y unzip libpq-dev libcurl4-gnutls-dev nginx libonig-dev
 
-# Sao chép toàn bộ mã nguồn Laravel vào container
-COPY ./ /var/www/html
+# Install PHP extensions.
+RUN docker-php-ext-install mysqli pdo pdo_mysql bcmath curl opcache mbstring
 
-# Đặt thư mục làm việc
-WORKDIR /var/www/html
+# Copy composer executable.
+COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
 
-# Cài đặt Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Copy configuration files.
+COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
+COPY ./docker/php/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 
-# Cài đặt các gói PHP thông qua Composer
-RUN composer install --optimize-autoloader --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-gd --ignore-platform-req=ext-exif --ignore-platform-req=ext-zip
 
-# Phân quyền cho thư mục storage và bootstrap/cache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 0777 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
+RUN npm install --global yarn
 
-# Mở cổng cho PHP-FPM
-EXPOSE 9000
+# Set working directory to /var/www.
+WORKDIR /var/www/backend
 
-# Chạy PHP-FPM
-CMD ["php-fpm"]
+# Copy files from current folder to container current folder (set in workdir).
+COPY --chown=www-data:www-data . .
+
+RUN chown -R www-data:www-data /var/www/backend
+
+# Create laravel caching folders.
+RUN mkdir -p /var/www/backend/storage/framework
+RUN mkdir -p /var/www/backend/storage/framework/cache
+RUN mkdir -p /var/www/backend/storage/framework/testing
+RUN mkdir -p /var/www/backend/storage/framework/sessions
+RUN mkdir -p /var/www/backend/storage/framework/views
+
+# Fix files ownership.
+RUN chown -R www-data /var/www/backend/storage
+RUN chown -R www-data /var/www/backend/storage/framework
+RUN chown -R www-data /var/www/backend/storage/framework/sessions
+
+# Set correct permission.
+RUN chmod -R 755 /var/www/backend/storage
+RUN chmod -R 755 /var/www/backend/storage/logs
+RUN chmod -R 755 /var/www/backend/storage/framework
+RUN chmod -R 755 /var/www/backend/storage/framework/sessions
+RUN chmod -R 755 /var/www/backend/bootstrap
+
+# Adjust user permission & group
+RUN usermod --uid 1000 www-data
+RUN groupmod --gid 1001 www-data
+
+RUN ["chmod", "+x", "docker/entrypoint.sh"]
+
+# Run the entrypoint file.
+ENTRYPOINT ["docker/entrypoint.sh" ]
