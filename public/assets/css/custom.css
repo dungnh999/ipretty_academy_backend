@@ -1,0 +1,43 @@
+.kanban-fixed-height .kanban-container .kanban-board .kanban-drag {
+  position: relative;
+  overflow-y: auto;
+}
+
+.modal-body {
+  background-color: #f5f5f9 !important;
+}
+
+.plyr {
+  border-radius: 12px; /* Thay đổi giá trị để điều chỉnh độ bo góc */
+  overflow: hidden; /* Đảm bảo nội dung không bị tràn ra ngoài */
+}
+
+.loader-custom {
+  position: absolute;
+  top: 39%;
+  z-index: 9;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  width: 80px; /* Kích thước của logo loader */
+  height: 80px;
+  background: url('../img/logo/logo-ipretty-white-no-text.svg') no-repeat center center; /* Thay đổi đường dẫn đến logo của bạn */
+  background-size: contain; /* Đảm bảo logo không bị cắt xén */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Ẩn loader khi không cần thiết */
+.hidden-loader {
+  display: none;
+}
+
+
+

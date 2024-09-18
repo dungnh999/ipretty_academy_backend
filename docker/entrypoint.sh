@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f "vendor/autoload.php" ]; then
-    composer install --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-gd --ignore-platform-req=ext-exif --ignore-platform-req=ext-exif --ignore-platform-req=ext-gd --ignore-platform-req=ext-zip --ignore-platform-req=ext-zip
+    composer install --no-progress --no-interaction
 fi
 
 if [ ! -f ".env" ]; then
@@ -10,8 +10,6 @@ if [ ! -f ".env" ]; then
 else
     echo "env file exists."
 fi
-
-yarn run dev
 
 php artisan migrate
 php artisan optimize clear
