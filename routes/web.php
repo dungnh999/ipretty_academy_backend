@@ -287,10 +287,10 @@ Route::group(['middleware' => 'auth'], function () {
   /**
    *  Thiết lập hệ thống
    */
-  Route::controller('UploadS3Controller')
-    ->prefix('upload')
-    ->as('upload.')
-    ->group(function () {
-      Route::post('/post-file', 'uploadFile')->name('index');
-    });
+  // Route::controller('UploadS3Controller')
+  //   ->prefix('upload')
+  //   ->as('upload.')
+  //   ->group(function () {
+  //     Route::post('/post-file', 'uploadFile')->name('index');
+  //   });
 });

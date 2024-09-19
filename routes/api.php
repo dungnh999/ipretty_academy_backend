@@ -239,12 +239,12 @@ Route::get('course-detail/{id}', 'CourseAPIController@getDetailCourseOfUser');
 Route::get('user-by-role', [UserAPIController::class, 'getUserByRole']);
 
 
-/*
- * UPLOAD S3
- * **/
+// /*
+//  * UPLOAD S3
+//  * **/
 
-Route::post('/upload-file', 'UploadS3Controller@uploadFile');
-Route::get('/get-link', 'UploadS3Controller@getPresignedUrl');
+// Route::post('/upload-file', 'UploadS3Controller@uploadFile');
+// Route::get('/get-link', 'UploadS3Controller@getPresignedUrl');
 
 
 Route::post('upload', 'UploadFileController@upload');

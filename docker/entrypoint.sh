@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f "vendor/autoload.php" ]; then
-    composer install --no-progress --no-interaction
+    composer install --ignore-platform-req=ext-zip --ignore-platform-req=ext-zip --no-progress --no-interaction --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-gd --ignore-platform-req=ext-exif --ignore-platform-req=ext-exif --ignore-platform-req=ext-gd
 fi
 
 if [ ! -f ".env" ]; then

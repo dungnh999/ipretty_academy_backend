@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Contract\CommonBusiness;
-use App\Http\Controllers\Api\UploadS3Controller;
 use App\Models\Chapter;
 use App\Models\ChapterLesson;
 use App\Models\Course;
@@ -43,7 +42,6 @@ class CourseController extends AppBaseController
     UserRepository            $userRepository,
     CourseStudentRepository   $courseStudentRepository,
     LearningProcessRepository $learningProcessRepository,
-    UploadS3Controller        $uploadFile,
     chapterRepository         $chapterRepo,
     LessonRepository          $lessonRepository
   )
