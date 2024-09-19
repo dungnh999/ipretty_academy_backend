@@ -8,9 +8,9 @@ use App\Models\ChapterLesson;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Repositories\CourseCategoryRepository;
-use App\Repositories\chapterRepository;
 use App\Repositories\LessonRepository;
 use App\Repositories\CourseRepository;
+use App\Repositories\ChapterRepository;
 use App\Repositories\CourseStudentRepository;
 use App\Repositories\LearningProcessRepository;
 use App\Repositories\UserRepository;
@@ -59,7 +59,6 @@ class CourseController extends AppBaseController
     $this->userRepository = $userRepository;
     $this->courseStudentRepository = $courseStudentRepository;
     $this->learningProcessRepository = $learningProcessRepository;
-    $this->uploadFile = $uploadFile;
     $this->courseCategoryRepository = $courseCategoryRepo;
     $this->lessonRepository = $lessonRepository;
   }
