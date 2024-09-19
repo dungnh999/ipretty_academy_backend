@@ -818,7 +818,6 @@ class CourseAPIController extends AppBaseController
     }
 
     $courseStudent = $this->courseStudentRepository->isJoined($user->id, $course->course_id);
-    dd($courseStudent);
     if (empty($courseStudent)) {
 //            if (($course->course_type == "Business" && $course->course_price > 0) || $course->course_type == "Group") {
 //                return $this->sendError(
@@ -840,8 +839,6 @@ class CourseAPIController extends AppBaseController
       $events = $course->events;
 
       $job = (new AddMemberIntoEvent($user->id, $events));
-
-      dd($job);
 
 
       dispatch($job);
