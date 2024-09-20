@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use App\Http\Resources\ChapterResource;
-use App\Http\Resources\courseResource;
+use App\Http\Resources\CourseResource;
 use App\Http\Resources\LessonResource;
 
 class CourseController extends AppBaseController
