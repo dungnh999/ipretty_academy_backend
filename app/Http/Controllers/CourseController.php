@@ -290,7 +290,7 @@ class CourseController extends AppBaseController
     $chapter = $this->courseRepository->getDetail($params['course_id']);
 
     return $this->sendResponse(
-      new courseResource($chapter),
+      new CourseResource($chapter),
       __('messages.saved', ['model' => __('models/userDepartments.singular')])
     );
   }
