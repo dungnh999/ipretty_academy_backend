@@ -74,7 +74,7 @@ class CourseController extends AppBaseController
     $courses = $this->courseRepository->allCourses($params);
     $collect = collect($courses);
 
-    $dataCourseActive = $collect->where('status', ENUM_ACTIVE)->all();
+    $dataCourseActive = $collect->where('status', ENUM_ACTIVE)->sortByDesc('is_published');
     $dataCourseUnActive = $collect->where('status', ENUM_UNACTIVE)->all();
 
     $dataTableActive = $this->drawDataTableCourse($dataCourseActive);
@@ -87,9 +87,9 @@ class CourseController extends AppBaseController
     return Datatables::of($data)
       ->addColumn('status', function ($row) {
         if ($row['is_published']) {
-          return '<span class="badge bg-label-info">Đang chạy</span>';
+          return '<span class="badge bg-label-info">Phát hành</span>';
         } else {
-          return '<span class="badge bg-label-danger">Đã tắt</span>';
+          return '<span class="badge bg-label-danger">Dừng phát hành</span>';
         }
       })
       ->addColumn('teacher_name', function ($row) {
@@ -97,8 +97,8 @@ class CourseController extends AppBaseController
                      <div class="avatar-wrapper">
                         <div class="avatar avatar-sm me-3" >
                           <img src="' .
-          $row['teacher']['avatar'] .
-          '" alt="Avatar" class="rounded-circle object-fit-cover">
+                            $row['teacher']['avatar'] .
+                            '" alt="Avatar" class="rounded-circle object-fit-cover">
                         </div>
                      </div>
                      <div class="d-flex flex-column" >
@@ -113,26 +113,72 @@ class CourseController extends AppBaseController
                     </div>
                   </div>';
       })
+      ->addColumn('course_name', function ($row) {
+        return '<div class="d-flex justify-content-center align-items-center user-name" >
+                     <div class="d-flex flex-column" >
+                          <a href="javascript:void(0)" class="text-body text-truncate">
+                              <span class="fw-medium">' 
+                              . $row['course_name'] .
+                              '</span>
+                          </a>
+                          <div class="row">
+                             <small class="text-muted">'. count($row['chapters']) .' bài học </small>
+                            <small class="text-muted">0 bài giảng</small>
+                          </div>
+                    </div>
+                  </div>';
+      })
       ->addColumn('action', function ($row) {
         $course_id = $row['course_id'];
         if ($row['status']) {
-          return '<div class="d-inline-block text-nowrap" >
-                    <button class="btn-sm rounded-pill btn-icon bg-label-success align-middle border-0" data-id="' .
-            $course_id .
-            '" onclick="openModalCreateChapterLesson($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Thêm bài giảng</span>">
-                          <i class="bx bx-book-open"></i>
-                      </button>
-                      <button class="btn-sm rounded-pill btn-icon bg-label-warning align-middle border-0" data-id="' .
-            $course_id .
-            '" onclick="openModalUpdateCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa</span>">
-                          <i class="bx bx-edit"></i>
-                      </button>
-                      <button class="btn-sm rounded-pill btn-icon bg-label-danger align-middle border-0" data-id="' .
-            $course_id .
-            '" onclick="changeStatusUnActiveCoursesCategory($(this))">
-                          <i class="bx bx-x"></i>
-                      </button>
-                  </div>';
+          if (!$row['is_published']) {
+            return '<div class="d-inline-block text-nowrap" >
+            <button class="btn-sm rounded-pill btn-icon bg-label-primary align-middle border-0" data-id="' .
+                $course_id .
+                '" onclick="openModalCreateChapterLesson($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Thêm bài giảng</span>">
+                              <i class="bx bx-book-open"></i>
+                          </button>
+                          <button class="btn-sm rounded-pill btn-icon bg-label-warning align-middle border-0" data-id="' .
+                $course_id .
+                '" onclick="openModalUpdateCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa</span>">
+                              <i class="bx bx-edit"></i>
+                          </button>
+                          <button class="btn-sm rounded-pill btn-icon bg-label-success align-middle border-0" data-id="' .
+                $course_id .
+                '" onclick="changeStatusUnActiveCoursesCategory($(this))">
+                              <i class="bx bx-play"></i>
+                          </button>
+                          <button class="btn-sm rounded-pill btn-icon bg-label-danger align-middle border-0" data-id="' .
+                $course_id .
+                '" onclick="changeStatusUnActiveCoursesCategory($(this))">
+                              <i class="bx bx-x"></i>
+                          </button>
+                      </div>';
+          }else{
+            return '<div class="d-inline-block text-nowrap" >
+                          <button class="btn-sm rounded-pill btn-icon bg-label-primary align-middle border-0" data-id="' .
+                  $course_id .
+                  '" onclick="openModalCreateChapterLesson($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Thêm bài giảng</span>">
+                                <i class="bx bx-book-open"></i>
+                            </button>
+                            <button class="btn-sm rounded-pill btn-icon bg-label-warning align-middle border-0" data-id="' .
+                  $course_id .
+                  '" onclick="openModalUpdateCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa</span>">
+                                <i class="bx bx-edit"></i>
+                            </button>
+                            <button class="btn-sm rounded-pill btn-icon bg-label-info align-middle border-0" data-id="' .
+                $course_id .
+                '" onclick="changeStatusUnActiveCoursesCategory($(this))">
+                              <i class="bx bx-pause"></i>
+                          </button>
+                            <button class="btn-sm rounded-pill btn-icon bg-label-danger align-middle border-0" data-id="' .
+                  $course_id .
+                  '" onclick="changeStatusUnActiveCoursesCategory($(this))">
+                                <i class="bx bx-x"></i>
+                            </button>
+                        </div>';
+          }
+          
         } else {
           return '<div class="d-inline-block text-nowrap" >
                        <button class="btn-sm rounded-pill btn-icon bg-label-warning align-middle border-0" data-id="' .
@@ -149,7 +195,7 @@ class CourseController extends AppBaseController
         }
       })
       ->addIndexColumn()
-      ->rawColumns(['status', 'teacher_name', 'action'])
+      ->rawColumns(['status','course_name', 'teacher_name', 'action'])
       ->make(true);
   }
 

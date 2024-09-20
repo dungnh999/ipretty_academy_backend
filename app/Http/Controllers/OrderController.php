@@ -6,7 +6,7 @@ use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class OrderController extends Controller
+class OrderController extends AppBaseController
 {
 
   private $orderRepository;
@@ -32,7 +32,17 @@ class OrderController extends Controller
   function getDataOrder(Request $request){
     $dataOrder = $this->orderRepository->getDataOrder();
     $collect = collect($dataOrder);
+    $dataOrderCheckedout = $collect->where('status', 'checkedout')->All();
 
+    // DataTable
+    $dataTableOrderCheckedout = $this->drawDataTableOrder($dataOrderCheckedout);
+
+
+    // DataTotal
+    $dataTotal = [
+      'total-checkouted' =>  count($dataOrderCheckedout)
+    ];
+    return [$dataTotal, $dataTableOrderCheckedout];
   }
 
 
@@ -40,26 +50,17 @@ class OrderController extends Controller
   {
     return Datatables::of($data)
       ->addColumn('action', function ($row) {
-        $departmentId = $row['category_id'];
-        if ($row['isPublished']) {
-          return '<div class="d-inline-block text-nowrap" >
-                      <button class="btn btn-icon btn-outline-warning rounded-pill btn-sm" data-id="' . $departmentId . '" onclick="openModalUpdateCoursesCategory($(this))">
-                          <i class="bx bx-edit"></i>
+        return '<div class="d-inline-block text-nowrap" >
+                      <button class="btn btn-icon btn-outline-primary rounded-pill btn-sm" data-id="" onclick="openModalUpdateCoursesCategory($(this))">
+                          <i class="bx bx-info-circle"></i>
                       </button>
-                      <button class="btn btn-icon btn-outline-danger rounded-pill btn-sm" data-id="' . $departmentId . '" onclick="changeStatusUnActiveCoursesCategory($(this))">
-                          <i class="bx bx-x"></i>
-                      </button>
-                  </div>';
-        } else {
-          return '<div class="d-inline-block text-nowrap" >
-                       <button class="btn btn-icon btn-outline-warning rounded-pill btn-sm" data-id="' . $departmentId . '" onclick="openModalUpdateCoursesCategory($(this))">
-                          <i class="bx bx-edit"></i>
-                      </button>
-                       <button class="btn btn-icon btn-outline-success rounded-pill btn-sm" data-id="' . $departmentId . '" onclick="changeStatusActiveCoursesCategory($(this))">
-                          <i class="bx bx-check"></i>
-                      </button>
-                  </div>';
-        }
+                  </div>';        
+      })
+      ->addColumn('total', function ($row) {
+          return $this->formatVND($row['total']);
+      })
+      ->addColumn('created_at', function ($row) {
+        return $this->formartDateTime($row['created_at']);
       })
       ->addIndexColumn()
       ->rawColumns(['action'])

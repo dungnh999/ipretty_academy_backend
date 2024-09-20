@@ -17,7 +17,7 @@ async function loadData(){
       idUnActive = $('#table-course-unactive-ipretty'),
       column = [
         { data: 'DT_RowIndex', className: 'text-center' , width: '5%' },
-        { data: 'course_name', className: 'text-center' },
+        { data: 'course_name', className: 'text-center ' , width: '30%'},
         { data: 'teacher_name', className: 'text-left' },
         { data: 'category.category_name', className: 'text-center' },
         { data: 'status', className: 'text-center' },

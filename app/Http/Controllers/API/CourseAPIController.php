@@ -840,7 +840,6 @@ class CourseAPIController extends AppBaseController
 
       $job = (new AddMemberIntoEvent($user->id, $events));
 
-
       dispatch($job);
     }
 

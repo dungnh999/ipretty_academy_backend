@@ -73,6 +73,11 @@ class Order extends Model
         return $this->hasMany('App\Models\OrderItem', 'order_id');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
     public function courses()
     {   
         // return $this->hasManyThrough('App\Models\Course', 'App\Models\CartItem', 'cart_id', 'course_id', 'id', 'course_id')

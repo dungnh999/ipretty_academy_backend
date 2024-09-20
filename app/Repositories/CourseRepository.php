@@ -22,6 +22,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Users;
 use App\Repositories\BaseRepository;
+use App\Http\Resources\ChapterResource;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Support\Facades\Auth;
@@ -621,7 +622,19 @@ class CourseRepository extends BaseRepository
 
   public function allCourses($params = null)
   {
-    $query = $this->model->newQuery()->with('category');
+    $query = $this->model->newQuery()
+            ->with('category')
+            ->with('chapters', function($q) {
+              $q->get()->map(function($chapter) {
+                $data = collect($chapter)->all();
+                $chapterLessons = ChapterLesson::where('chapter_id', $data['chapter_id'])->get();
+                $data['lessons'] =  $chapterLessons;
+                return $data; 
+              });
+            });
+
+
+          
 
     $user = auth()->user();
     if ($user->hasRole('employee') && $user->hasPermissionTo(PERMISSION['MANAGE_COURSES'])) {
@@ -652,10 +665,14 @@ class CourseRepository extends BaseRepository
       );
     }
 
+
+
     if (isset($params['course_types']) && $params['course_types'] != null) {
       $course_types = explode(',', $params['course_types']);
       $query = $query->whereIn('course_type', $course_types);
     }
+
+    
 
     if (isset($params['course_categories']) && $params['course_categories'] != null) {
       $course_categories = explode(',', $params['course_categories']);

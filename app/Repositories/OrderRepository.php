@@ -175,9 +175,9 @@ class OrderRepository extends BaseRepository
         ->with('createdBy', function($q) {
           $q->select('name', 'email', 'id');
         })
-        ->with('categoryType', function($q) {
-          $q->select('category_type_name', 'category_type_description' , 'id');
-        })
+        // ->with('transaction', function($q) {
+        //   $q->select('status');
+        // })
         ->orderBy('created_at', 'desc');
 
       if (isset($params['created_at']) && $params['created_at'] != null) {

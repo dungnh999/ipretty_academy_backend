@@ -98,6 +98,11 @@ class AppBaseController extends Controller
     ], $code);
   }
 
+  public static function formatVND($number)
+  {
+      return number_format($number, 0, ',', ',');
+  }
+
   public function formartDateTime($time, $formart = 'd/m/Y H:i')
   {
     $carbonDate = Carbon::parse($time);
