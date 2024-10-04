@@ -16,6 +16,16 @@ use Response;
  *     title="Laravel Generator APIs",
  *     version="1.0.0",
  *   )
+ *   @OA\Server(
+ *     url="http://localhost:8000/api"
+ *   )
+ *   @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     description="Nhập Token tại đây"
+ *   )
  * )
  * This class should be parent class for other API controllers
  * Class AppBaseController
@@ -41,6 +51,19 @@ class AppBaseController extends Controller
         return Response::json(ResponseUtil::makeError($error, $data, $code), 200);
     }
 
+
+    /**
+     * @OA\Schema(
+     *     schema="SuccessResponse",
+     *     type="object",
+     *     @OA\Property(property="success", type="boolean"),
+     *     @OA\Property(property="message", type="string"),
+     *     @OA\Property(property="data", type="array",
+     *          @OA\Items()
+     *     ),
+     *     @OA\Property(property="status", type="integer", example="200")
+     * )
+     */
     public function sendSuccess($message, $result = [])
     {
         return Response::json([

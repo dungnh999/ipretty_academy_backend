@@ -11,6 +11,7 @@
     "php": "^7.4|^8.0",
     "arcanedev/log-viewer": "*",
     "barryvdh/laravel-snappy": "*",
+    "darkaonline/l5-swagger": "^8.6",
     "fideloper/proxy": "^4.4",
     "fruitcake/laravel-cors": "^3.0",
     "guzzlehttp/guzzle": "^7.3",
@@ -31,7 +32,8 @@
     "yajra/laravel-datatables": "^1.5",
     "yajra/laravel-datatables-buttons": "^4.13",
     "yajra/laravel-datatables-html": "^4.38",
-    "yajra/laravel-datatables-oracle": "~9.0"
+    "yajra/laravel-datatables-oracle": "~9.0",
+    "zircote/swagger-php": "^4.10"
   },
   "require-dev": {
     "arcanedev/log-viewer": "^8.1",

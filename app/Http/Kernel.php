@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'get.menu' => \App\Http\Middleware\GetMenu::class,
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'locale' => \App\Http\Middleware\Locale::class, //Thêm vào dòng này
+        'api.access' => \App\Http\Middleware\ApiAccess::class,
     ];
 
     /**

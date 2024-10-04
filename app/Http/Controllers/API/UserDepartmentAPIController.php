@@ -34,38 +34,6 @@ class UserDepartmentAPIController extends AppBaseController
         $this->userDepartmentRepository = $userDepartmentRepo;
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/userDepartments",
-     *      summary="Get a listing of the UserDepartments.",
-     *      tags={"UserDepartment"},
-     *      description="Get all UserDepartments",
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/UserDepartment")
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function index(Request $request)
     {
         $userDepartments = $this->userDepartmentRepository->all(
@@ -80,44 +48,6 @@ class UserDepartmentAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param CreateUserDepartmentAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Post(
-     *      path="/userDepartments",
-     *      summary="Store a newly created UserDepartment in storage",
-     *      tags={"UserDepartment"},
-     *      description="Store UserDepartment",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="UserDepartment that should be stored",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/UserDepartment")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/UserDepartment"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function store(CreateUserDepartmentAPIRequest $request)
     {
         $input = $request->all();
@@ -130,44 +60,6 @@ class UserDepartmentAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/userDepartments/{id}",
-     *      summary="Display the specified UserDepartment",
-     *      tags={"UserDepartment"},
-     *      description="Get UserDepartment",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of UserDepartment",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/UserDepartment"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function show($id)
     {
         /** @var UserDepartment $userDepartment */
@@ -185,52 +77,6 @@ class UserDepartmentAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @param UpdateUserDepartmentAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Put(
-     *      path="/userDepartments/{id}",
-     *      summary="Update the specified UserDepartment in storage",
-     *      tags={"UserDepartment"},
-     *      description="Update UserDepartment",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of UserDepartment",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="UserDepartment that should be updated",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/UserDepartment")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/UserDepartment"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function update($id, UpdateUserDepartmentAPIRequest $request)
     {
 
@@ -253,44 +99,6 @@ class UserDepartmentAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     *
-     * @SWG\Delete(
-     *      path="/userDepartments/{id}",
-     *      summary="Remove the specified UserDepartment from storage",
-     *      tags={"UserDepartment"},
-     *      description="Delete UserDepartment",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of UserDepartment",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="string"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function destroy($id)
     {
         /** @var UserDepartment $userDepartment */

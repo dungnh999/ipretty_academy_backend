@@ -6,35 +6,6 @@ use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-/**
- * @SWG\Definition(
- *      definition="Chapter",
- *      required={""},
- *      @SWG\Property(
- *          property="chapter_id",
- *          description="chapter_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="chapter_name",
- *          description="chapter_name",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="course_id",
- *          description="course_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="course_version",
- *          description="course_version",
- *          type="integer",
- *          format="int32"
- *      )
- * )
- */
 class Chapter extends Model
 {
     use SoftDeletes;

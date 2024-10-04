@@ -6,36 +6,6 @@ use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-/**
- * @SWG\Definition(
- *      definition="SessionLesson",
- *      required={""},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="session_id",
- *          description="session_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="lesson_id",
- *          description="lesson_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="count_views",
- *          description="count_views",
- *          type="integer",
- *          format="int32"
- *      )
- * )
- */
 class SessionLesson extends Model
 {
     use SoftDeletes;

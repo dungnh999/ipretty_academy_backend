@@ -26,38 +26,7 @@ class SessionLessonAPIController extends AppBaseController
         $this->sessionLessonRepository = $sessionLessonRepo;
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/sessionLessons",
-     *      summary="Get a listing of the SessionLessons.",
-     *      tags={"SessionLesson"},
-     *      description="Get all SessionLessons",
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/SessionLesson")
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
+
     public function index(Request $request)
     {
         $sessionLessons = $this->sessionLessonRepository->all(
@@ -72,44 +41,6 @@ class SessionLessonAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param CreateSessionLessonAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Post(
-     *      path="/sessionLessons",
-     *      summary="Store a newly created SessionLesson in storage",
-     *      tags={"SessionLesson"},
-     *      description="Store SessionLesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="SessionLesson that should be stored",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/SessionLesson")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/SessionLesson"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function store(CreateSessionLessonAPIRequest $request)
     {
         $input = $request->all();
@@ -122,44 +53,6 @@ class SessionLessonAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/sessionLessons/{id}",
-     *      summary="Display the specified SessionLesson",
-     *      tags={"SessionLesson"},
-     *      description="Get SessionLesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of SessionLesson",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/SessionLesson"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function show($id)
     {
         /** @var SessionLesson $sessionLesson */
@@ -177,52 +70,6 @@ class SessionLessonAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @param UpdateSessionLessonAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Put(
-     *      path="/sessionLessons/{id}",
-     *      summary="Update the specified SessionLesson in storage",
-     *      tags={"SessionLesson"},
-     *      description="Update SessionLesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of SessionLesson",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="SessionLesson that should be updated",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/SessionLesson")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/SessionLesson"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function update($id, UpdateSessionLessonAPIRequest $request)
     {
         $input = $request->all();
@@ -244,44 +91,6 @@ class SessionLessonAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     *
-     * @SWG\Delete(
-     *      path="/sessionLessons/{id}",
-     *      summary="Remove the specified SessionLesson from storage",
-     *      tags={"SessionLesson"},
-     *      description="Delete SessionLesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of SessionLesson",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="string"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function destroy($id)
     {
         /** @var SessionLesson $sessionLesson */

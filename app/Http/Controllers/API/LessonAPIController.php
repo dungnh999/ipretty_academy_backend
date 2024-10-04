@@ -44,38 +44,6 @@ class LessonAPIController extends AppBaseController
         $this->learningProcessRepository = $learningProcessRepository;
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/lessons",
-     *      summary="Get a listing of the Lessons.",
-     *      tags={"Lesson"},
-     *      description="Get all Lessons",
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/Lesson")
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function index(Request $request)
     {
 
@@ -89,44 +57,6 @@ class LessonAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param CreateLessonAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Post(
-     *      path="/lessons",
-     *      summary="Store a newly created Lesson in storage",
-     *      tags={"Lesson"},
-     *      description="Store Lesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Lesson that should be stored",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Lesson")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Lesson"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function store(CreateLessonAPIRequest $request)
     {
         $input = $request->all();
@@ -148,44 +78,6 @@ class LessonAPIController extends AppBaseController
 
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/lessons/{id}",
-     *      summary="Display the specified Lesson",
-     *      tags={"Lesson"},
-     *      description="Get Lesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Lesson",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Lesson"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function show($id)
     {
         /** @var Lesson $lesson */
@@ -203,52 +95,6 @@ class LessonAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @param UpdateLessonAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Put(
-     *      path="/lessons/{id}",
-     *      summary="Update the specified Lesson in storage",
-     *      tags={"Lesson"},
-     *      description="Update Lesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Lesson",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Lesson that should be updated",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Lesson")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Lesson"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function update($id, UpdateLessonAPIRequest $request)
     {
         // dd($request->all());
@@ -311,44 +157,6 @@ class LessonAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     *
-     * @SWG\Delete(
-     *      path="/lessons/{id}",
-     *      summary="Remove the specified Lesson from storage",
-     *      tags={"Lesson"},
-     *      description="Delete Lesson",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Lesson",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="string"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function destroy(DeleteLessonAPIRequest $request)
     {
         /** @var Lesson $lesson */

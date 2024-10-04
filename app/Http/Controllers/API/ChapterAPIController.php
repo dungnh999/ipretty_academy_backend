@@ -26,38 +26,6 @@ class ChapterAPIController extends AppBaseController
         $this->chapterRepository = $chapterRepo;
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/chapters",
-     *      summary="Get a listing of the Chapters.",
-     *      tags={"Chapter"},
-     *      description="Get all Chapters",
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/Chapter")
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function index(Request $request)
     {
         $chapters = $this->chapterRepository->all(
@@ -72,44 +40,6 @@ class ChapterAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param CreateChapterAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Post(
-     *      path="/chapters",
-     *      summary="Store a newly created Chapter in storage",
-     *      tags={"Chapter"},
-     *      description="Store Chapter",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Chapter that should be stored",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Chapter")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Chapter"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function store(CreateChapterAPIRequest $request)
     {
         $input = $request->all();
@@ -122,44 +52,6 @@ class ChapterAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     *
-     * @SWG\Get(
-     *      path="/chapters/{id}",
-     *      summary="Display the specified Chapter",
-     *      tags={"Chapter"},
-     *      description="Get Chapter",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Chapter",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Chapter"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function show($id)
     {
         /** @var Chapter $chapter */
@@ -177,52 +69,6 @@ class ChapterAPIController extends AppBaseController
         );
     }
 
-    /**
-     * @param int $id
-     * @param UpdateChapterAPIRequest $request
-     * @return Response
-     *
-     * @SWG\Put(
-     *      path="/chapters/{id}",
-     *      summary="Update the specified Chapter in storage",
-     *      tags={"Chapter"},
-     *      description="Update Chapter",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Chapter",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Chapter that should be updated",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Chapter")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Chapter"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     */
     public function update($id, UpdateChapterAPIRequest $request)
     {
         $input = $request->all();

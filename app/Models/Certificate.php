@@ -7,45 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-/**
- * @SWG\Definition(
- *      definition="Certificate",
- *      required={""},
- *      @SWG\Property(
- *          property="certificate_id",
- *          description="certificate_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="certificate_name",
- *          description="certificate_name",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="certificate_image",
- *          description="certificate_image",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="certificate_description",
- *          description="certificate_description",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="created_at",
- *          description="created_at",
- *          type="string",
- *          format="date-time"
- *      ),
- *      @SWG\Property(
- *          property="updated_at",
- *          description="updated_at",
- *          type="string",
- *          format="date-time"
- *      )
- * )
- */
+
 class Certificate extends Model implements HasMedia
 {
     use SoftDeletes;
