@@ -9,6 +9,8 @@ use App\Models\LearningProcess;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Yajra\DataTables\Html\Editor\Fields\Boolean;
+use Illuminate\Support\Facades\Auth;
+
 
 class CourseShortTermResource extends JsonResource
 {
@@ -23,13 +25,13 @@ class CourseShortTermResource extends JsonResource
     {
 
 
-        $user = auth()->user();
+        $user = Auth::guard('api')->user();
 
         $chapters = Chapter::where('course_id', $this->course_id)->with('lessons')->with('survey')->get();
 
         $course_resources["chapters"] = ChapterShortTermResource::collection($chapters);
 
-        $studentCourse = CourseStudent::where('course_id', '=', $this->course_id)->first();
+        $studentCourse = CourseStudent::where('student_id', '=', $user->id)->where('course_id', '=', $this->course_id)->first();
 
         $stepLearning = LearningProcess::where('course_id', '=', $this->course_id)->where('isPassed', 'false')->first();
 
@@ -42,6 +44,7 @@ class CourseShortTermResource extends JsonResource
         $learningProcess = ($user) ? User::find($user->id)->learningProcess($this->course_id): [];
 
         $students = $this->students;
+
 
         $scoreRating = CourseStudent::whereNotNull('rating')->where('course_id', $this->course_id)->selectRaw("sum(rating) as scoreRating, count(case when rating > 0 then 1 else null end) as rating_round ")->first();
 
@@ -81,7 +84,8 @@ class CourseShortTermResource extends JsonResource
             'is_published' => $this->is_published,
             'course_type' => $this->course_type,
             'unit_currency' => $this->unit_currency,
-            'created_at' => $this->created_at->format('Y-m-d H:i'),
+            'created_at' => $this->created_at->format('d-m-Y H:i'),
+            'updated_at' => $this->updated_at->format('m/Y'),
             'course_resources' => $course_resources,
             'learningProcess' => $learningProcess,
             'number_of_students' => count($students),

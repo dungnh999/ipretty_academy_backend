@@ -31,6 +31,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Response;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class CourseController
@@ -717,7 +718,7 @@ class CourseAPIController extends AppBaseController
       );
     }
     $new_course = $this->courseRepository->updateViewCount($course);
-    if(auth()->user()){
+    if(Auth::guard('api')->user()){
       return $this->sendResponse(
         new CourseShortTermResource($course),
         __('messages.retrieved', ['model' => __('models/courses.singular')])

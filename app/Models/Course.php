@@ -200,22 +200,16 @@ class Course extends Model implements HasMedia
     // remember to save before run this method
     public function handleMedia($request = null, $collectionName = null, $collection = null): void
     {
-        
         if ($request == null) {
             return;
         }
+        dd($request[$collectionName] && is_string($request[$collectionName]));
         // Store Image
-        
         if ($request[$collectionName] && is_string($request[$collectionName])) {
-            
+
             $base64 = $this->check_base64_image($request[$collectionName]);
             if ($base64['isValidFormat'] && $base64['isValidSize']) {
-                $newMedia = $this->handleBase64Media($collection, [$request[$collectionName]], $collectionName);
-                // var_dump($newMedia);
-                // dd($newMedia);
 
-                $this[$collectionName] = $newMedia;
-                $this->save(); //remember to save again
             }else {
                 return;
             }
@@ -226,7 +220,7 @@ class Course extends Model implements HasMedia
             // var_dump($collectionName);
             // var_dump('sdasdds2');
             // $this->addMediaFromRequest('main_attachment')
-            $this->addMedia($file)
+            $newMedia = $this->addMedia($file)
                 ->usingFileName(
                     CommonBusiness::change_alias($file->getClientOriginalName())
                 )
@@ -234,8 +228,9 @@ class Course extends Model implements HasMedia
             // $newMedia = $this->addMediaFromRequest($collectionName)->toMediaCollection($collectionName);
             // $this[$collectionName] = $newMedia->getUrl();
   
-            $this[$collectionName] = $this->getFirstMediaUrl($collectionName);
-            
+            $this[$collectionName] = str_replace(public_path(), '', $newMedia->getPath());
+
+
             $this->save(); //remember to save again
         } else {
             // TODO: throw exception

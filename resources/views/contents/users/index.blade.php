@@ -112,7 +112,8 @@
                 <th class="text-right">Tên</th>
                 <th class="text-center">Giới tính</th>
                 <th class="text-center">Xác Thực</th>
-{{--                <th class="text-center">Trạng thái</th>--}}
+                <th class="text-center">Trạng thái</th>
+                <th class="text-center"></th>
               </tr>
               </thead>
             </table>

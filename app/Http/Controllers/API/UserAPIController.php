@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Contract\CommonBusiness;
 use App\Exports\UserTemplateExport;
+use App\Jobs\PushNotificationWhenActiveAccount;
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use App\Http\Controllers\AppBaseController;
@@ -386,6 +387,68 @@ class UserAPIController extends AppBaseController
             __('auth.users.active_success')
         );
     }
+
+    public function activate(Request $request )
+    {
+
+        $id = $request->get('id');
+        $token = $request->get('token');
+        $redirect = env('IPRETTY_PLATFORM') . '/#/';
+        $active_url = env('ACTIVE_URL') ? env('ACTIVE_URL') : 'confirm-success';
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                return redirect($redirect . '?error=' . __('messages.user_not_exist'))->with(
+                    'error',
+                    __('messages.user_not_exist')
+                );
+            }
+            // check if token is expired
+            if (
+                Carbon::parse($user->updated_at)
+                    ->addDays(1)
+                    ->isPast()
+            ) {
+                return redirect($redirect . '?error=' . __('messages.expired_token'))->with(
+                    'error',
+                    __('messages.expired_token')
+                );
+            }
+
+            if ($user->activation_token != $token && $user->email_verified_at == null) {
+                return redirect($redirect . '?error=' . __('messages.invalid_token'))->with(
+                    'error',
+                    __('messages.invalid_token')
+                );
+            }
+
+            if ($user->markEmailAsVerified()) {
+                $job = new PushNotificationWhenActiveAccount($user);
+                dispatch($job);
+                return redirect(
+                    $redirect . $active_url . '?email=' . $user->email . '&token=' . $user->activation_token . '&logout=1'
+                )->with('verifySuccess', __('messages.verification_successfully'));
+            }
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'errors' => [
+                        '_messages' => ['There is error while activating your account. ' . $e->getMessage()],
+                    ],
+                ],
+                500
+            );
+        }
+        return response()->json(
+            [
+                'errors' => [
+                    '_messages' => ['There is unknown error while activating your account.'],
+                ],
+            ],
+            500
+        );
+    }
+
 
     public function inviteUser (InviteUserAPIRequest $request) {
 
@@ -824,6 +887,7 @@ class UserAPIController extends AppBaseController
     {
         return (!preg_match("/(0)[0-9]/", $str)) || (preg_match("/[a-z]/", $str)) ? FALSE : TRUE;
     }
+
 
     public function feature_teachers () {
         $teachers = $this->userRepository->feature_teachers();

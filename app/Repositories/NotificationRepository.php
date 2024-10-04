@@ -6,6 +6,8 @@ use App\Models\Notification;
 use App\Repositories\BaseRepository;
 use DateInterval;
 use DateTime;
+use Carbon\Carbon;
+
 
 /**
  * Class NotificationRepository
@@ -53,6 +55,7 @@ class NotificationRepository extends BaseRepository
         $count_unchecked = count($noti_unchecked);
         $notify_data = $this->model->where('notifiable_id', $user->id)->orderBy('created_at', 'desc')->where('created_at', '>=', $date)->select('*');
 
+
         if (isset($params['paging']) && $params['paging'] == true) {
             if (isset($params['perpage']) && $params['perpage'] != null) {
                 $perpage = $params['perpage'];
@@ -65,22 +68,33 @@ class NotificationRepository extends BaseRepository
             $model = $notify_data->get();
         }
 
+
+
+
         if(count($model) > 0 ) {
             foreach($model as $noti) {
-                $noti['message'] = json_decode($noti['data']);
+                $noti['info'] = json_decode($noti['data'], true);
+                $targetTime = Carbon::parse($noti['updated_at']);
+                $currentTime = Carbon::now();
+                $timeDifference = $targetTime->diff($currentTime);
+                if ($timeDifference->days > 0) {
+                    $noti['time_notification'] =  $timeDifference->days . " ngày ";
+                }
+                if ($timeDifference->h > 0) {
+                    $noti['time_notification'] = $timeDifference->h . " giờ";
+                }
+                $noti['avatar'] = ($noti['info']['avatar'] == "") ? $this->generateAvatar('NO') : $noti['info']['avatar'];
             }
         }
-        
-        if (isset($count_unread)) {
-          $customField = collect(['count_unread' => $count_unread]);
-          $model = $customField->merge($model);
-        }
-        if (isset($count_unchecked)) {
-            $customField = collect(['count_unchecked' => $count_unchecked]);
-            $model = $customField->merge($model);
-        }
+//        if (isset($count_unread)) {
+//          $customField = collect(['count_unread' => $count_unread]);
+//          $model = $customField->merge($model);
+//        }
+//        if (isset($count_unchecked)) {
+//            $customField = collect(['count_unchecked' => $count_unchecked]);
+//            $model = $customField->merge($model);
+//        }
 
-      
         return $model;
     }
 

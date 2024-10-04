@@ -67,9 +67,9 @@ class PostRepository extends BaseRepository
 
         $model->save();
 
-        // if($input["is_banner"] == 1){
-//        $model->handleMedia($request);
-        // }
+        if ($input["is_banner"] == 1) {
+            $model->handleMedia($request);
+        }
 
 
         Post::where('post_id', $model->post_id)->update(['updated_at' => NULL]);
@@ -156,7 +156,7 @@ class PostRepository extends BaseRepository
         $model->fill($input);
         $model->save();
 
-        if ($input[MEDIA_COLLECTION["POST_BANNERURL"]] != NULL && $input[MEDIA_COLLECTION["POST_BANNERURL"]] != "null" ) {
+        if ($input[MEDIA_COLLECTION["POST_BANNERURL"]] != NULL && $input[MEDIA_COLLECTION["POST_BANNERURL"]] != "null") {
             $model->handleMedia($request);
         }
 
@@ -319,8 +319,6 @@ class PostRepository extends BaseRepository
             ->get();
         return $post_by_category;
     }
-
-
 
 
 }

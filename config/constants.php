@@ -59,8 +59,8 @@ defined('COOKIE_ACCESS_TOKEN') or define('COOKIE_ACCESS_TOKEN', 'accessToken');
 /**
  * ENUM
 */
-define('ENUM_MALE', 1);
-define('ENUM_FEMALE', 0);
+define('ENUM_MALE', 'Male');
+define('ENUM_FEMALE', 'Female');
 define('ENUM_OTHER', 2);
 define('ENUM_ACTIVE', 1);
 define('ENUM_UNACTIVE', 0);

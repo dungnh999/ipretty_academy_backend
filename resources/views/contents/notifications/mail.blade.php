@@ -94,7 +94,7 @@
                     @endisset
                     @isset($passwordSuccess)
                     <p>Mật khẩu của bạn: {{ $passwordSuccess }} </p>
-                    <p>Vui lòng đổi mật khẩu sau khi đăng nhập. </p>
+{{--                    <p>Vui lòng đổi mật khẩu sau khi đăng nhập. </p>--}}
                     @endisset
                     <p>Nếu bạn không thay đổi mật khẩu, vui lòng bảo vệ tài khoản của bạn ngay lập tức.</p>
                     @endif
@@ -150,7 +150,7 @@
                     @endisset
                     @isset($password)
                     <p>Mật khẩu của bạn: {{ $password }} </p>
-                    <p>Vui lòng đổi mật khẩu sau khi đăng nhập. </p>
+{{--                    <p>Vui lòng đổi mật khẩu sau khi đăng nhập. </p>--}}
                     @endisset
 
                     @isset($nameButton)
@@ -204,7 +204,7 @@
 
                 <tr>
                     <td colspan="2" class="content-cell" align="center">
-                        © 2021 Ipretty.vn
+                        © 2024 Iprett.edu.vn
                     </td>
                 </tr>
             </div>

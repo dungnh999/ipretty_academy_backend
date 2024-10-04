@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Exports\StatistialBusinessExport;
 use App\Http\Requests\API\CreateTransactionAPIRequest;
 use App\Http\Requests\API\UpdateTransactionAPIRequest;
+use App\Jobs\AddMemberIntoEvent;
 use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
@@ -102,7 +103,7 @@ class TransactionAPIController extends AppBaseController
 
         if ($order->status != 'ordered') {
             return $this->sendError(
-                __('messages.order_used')
+                "Đơn hàng đã được thanh toán", '400'
             );
         }
 
@@ -118,6 +119,27 @@ class TransactionAPIController extends AppBaseController
             $order->save();
 
         }
+
+        $oderStatus = 'paid';
+        $updateOrder = $this->orderRepository->updateStatus($transaction->order_id, $oderStatus);
+        $courseIds = $updateOrder->courses->pluck('course_id')->toArray();
+
+        foreach ($courseIds as $key => $courseId) {
+
+            $input['course_id'] = $courseId;
+
+            $input['student_id'] = $updateOrder->user_id;
+
+            $this->courseStudentRepository->create($input);
+
+            $this->learningProcessRepository->createProcessLearning($input, $updateOrder->user_id);
+            $course = $this->courseRepository->find($courseId);
+            $events = $course->events;
+            $job = (new AddMemberIntoEvent($updateOrder->user_id, $events));
+
+            dispatch($job);
+        }
+
 
         return $this->sendResponse(
             new TransactionResource($transaction),

@@ -190,6 +190,9 @@ async function saveUpdateChapterLesson(){
   }
 }
 
+/**
+ * Tạo bài giảng
+ * */
 async function saveCreateChapterLesson() {
   let videoId = getYouTubeVideoId($('#link-yotube-course').val());
   let METHOD = 'POST',

@@ -55,7 +55,6 @@ class OrderRepository extends BaseRepository
       $sale_price = 0;
       $grandTotal = $total_price + round($total_price * 10 / 100,2) - $sale_price;
 
-
       $input["user_id"] = $user->id;
       $input['discount_code'] = $request->discount_code;
       $input['total'] = $total_price;

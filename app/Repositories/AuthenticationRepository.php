@@ -73,21 +73,11 @@ class AuthenticationRepository extends BaseRepository
 
   public function register($input, $request = null)
   {
-    $email = $input['email'] ?? '';
-    $department_id = $input['department_id'] ?? 0;
-
-    //    // Kiểm tra tồn tại
-    //    if (User::where('email', $email)->count() != 0) {
-    //      $response['isExist'] = 1;
-    //      return $response;
-    //    }
-    //
-    //
-    //    if (UserDepartment::where('department_id', $department_id)->count() == 0) {
-    //      $response['noDepartment'] = 1;
-    //      return $response;
-    //    }
-    $user = User::find(1);
+      //    // Kiểm tra tồn tại
+    if (User::where('email', $input['email'])->count() != 0) {
+      $response['is-exist'] = 1;
+      return $response;
+    }
     $password = $input['password'] ?? Str::random(6);
     $department_id = $input['department_id'] ?? null;
     $gender = $input['gender'] ?? 'Male';
@@ -96,7 +86,7 @@ class AuthenticationRepository extends BaseRepository
     $name = $input['name'] ?? null;
     $phone = $input['phone'] ?? null;
     $about = $input['about'] ?? null;
-    $role = $input['position'] ?? null;
+    $role = $input['position'] ?? ENUM_PREFIX_ROLE_EMPLOYEE;
 
     // role : 1 Giáo viên , 0 Quản lý , 2 Học viên , 3 Nhân viên
     $prefix = TEXT_PREFIX_ROLE_EMPLOYEE;
@@ -140,6 +130,7 @@ class AuthenticationRepository extends BaseRepository
       'code' => $code,
       'name' => $name,
       'phone' => $phone,
+      'menuroles' => $role,
       'address' => $address,
       'birth_day' => $birthday,
       'about' => $about,

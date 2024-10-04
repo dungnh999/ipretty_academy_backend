@@ -44,6 +44,8 @@ async function drawDataTableUsers(res){
       { data: 'name', className: 'text-right' },
       { data: 'gender', className: 'text-center' },
       { data: 'verified', className: 'text-center' },
+      { data: 'isLocked', className: 'text-center' },
+      { data: 'action', className: 'text-center' },
     ]
     button = [
       {

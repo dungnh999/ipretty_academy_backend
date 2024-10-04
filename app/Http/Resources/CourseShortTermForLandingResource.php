@@ -44,6 +44,7 @@ class CourseShortTermForLandingResource extends JsonResource
             'course_type' => $this->course_type,
             'unit_currency' => $this->unit_currency,
             'created_at' => $this->created_at->format('Y-m-d H:i'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i'),
             'course_resources' => $course_resources,
             'number_of_students' => count($students),
             'scoreRating' => $scoreRating->scoreRating,

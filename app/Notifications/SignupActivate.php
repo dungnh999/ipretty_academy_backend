@@ -47,7 +47,7 @@ class SignupActivate extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         Log::info($notifiable);
-        $url = route('signupActivate', [$notifiable->id, $notifiable->activation_token]);
+        $url = env('ACADEMY_URL') . env('ACADEMY_LINK_VERIFY') . $notifiable->id . '/' . $notifiable->activation_token;
         $textBody = array(__('auth.emails.welcome_body'));
         $name = isset($this->user->name) && $this->user->name !== "" ? $this->user->name : $this->user->email;
 
@@ -60,7 +60,7 @@ class SignupActivate extends Notification implements ShouldQueue
                     'textTitle' =>  ucwords($name),
                     'textBody' => $textBody,
                     'nameButton' => __('auth.emails.verify_button'),
-                    'linkEvent' => url($url),
+                    'linkEvent' => $url,
                     'name' => $name,
                     'username' => $this->user->email,
                     'password' => $this->password ? $this->password : null

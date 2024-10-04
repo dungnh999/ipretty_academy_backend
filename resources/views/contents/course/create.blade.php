@@ -55,15 +55,29 @@
             </div>
           </div>
           <div class="col-lg-5">
-            <label class="form-label" for="username">Hình ảnh khoá học</label>
-            <div class="review-video-create-course position-relative">
-              <img id="preview-banner-create-course" height="300" src="https://upload-dungnh-dev.s3.ap-southeast-1.amazonaws.com/public/image/course/cdDyAwRUytGhmrlh7e4DRzqZ2rYTeU5wRZGQz30A.png"
-                class="w-100 rounded object-fit-cover">
-              <label for="input-banner-create-course" type="button" style="position: absolute; background: aliceblue; right: 17px; bottom: 17px; border: none; padding: 7px; border-radius: 7px; border-color: red">
-                <i class='bx bx-cloud-upload'></i>
-                Tải ảnh lên
-              </label>
-              <input type="file" id="input-banner-create-course" hidden="">
+            <div>
+              <label class="form-label" for="username">Hình ảnh khoá học</label>
+              <div class="review-video-create-course position-relative">
+                <img id="preview-banner-create-course" height="300" src="https://upload-dungnh-dev.s3.ap-southeast-1.amazonaws.com/public/image/course/cdDyAwRUytGhmrlh7e4DRzqZ2rYTeU5wRZGQz30A.png"
+                     class="w-100 rounded object-fit-cover">
+                <label for="input-banner-create-course" type="button" style="position: absolute; background: aliceblue; right: 17px; bottom: 17px; border: none; padding: 7px; border-radius: 7px; border-color: red">
+                  <i class='bx bx-cloud-upload'></i>
+                  Tải ảnh lên
+                </label>
+                <input type="file" id="input-banner-create-course" hidden="">
+              </div>
+            </div>
+            <div>
+              <label class="form-label" for="username">Chứng chỉ</label>
+              <div class="review-video-create-course position-relative">
+                <img id="preview-certificate-create-course" height="150" src="https://upload-dungnh-dev.s3.ap-southeast-1.amazonaws.com/public/image/course/cdDyAwRUytGhmrlh7e4DRzqZ2rYTeU5wRZGQz30A.png"
+                     class="w-100 rounded object-fit-cover">
+                <label for="input-certificate-create-course" type="button" style="position: absolute; background: aliceblue; right: 17px; bottom: 17px; border: none; padding: 7px; border-radius: 7px; border-color: red">
+                  <i class='bx bx-cloud-upload'></i>
+                  Tải ảnh lên
+                </label>
+                <input type="file" id="input-certificate-create-course" hidden="">
+              </div>
             </div>
           </div>
         </div>

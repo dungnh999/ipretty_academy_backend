@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 abstract class BaseRepository
@@ -198,5 +199,30 @@ abstract class BaseRepository
         $model = $query->findOrFail($id);
 
         return $model->delete();
+    }
+
+
+    public function generateAvatar($name)
+    {
+
+        // Chuyển đổi tên về UTF-8 nếu cần
+        $name = mb_convert_encoding($name, 'UTF-8', 'UTF-8');
+
+        // Lấy hai ký tự đầu tiên
+        $initials = strtoupper(substr($name, 0, 2));
+
+        // Tạo ảnh nền 200x200
+        $img = Image::canvas(200, 200, '#f0f0f0');
+        // Vẽ chữ lên ảnh
+        $img->text($initials, 100, 100, function($font) {
+            $font->size(100);
+            $font->file(public_path("/assets/font/OpenSans.ttf"));
+            $font->color('#a1acb8');
+            $font->align('center');
+            $font->valign('middle');
+        });
+
+        // Trả về HTML cho ảnh
+        return (string) $img->encode('data-url');
     }
 }

@@ -13,12 +13,12 @@
                      placeholder="Nhập tên danh mục khoá học" required>
               <div class="invalid-feedback">Tên danh mục khoá học không được để trống </div>
             </div>
-            <div class="col-sm-12 form-password-toggle">
-              <label class="form-label" for="password">Loại danh mục khoá học</label>
-              <select id="course-category-types-create" class="form-select">
-                <option hidden selected>Chọn loại doanh mục khoá học</option>
-              </select>
-            </div>
+{{--            <div class="col-sm-12 form-password-toggle">--}}
+{{--              <label class="form-label" for="password">Loại danh mục khoá học</label>--}}
+{{--              <select id="course-category-types-create" class="form-select">--}}
+{{--                <option hidden selected>Chọn loại doanh mục khoá học</option>--}}
+{{--              </select>--}}
+{{--            </div>--}}
             <div class="col-lg-12">
               <label for="exampleFormControlTextarea1" class="form-label">Mô tả</label>
               <textarea class="form-control" id="description-create-category-course" rows="5"></textarea>

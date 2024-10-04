@@ -85,8 +85,6 @@ class Post extends Model implements HasMedia
 
     public function handleMedia($request = null)
     {
-
-
       if ($request == null) {
             return;
       }
@@ -94,7 +92,7 @@ class Post extends Model implements HasMedia
       // Store Image
       if ($request->hasFile($this->mediaCollection) && $request->file($this->mediaCollection)->isValid()) {
           $newMedia = $this->addMediaFromRequest($this->mediaCollection)->toMediaCollection($this->mediaCollection);
-          $this[$this->mediaCollection] = $newMedia->getUrl();
+          $this[$this->mediaCollection] = str_replace(public_path(), '', $newMedia->getPath());
           $this->save(); //remember to save again
       } else {
           // TODO: throw exception

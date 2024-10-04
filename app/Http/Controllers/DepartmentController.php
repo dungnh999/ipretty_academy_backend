@@ -35,9 +35,9 @@ class DepartmentController extends AppBaseController
   public function CreateDepartment(Request $request)
   {
     $userDepartment = $this->userDepartmentRepository->create($request->all());
-    return $this->sendResponse(
-      new UserDepartmentResource($userDepartment),
-      __('messages.saved', ['model' => __('models/userDepartments.singular')])
+    return $this->sendSuccess(
+      __('messages.saved', ['model' => __('models/userDepartments.singular')]),
+        new UserDepartmentResource($userDepartment)
     );
   }
 
@@ -98,9 +98,9 @@ class DepartmentController extends AppBaseController
         );
       }
 
-      return $this->sendResponse(
-        new UserDepartmentResource($userDepartment),
-        __('messages.retrieved', ['model' => __('models/userDepartments.singular')])
+      return $this->sendSuccess(
+        __('messages.retrieved', ['model' => __('models/userDepartments.singular')]) ,
+        new UserDepartmentResource($userDepartment)
       );
   }
 
@@ -117,9 +117,9 @@ class DepartmentController extends AppBaseController
 
     $userDepartment = $this->userDepartmentRepository->update($input, $request->get('id'));
 
-    return $this->sendResponse(
-      new UserDepartmentResource($userDepartment),
-      __('messages.updated', ['model' => __('models/userDepartments.singular')])
+    return $this->sendSuccess(
+        __('messages.updated', ['model' => __('models/userDepartments.singular')]),
+        new UserDepartmentResource($userDepartment)
     );
   }
 
@@ -136,9 +136,9 @@ class DepartmentController extends AppBaseController
 
     $userDepartment['isActive'] = (int)$request->get('status');
     $userDepartment->save();
-    return $this->sendResponse(
-      $id,
-      __('messages.deleted', ['model' => __('models/userDepartments.singular')])
+    return $this->sendSuccess(
+      __('messages.deleted', ['model' => __('models/userDepartments.singular')]),
+        new UserDepartmentResource($userDepartment)
     );
   }
 

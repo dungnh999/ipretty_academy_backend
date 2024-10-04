@@ -170,6 +170,7 @@ return [
 
   'no_data' => 'Chưa có dữ liệu.',
   'login_errors' => [
+    'username_exist' => 'Email đã tồn tại',
     'username_or_password_incorrect' => 'Email đăng nhập hoặc mật khẩu không đúng.',
     'account_has_not_yet_verified' => 'Tài khoản chưa được xác minh.',
     'account_has_not_manager' => 'Tài khoản bạn không phải đúng !!',

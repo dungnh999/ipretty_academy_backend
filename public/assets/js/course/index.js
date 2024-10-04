@@ -1,3 +1,5 @@
+let DataTableDepartment, DataTableUnActiveDepartment;
+
 $(function (){
   loadData();
 })
@@ -8,7 +10,15 @@ async function loadData(){
     param = null,
     data = null ;
   let res = await axiosTemplate(method , url , param , data)
-  drawDataTableCourse(res);
+  $('#total-tab-active-course').text(res.data[2]['total_active'])
+  $('#total-tab-unactive-course').text(res.data[2]['total_UnActive'])
+
+    if (DataTableDepartment || DataTableUnActiveDepartment) {
+        updateDataTable($('#table-course-active-ipretty'), res.data[0].original.data);
+        updateDataTable($('#table-course-unactive-ipretty'), res.data[1].original.data);
+    } else {
+        drawDataTableCourse(res)
+    }
 }
 
 

@@ -7,12 +7,12 @@ function openModalCreateCoursesCategory(){
     $('#image-preview-create-category-course').attr('src', url)
   })
 
-  let $select = $('#course-category-types-create').select2({
-    dropdownParent: '#modal-create-category-course',
-  });
-  $select.data('select2').$container.addClass('w-100');
+  // let $select = $('#course-category-types-create').select2({
+  //   dropdownParent: '#modal-create-category-course',
+  // });
+  // $select.data('select2').$container.addClass('w-100');
 
-  getCategoryTypesCreate();
+  // getCategoryTypesCreate();
 }
 
 async function saveCreateCoursesCategory(){
@@ -23,12 +23,11 @@ async function saveCreateCoursesCategory(){
   formData.append('category_name', $('#name-create-category-course-ipretty').val()),
   formData.append('course_category_attachment', fileUpload);
   formData.append('category_description', $('#description-create-category-course').val());
-  formData.append('category_type_id', $('#course-category-types-create').val());
   let method = 'POST',
     url = '/courses-category/create',
     param = null,
     data = formData;
-  let res = await axiosTemplate(method , url , param , data)
+  let res = await axiosTemplateFile(method , url , param , data)
   if(res.status == 200) {
     successSwalNotify("Thêm mới thành công")
     loadData();
@@ -38,14 +37,14 @@ async function saveCreateCoursesCategory(){
   }
 }
 
-async function getCategoryTypesCreate(){
-  let METHOD = 'get',
-    URL = '/courses-category/get-data-category-types',
-    PARAM = '',
-    DATA = null;
-  let res = await axiosTemplate(METHOD, URL , PARAM, DATA )
-  $('#course-category-types-create').html(res.data.data)
-}
+// async function getCategoryTypesCreate(){
+//   let METHOD = 'get',
+//     URL = '/courses-category/get-data-category-types',
+//     PARAM = '',
+//     DATA = null;
+//   let res = await axiosTemplate(METHOD, URL , PARAM, DATA )
+//   $('#course-category-types-create').html(res.data.data)
+// }
 
 function closeModalCreateCoursesCategory(){
   $('#modal-create-category-course').modal('hide');

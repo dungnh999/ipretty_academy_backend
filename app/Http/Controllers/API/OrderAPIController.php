@@ -76,27 +76,33 @@ class OrderAPIController extends AppBaseController
     public function store(CreateOrderAPIRequest $request)
     {
 
-       // $input = $request->all();
+        // $input = $request->all();
         $user = auth()->user();
+        $course_ids = collect($request->get('data'))->pluck('course_id')->toArray();
+        $ordered = $user->coursesOrdered->where('status', 'ordered')->pluck('courses')->toArray();
+        $coursesOrderedUser = [];
 
-        $order = $this->orderRepository->createOrderCourse($request, $user);
+        foreach ($ordered as $key => $order) {
+            foreach ($order as $key => $item) {
+                array_push($coursesOrderedUser, $item);
+            }
+        }
 
 
-//        $course_ids = $request->course_ids;
+        $orderedCourses = array_filter($coursesOrderedUser, function($courseOrdered) use ($course_ids) {
+            return in_array($courseOrdered['course_id'], $course_ids);
+        });
+
+
 //
-//        $ordered = $user->coursesOrdered->pluck('courses')->toArray();
+
+
 //
-//        $coursesOrderedUser = [];
 //
-//        foreach ($ordered as $key => $order) {
-//            foreach ($order as $key => $item) {
-//                array_push($coursesOrderedUser, $item);
-//            }
-//        }
 //
-//        $orderedCourses = array_filter($coursesOrderedUser, function($courseOrdered) use ($course_ids) {
-//            return in_array($courseOrdered['course_id'], $course_ids);
-//        });
+
+//
+
 //
 //
 //        if (count($orderedCourses)) {
@@ -129,6 +135,8 @@ class OrderAPIController extends AppBaseController
 //            }
 //        }
 
+            $order = $this->orderRepository->createOrderCourse($request, $user);
+
 
 //        if ($order) {
 //            if (isset($request->discount_code) && $request->discount_code != null && $used_discount_code['discountCode'] != null) {
@@ -139,6 +147,7 @@ class OrderAPIController extends AppBaseController
 //
 //            $removeCartItem = $this->cartItemRepository->removeCartItemOrdered($request->cart_id, $course_ids);
 //        }
+
 
 
         return $this->sendResponse(

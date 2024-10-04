@@ -35,7 +35,7 @@ async function saveUpdateBanner(){
     URL = '/banner/update',
     PARAM = null,
     DATA = formData;
-  let res = await axiosTemplate(METHOD, URL , PARAM, DATA )
+  let res = await axiosTemplateFile(METHOD, URL , PARAM, DATA )
   if(res.status === 200){
     successSwalNotify("Chỉnh sửa thành công");
     loadData();

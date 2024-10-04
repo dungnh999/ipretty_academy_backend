@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Contract\CommonBusiness;
@@ -23,7 +24,7 @@ class CourseCategory extends Model implements HasMedia
     protected $primaryKey = 'category_id';
 
     protected $mediaCollection = [
-        "course_category_attachment" =>  MEDIA_COLLECTION["COURSE_CATEGORY_ATTACHMENT"]
+        "course_category_attachment" => MEDIA_COLLECTION["COURSE_CATEGORY_ATTACHMENT"]
     ];
 
     public $fillable = [
@@ -65,28 +66,28 @@ class CourseCategory extends Model implements HasMedia
 
     public function createdBy()
     {
-       return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function categoryType()
     {
-      return $this->belongsTo( CourseCategoryTypes::class, 'category_type_id');
+        return $this->belongsTo(CourseCategoryTypes::class, 'category_type_id');
     }
 
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection($this->mediaCollection["course_category_attachment"])
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif',
-             'application/pdf', 'application/xls', 'application/xlsx', 'application/doc',
-             'application/docx', 'application/ppt', 'application/pptx', 'application/zip',
-             'application/msword',
-             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-             'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-             'application/vnd.ms-powerpoint',
-             'application/vnd.ms-excel',
-             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-             'application/vnd.rar'])
-             ->singleFile();
+                'application/pdf', 'application/xls', 'application/xlsx', 'application/doc',
+                'application/docx', 'application/ppt', 'application/pptx', 'application/zip',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'application/vnd.ms-powerpoint',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/vnd.rar'])
+            ->singleFile();
     }
 
     public function handleMedia($request = null)
@@ -96,23 +97,21 @@ class CourseCategory extends Model implements HasMedia
 //            return;
 //        }
 //        try {
-            if ($request->hasFile('course_category_attachment') && $request->file('course_category_attachment')->isValid()) {
-                $file = $request->file('course_category_attachment');
-                // $this->addMediaFromRequest('main_attachment')
-                $newMedia = $this->addMedia($file)
-                      ->usingFileName(
-                          CommonBusiness::change_alias($file->getClientOriginalName())
-                      )
-                      ->toMediaCollection($this->mediaCollection["course_category_attachment"]);
-                $this->course_category_attachment = $newMedia->getUrl();
-                $this->save(); //remember to save again
-                return true;
-            } else if ($request->hasFile('course_category_attachment') && $request->file('course_category_attachment')->isValid()) {
+        if ($request->hasFile('course_category_attachment') && $request->file('course_category_attachment')->isValid()) {
+            $file = $request->file('course_category_attachment');
+            // $this->addMediaFromRequest('main_attachment')
+            $newMedia = $this->addMedia($file)
+                ->usingFileName(
+                    CommonBusiness::change_alias($file->getClientOriginalName())
+                )
+                ->toMediaCollection($this->mediaCollection["course_category_attachment"]);
+            $this->course_category_attachment = str_replace(public_path(), '', $newMedia->getPath());
+            $this->save(); //remember to save again
+            return true;
+        } else {
+            // TODO: throw exception
 
-            } else {
-                // TODO: throw exception
-
-            }
+        }
 
 
 //        } catch (\Throwable $th) {
@@ -121,15 +120,18 @@ class CourseCategory extends Model implements HasMedia
 //        }
     }
 
-    public function courses () {
+    public function courses()
+    {
         return $this->hasMany('App\Models\Course', 'category_id', 'category_id');
     }
 
-    public function coursesWithStudents () {
+    public function coursesWithStudents()
+    {
         return $this->hasManyThrough('App\Models\CourseStudent', 'App\Models\Course', 'category_id', 'course_id');
     }
 
-    public function studentsCurrentMonth () {
+    public function studentsCurrentMonth()
+    {
 
         $month = $this->getCurPrevMonth();
 
@@ -137,7 +139,8 @@ class CourseCategory extends Model implements HasMedia
             ->whereDate('courses_students.created_at', '<=', $month['currentMonth'])->whereDate('courses_students.created_at', '>', $month['previousMonth']);
     }
 
-    public function studentsPrevMonth () {
+    public function studentsPrevMonth()
+    {
 
         $month = $this->getCurPrevMonth();
 
@@ -150,7 +153,7 @@ class CourseCategory extends Model implements HasMedia
         $month = $this->getCurPrevMonth();
 
         return $this->hasMany('App\Models\Course', 'category_id', 'category_id')
-        ->whereDate('courses.created_at', '<=', $month['currentMonth'])->whereDate('courses.created_at', '>', $month['previousMonth']);
+            ->whereDate('courses.created_at', '<=', $month['currentMonth'])->whereDate('courses.created_at', '>', $month['previousMonth']);
     }
 
     public function coursesOfPrevMonth()
@@ -158,7 +161,7 @@ class CourseCategory extends Model implements HasMedia
         $month = $this->getCurPrevMonth();
 
         return $this->hasMany('App\Models\Course', 'category_id', 'category_id')
-        ->whereDate('courses.created_at', '<=', $month['previousMonth'])->whereDate('courses.created_at', '>', $month['prevPreviousMonth']);
+            ->whereDate('courses.created_at', '<=', $month['previousMonth'])->whereDate('courses.created_at', '>', $month['prevPreviousMonth']);
     }
 
 }

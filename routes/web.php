@@ -162,7 +162,7 @@ Route::group(['middleware' => 'auth'], function () {
       Route::post('/update', 'updateUserAccount');
       Route::get('/get-data-department', 'getDataDepartment');
       Route::post('/change-status', 'lockUser');
-      Route::get('/profile', 'getProfileUser')->name('profile');
+      Route::get('/get-profile', 'getProfileUser');
     });
 
   /**

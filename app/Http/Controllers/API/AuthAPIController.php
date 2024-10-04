@@ -87,16 +87,21 @@ class AuthAPIController extends AppBaseController
         }
     }
 
-    public function register (RegisterAPIRequest $request) {
+    public function register (Request $request) {
 
         $input = $request->all();
-
+        $input['position'] = ENUM_PREFIX_ROLE_EMPLOYEE;
         $user = $this->authenticationRepository->register($input);
+        if(isset($user['is-exist'])){
+            return $this->sendError(
+                __('messages.login_errors.username_exist'),
+                400
+            );
+        }
         $job = (new PushNotificationWhenNewAccount($user));
         dispatch($job);
-        // $this->pushNotificationForUser('admin');
-        return $this->sendSuccess(__('auth.registration.success_message'));
-
+        $this->pushNotificationForUser('admin');
+        return $this->sendSuccess(__('auth.registration.success_message'), $user);
     }
 
     public function changePassword(UpdatePasswordInSecurityAPIRequest $request)
@@ -122,6 +127,69 @@ class AuthAPIController extends AppBaseController
 
             return $this->sendSuccess( __('auth.reset_password.password_update_success'));
         }
+    }
+
+    public function activate(Request $request)
+    {
+        $id =  $request->get('id');
+        $token = $request->get('token');
+
+        $redirect = env('IPRETTY_PLATFORM') . '/#/';
+        $active_url = env('ACTIVE_URL') ? env('ACTIVE_URL') : 'confirm-success';
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                return redirect($redirect . '?error=' . __('messages.user_not_exist'))->with(
+                    'error',
+                    __('messages.user_not_exist')
+                );
+            }
+            // check if token is expired
+
+//            if (
+//                Carbon::parse($user->updated_at)
+//                    ->addDays(1)
+//                    ->isPast()
+//            ) {
+//                return redirect($redirect . '?error=' . __('messages.expired_token'))->with(
+//                    'error',
+//                    __('messages.expired_token')
+//                );
+//            }
+//
+//            if ($user->activation_token != $token && $user->email_verified_at == null) {
+//                return redirect($redirect . '?error=' . __('messages.invalid_token'))->with(
+//                    'error',
+//                    __('messages.invalid_token')
+//                );
+//            }
+            if ($user->markEmailAsVerified()) {
+                $job = new PushNotificationWhenActiveAccount($user);
+                dispatch($job);
+//                return redirect(
+//                    $redirect . $active_url . '?email=' . $user->email . '&token=' . $user->activation_token . '&logout=1'
+//                )->with('verifySuccess', __('messages.verification_successfully'));
+                return $this->sendSuccess('Xác nhận thành công');
+            }
+
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'errors' => [
+                        '_messages' => ['There is error while activating your account. ' . $e->getMessage()],
+                    ],
+                ],
+                500
+            );
+        }
+        return response()->json(
+            [
+                'errors' => [
+                    '_messages' => ['There is unknown error while activating your account.'],
+                ],
+            ],
+            500
+        );
     }
 
     public function resetPassword(ResetPasswordAPIRequest $request)

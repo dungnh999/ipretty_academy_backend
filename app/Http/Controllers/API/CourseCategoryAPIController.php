@@ -78,6 +78,7 @@ class CourseCategoryAPIController extends AppBaseController
 
         $courseCategories = $this->courseCategoryRepository->allCategories($params);
 
+
         if (isset($params["paging"]) && $params['paging'] != null) {
             return $this->sendResponse(
                 $courseCategories,

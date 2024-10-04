@@ -34,6 +34,8 @@
                 <th class="text-center">STT</th>
                 <th class="text-center">Tên doanh mục</th>
                 <th class="text-center">Mã doanh mục</th>
+                <th class="text-center">Người tạo</th>
+                <th class="text-center">Ngày tạo</th>
                 <th></th>
               </tr>
               </thead>
@@ -48,7 +50,8 @@
                 <th class="text-center">STT</th>
                 <th class="text-center">Tên Bộ Phận</th>
                 <th class="text-center">Mã doanh mục</th>
-                <th class="text-center">Loại danh mục</th>
+                <th class="text-center">Người tạo</th>
+                <th class="text-center">Ngày tạo</th>
                 <th></th>
               </tr>
               </thead>

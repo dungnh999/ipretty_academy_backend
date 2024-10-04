@@ -11,11 +11,11 @@ use App\Repositories\BaseRepository;
  * Class CourseCategoryRepository
  * @package App\Repositories
  * @version September 7, 2021, 5:18 pm UTC
-*/
-
+ */
 class CourseCategoryRepository extends BaseRepository
 {
     use CommonBusiness;
+
     /**
      * @var array
      */
@@ -40,6 +40,7 @@ class CourseCategoryRepository extends BaseRepository
     protected $relationSearchable = [
         'name'
     ];
+
     /**
      * Configure the Model
      **/
@@ -48,7 +49,7 @@ class CourseCategoryRepository extends BaseRepository
         return CourseCategory::class;
     }
 
-    public function createCourseCategory($input,$request)
+    public function createCourseCategory($input, $request)
     {
         $model = $this->model->newInstance($input);
 
@@ -56,13 +57,13 @@ class CourseCategoryRepository extends BaseRepository
         $model->created_by = $user->id;
         $model->save();
 
-      $model->handleMedia($request);
-
-
-      return $model;
+        if ($request->hasFile(MEDIA_COLLECTION['COURSE_CATEGORY_ATTACHMENT'])) {
+            $model->handleMedia($request);
+        }
+        return $model;
     }
 
-    public function updateCourseCategory($input,$id,$request)
+    public function updateCourseCategory($input, $id, $request)
     {
         $query = $this->model->newQuery();
         $model = $query->findOrFail($id);
@@ -80,16 +81,17 @@ class CourseCategoryRepository extends BaseRepository
     }
 
 
-    public function allCategories ($params = null) {
+    public function allCategories($params = null)
+    {
 
         $query = $this->model->newQuery()
-        ->with('createdBy', function($q) {
-            $q->select('name', 'email', 'id');
-        })
-        // ->with('categoryType', function($q) {
-        //     $q->select('category_type_name', 'category_type_description' , 'id');
-        // })
-        ->orderBy('created_at', 'desc');
+            ->with('createdBy', function ($q) {
+                $q->select('name', 'email', 'id');
+            })
+            // ->with('categoryType', function($q) {
+            //     $q->select('category_type_name', 'category_type_description' , 'id');
+            // })
+            ->orderBy('created_at', 'desc');
 
         if (isset($params['status']) && $params['status'] != null) {
             $status = explode(',', $params['status']);
@@ -125,7 +127,8 @@ class CourseCategoryRepository extends BaseRepository
         return $model;
     }
 
-    public function allCourseCategory($params = null, $user = null){
+    public function allCourseCategory($params = null, $user = null)
+    {
 
         $mainRole = null;
 
@@ -147,7 +150,7 @@ class CourseCategoryRepository extends BaseRepository
                             ->orwhere('course_type', 'Local');
                     });
             });
-        }else {
+        } else {
             $model = $model->whereHas('courses', function ($q) {
                 $q->where('is_published', 1)
                     ->where('isDraft', 0)
@@ -156,8 +159,8 @@ class CourseCategoryRepository extends BaseRepository
         }
 
         $model = $model->withCount('courses')
-        ->orderBy('courses_count', 'DESC')
-        ->limit(12);
+            ->orderBy('courses_count', 'DESC')
+            ->limit(12);
 
         if (!empty($params['keyword'])) {
             $model = CommonBusiness::searchInCollection($model, $this->fieldSearchable, $params['keyword']);
@@ -189,7 +192,7 @@ class CourseCategoryRepository extends BaseRepository
                     ->where('isDraft', 0)
                     ->where(function ($oq) {
                         $oq->orwhere('course_type', 'Business')
-                        ->orwhere('course_type', 'Local');
+                            ->orwhere('course_type', 'Local');
                     });
             });
         } else {
@@ -201,7 +204,7 @@ class CourseCategoryRepository extends BaseRepository
         }
 
         $model = $model->withCount('courses')
-        ->orderBy('courses_count', 'DESC');
+            ->orderBy('courses_count', 'DESC');
 
         if (isset($params) && isset($params['limit']) && $params['limit'] != null) {
             $model = $model->limit($params['limit']);
@@ -231,21 +234,22 @@ class CourseCategoryRepository extends BaseRepository
         return $model;
     }
 
-    public function feature_course_categories () {
+    public function feature_course_categories()
+    {
 
         $query = $this->model->newQuery();
 
         $model = $query->select('category_name', 'category_id', 'course_category_attachment')
-                ->withCount(['coursesWithStudents'])
-                ->withCount(['studentsCurrentMonth'])
-                ->withCount(['studentsPrevMonth'])
-                ->withSum('courses', 'count_viewer')
-                ->withSum('coursesOfMonth', 'count_viewer')
-                ->withSum('coursesOfPrevMonth', 'count_viewer')
-                ->orderBy('courses_with_students_count', 'desc')
-                ->orderBy('courses_sum_count_viewer', 'desc')
-                ->limit(10)
-                ->get();
+            ->withCount(['coursesWithStudents'])
+            ->withCount(['studentsCurrentMonth'])
+            ->withCount(['studentsPrevMonth'])
+            ->withSum('courses', 'count_viewer')
+            ->withSum('coursesOfMonth', 'count_viewer')
+            ->withSum('coursesOfPrevMonth', 'count_viewer')
+            ->orderBy('courses_with_students_count', 'desc')
+            ->orderBy('courses_sum_count_viewer', 'desc')
+            ->limit(10)
+            ->get();
         foreach ($model as $key => $item) {
             $current_quantity = $item->students_current_month_count + $item->courses_of_month_sum_count_viewer;
             $prev_quantity = $item->students_prev_month_count + $item->courses_of_prev_month_sum_count_viewer;

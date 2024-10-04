@@ -23,6 +23,8 @@ async function drawDataTableCoursesCategory(res){
       { data: 'DT_RowIndex', className: 'text-center' , width: '5%' },
       { data: 'category_name', className: 'text-center' },
       { data: 'category_code', className: 'text-center' },
+      { data: 'created_by.name', className: 'text-center' },
+      { data: 'created_at', className: 'text-center' },
       { data: 'action', className: 'text-center' , width: '5%' },
     ],
     button = [
