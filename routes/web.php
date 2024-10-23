@@ -221,6 +221,8 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/', 'index')->name('index');
       Route::get('/get-data-course', 'getDataCourse')->name('index');
       Route::get('/get-teacher', 'getDataTeacher')->name('getdata');
+      Route::post('/change-status-course', 'changeCourse')->name('getdata');
+      Route::post('/change-published-course', 'changePublished')->name('published');
       Route::get('/get-category', 'getDataCategory')->name('getcategory');
       Route::post('/create-course', 'createCourse')->name('create');
       Route::post('/create-chapter-course', 'createChapterCourse')->name('create');

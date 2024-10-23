@@ -136,12 +136,12 @@ class CourseController extends AppBaseController
                           </button>
                           <button class="btn-sm rounded-pill btn-icon bg-label-success align-middle border-0" data-id="' .
                             $course_id .
-                            '" onclick="changeStatusUnActiveCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Phát hành</span>">
+                            '" onclick="changeStatusPublishedCourses($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Phát hành</span>">
                               <i class="bx bx-play"></i>
                           </button>
                           <button class="btn-sm rounded-pill btn-icon bg-label-danger align-middle border-0" data-id="' .
                             $course_id .
-                            '" onclick="changeStatusUnActiveCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Tạm ngưng</span>">
+                            '" onclick="changeStatusUnActiveCourses($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Tạm ngưng</span>">
                               <i class="bx bx-x"></i>
                           </button>
                       </div>';
@@ -159,12 +159,12 @@ class CourseController extends AppBaseController
                             </button>
                             <button class="btn-sm rounded-pill btn-icon bg-label-info align-middle border-0" data-id="' .
                             $course_id .
-                            '" onclick="changeStatusUnActiveCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Ngưng phát hành</span>">
+                            '" onclick="changeStatusUnPublishedCourses($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Ngưng phát hành</span>">
                               <i class="bx bx-pause"></i>
                           </button>
                             <button class="btn-sm rounded-pill btn-icon bg-label-danger align-middle border-0" data-id="' .
                             $course_id .
-                            '" onclick="changeStatusUnActiveCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Tạm ngưng</span>">
+                            '" onclick="changeStatusUnActiveCourses($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Tạm ngưng</span>">
                                 <i class="bx bx-x"></i>
                             </button>
                         </div>';
@@ -179,7 +179,7 @@ class CourseController extends AppBaseController
                       </button>
                        <button class="btn-sm rounded-pill btn-icon bg-label-success align-middle border-0" data-id="' .
                         $course_id .
-                        '" onclick="changeStatusActiveCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Bật hoạt động</span>">
+                        '" onclick="changeStatusActiveCourses($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Bật hoạt động</span>">
                           <i class="bx bx-check"></i>
                       </button>
                   </div>';
@@ -214,6 +214,7 @@ class CourseController extends AppBaseController
 
     public function createCourse(Request $request)
     {
+
         $input = $request->all();
         $response = $this->courseRepository->createCourse($input, $request);
 //        if (!$response["validJson"]) {
@@ -318,6 +319,26 @@ class CourseController extends AppBaseController
         return $this->sendResponse(
             new LessonResource($Lesson),
             __('messages.saved', ['model' => __('models/userDepartments.singular')])
+        );
+    }
+
+
+    public function changeCourse(Request $request)
+    {
+        $course = $this->courseRepository->changeStatus($request);
+        return $this->sendResponse(
+            new CourseResource($course),
+            __('messages.saved', ['model' => __('models/courseCategories.singular')])
+          );
+    }
+
+
+    public function changePublished(Request $request) 
+    {
+        $course = $this->courseRepository->changePublished($request);
+        return $this->sendResponse(
+            new CourseResource($course),
+            __('messages.saved', ['model' => __('models/courseCategories.singular')])
         );
     }
 }

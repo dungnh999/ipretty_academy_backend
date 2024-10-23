@@ -54,6 +54,7 @@ class LessonResource extends JsonResource
             // 'lesson_status' => $this->lesson_status,
             'main_attachment' => $this->main_attachment,
             'main_attachment_name' => $main_attachment_name,
+            'is_demo' => $this->is_demo,
             'lesson_duration' => $this->lesson_duration,
             'created_at' => $this->created_at->format('Y-m-d H:i')
         ];

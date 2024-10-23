@@ -15,32 +15,32 @@
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-unactive-department"
+          <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-order-paid"
                   aria-controls="navs-pills-justified-profile" aria-selected="false" tabindex="-1">
             <i class='tf-icons bx bx-wallet-alt me-1'></i>
             <span class="d-none d-sm-block"> Chờ xác nhận
                 <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-primary ms-1"
-                      id="totalUnActiveDepartment">0</span>
+                      id="total-data-order-paid">0</span>
             </span>
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-unactive-department"
+          <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-order-ordered"
                   aria-controls="navs-pills-justified-profile" aria-selected="false" tabindex="-1">
             <i class="tf-icons bx bx-dollar-circle me-1"></i>
             <span class="d-none d-sm-block"> Đã thanh toán
                 <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-primary ms-1"
-                      id="totalUnActiveDepartment">0</span>
+                      id="total-data-order-oredered">0</span>
             </span>
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-unactive-department"
+          <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-order-canceled"
                   aria-controls="navs-pills-justified-profile" aria-selected="false" tabindex="-1">
             <i class="tf-icons bx bx-trash me-1"></i>
-            <span class="d-none d-sm-block"> đơn huỷ
+            <span class="d-none d-sm-block"> Đơn huỷ
                 <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-primary ms-1"
-                      id="totalUnActiveDepartment">0</span>
+                      id="total-data-order-canceled">0</span>
             </span>
           </button>
         </li>
@@ -53,6 +53,7 @@
                 <tr>
                   <th class="text-center">STT</th>
                   <th class="text-center">Mã đơn hàng</th>
+                  <th class="text-center">Học viên</th>
                   <th class="text-center">Tổng tiền</th>
                   <th class="text-center">Giảm giá</th>
                   <th class="text-center">Thanh toán</th>
@@ -63,19 +64,54 @@
             </table>
           </div>
         </div>
-        <div class="tab-pane fade" id="navs-unactive-department" role="tabpanel">
+        <div class="tab-pane fade" id="navs-order-paid" role="tabpanel">
           <div class="card-datatable table-responsive">
-            <table id="table-unactive-order-ipretty" class="datatables-basic table border-top dataTable no-footer dtr-column">
+            <table id="table-paid-order-ipretty" class="datatables-basic table border-top dataTable no-footer dtr-column">
               <thead>
               <tr>
                 <th class="text-center">STT</th>
                 <th class="text-center">Mã đơn hàng</th>
+                <th class="text-center">Học viên</th>
                 <th class="text-center">Tổng tiền</th>
                 <th class="text-center">Giảm giá</th>
                 <th class="text-center">Thanh toán</th>
-                <th class="text-center">Trạng thái</th>
                 <th class="text-center">Ngày tạo</th>
-                <th class="text-center"></th>
+                <th></th>
+              </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="navs-order-ordered" role="tabpanel">
+          <div class="card-datatable table-responsive">
+            <table id="table-ordered-order-ipretty" class="datatables-basic table border-top dataTable no-footer dtr-column">
+              <thead>
+              <tr>
+                <th class="text-center">STT</th>
+                <th class="text-center">Mã đơn hàng</th>
+                <th class="text-center">Học viên</th>
+                <th class="text-center">Tổng tiền</th>
+                <th class="text-center">Giảm giá</th>
+                <th class="text-center">Thanh toán</th>
+                <th class="text-center">Ngày tạo</th>
+                <th></th>
+              </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="navs-order-canceled" role="tabpanel">
+          <div class="card-datatable table-responsive">
+            <table id="table-canceled-order-ipretty" class="datatables-basic table border-top dataTable no-footer dtr-column">
+              <thead>
+              <tr>
+                <th class="text-center">STT</th>
+                <th class="text-center">Mã đơn hàng</th>
+                <th class="text-center">Học viên</th>
+                <th class="text-center">Tổng tiền</th>
+                <th class="text-center">Giảm giá</th>
+                <th class="text-center">Thanh toán</th>
+                <th class="text-center">Ngày tạo</th>
                 <th></th>
               </tr>
               </thead>

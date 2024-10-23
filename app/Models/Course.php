@@ -107,7 +107,6 @@ class Course extends Model implements HasMedia
         if ($request == null) {
             return;
         }
-        dd($request[$collectionName] && is_string($request[$collectionName]));
         // Store Image
         if ($request[$collectionName] && is_string($request[$collectionName])) {
 

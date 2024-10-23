@@ -18,7 +18,6 @@ class CourseShortTermForLandingResource extends JsonResource
     public function toArray($request)
     {
         $chapters = Chapter::where('course_id', $this->course_id)->with('lessons')->with('survey')->get();
-
         $course_resources["chapters"] = ChapterShortTermResource::collection($chapters);
 
         $students = $this->students;

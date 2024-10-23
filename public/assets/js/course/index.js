@@ -46,3 +46,99 @@ async function loadData(){
   DataTableDepartment = await datatableTemplate(id, res.data[0].original.data , column, button);
   DataTableUnActiveDepartment = await datatableTemplate(idUnActive, res.data[1].original.data , column, button);
 }
+
+
+
+async function changeStatusUnActiveCourses(r) {
+  Swal.fire({
+    title: "Thông báo",
+    text: "Bạn có muốn tạm ngưng",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Đồng ý",
+    cancelButtonText: "Đóng"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      changeStatusCourses(false, r.data('id'));
+    }
+  });
+}
+async function changeStatusActiveCourses(r) {
+  Swal.fire({
+    title: "Thông báo",
+    text: "Bạn có muốn bật hoạt động",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Đồng ý",
+    cancelButtonText: "Đóng"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      changeStatusCourses(true, r.data('id'));
+    }
+  });
+}
+async function changeStatusCourses(status , id) {
+    let METHOD = 'POST',
+      URL = '/course/change-status-course',
+      PARAM = '',
+      DATA = {
+        status : status,
+        id : id
+      };
+    let res = await axiosTemplate(METHOD, URL , PARAM, DATA )
+    if(res.status == 200){
+      successSwalNotify("Thay đổi trạng thái thành công")
+      loadData();
+    }else{
+      errorSwalNotify('Lỗi rồi '+ res);
+    }
+}
+
+
+
+
+async function changeStatusUnPublishedCourses(r) {
+  Swal.fire({
+    title: "Thông báo",
+    text: "Bạn có muốn ",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Đồng ý",
+    cancelButtonText: "Đóng"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      changePublishedCourses(false, r.data('id'));
+    }
+  });
+}
+async function changeStatusPublishedCourses(r) {
+  Swal.fire({
+    title: "Thông báo",
+    text: "Bạn có muốn xuất bản",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Đồng ý",
+    cancelButtonText: "Đóng"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      changePublishedCourses(true, r.data('id'));
+    }
+  });
+}
+
+async function changePublishedCourses(status , id) {
+    let METHOD = 'POST',
+      URL = '/course/change-published-course',
+      PARAM = '',
+      DATA = {
+        status : status,
+        id : id
+      };
+    let res = await axiosTemplate(METHOD, URL , PARAM, DATA )
+    if(res.status == 200){
+      successSwalNotify("Thay đổi trạng thái thành công")
+      loadData();
+    }else{
+      errorSwalNotify('Lỗi rồi '+ res);
+    }
+}

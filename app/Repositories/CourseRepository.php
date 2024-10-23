@@ -103,9 +103,13 @@ class CourseRepository extends BaseRepository
 
         $input["course_created_by"] = $user->id;
 
+        $input["status"] = 1;
+
+
         $model = $this->model->newInstance($input);
 
         $model->save();
+
 
 //        if (isset($request->student_ids) && $model->course_type == "Group") {
 //
@@ -2303,4 +2307,29 @@ class CourseRepository extends BaseRepository
     {
         return Course::where('slug_course', $slug)->firstOrFail();
     }
+
+
+    public function changeStatus($request) 
+    {
+        $query = $this->model->newQuery();
+        $model = $query->findOrFail($request->get('id'));
+        if ($model) {
+            $model->status = $request->get('status');
+            $model->save();
+        }
+        return $model;
+    } 
+
+
+    public function changePublished($request) 
+    {
+        $query = $this->model->newQuery();
+        $model = $query->findOrFail($request->get('id'));
+        if ($model) {
+            $model->is_published = $request->get('status');
+            $model->save();
+        }
+        return $model;
+    } 
+
 }

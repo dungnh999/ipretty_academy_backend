@@ -42,7 +42,7 @@ $navbarDetached = ($navbarDetached ?? '');
         </div>
         <!-- /Search -->
         <ul class="navbar-nav flex-row align-items-center ms-auto">
-          <!-- Language -->
+          {{-- <!-- Language -->
           <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
             <a class="nav-link dropdown-toggle hide-arrow show" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
               <i class="bx bx-globe bx-sm"></i>
@@ -60,7 +60,7 @@ $navbarDetached = ($navbarDetached ?? '');
               </li>
             </ul>
           </li>
-          <!-- End Language -->
+          <!-- End Language --> --}}
 
           <!-- Notification -->
           <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">

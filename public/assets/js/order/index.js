@@ -20,10 +20,14 @@ async function loadData(){
 
 
 async function drawDataTableOrder(res){
-  let id = $('#table-order-checkedout-ipretty'),
+  let idCheckedOut= $('#table-order-checkedout-ipretty'),
+      idOrdered= $('#table-ordered-order-ipretty'),
+      idPaid= $('#table-paid-order-ipretty'),
+      idCanceled= $('#table-canceled-order-ipretty'),
       column = [
         { data: 'DT_RowIndex', className: 'text-center' , width: '5%' },
-        { data: 'order_id', className: 'text-center' },
+        { data: 'order_id', className: 'text-center', with: '10%' },
+        { data: 'name', className: 'text-left' },
         { data: 'total', className: 'text-center' },
         { data: 'salePrice', className: 'text-center'},
         { data: 'total', className: 'text-center'},
@@ -32,9 +36,17 @@ async function drawDataTableOrder(res){
 
       ],
       button = [];
-      DataTableOrderCheckedout = await datatableTemplate(id, res.data[1].original.data , column, button);
+      DataTableOrderCheckedout = await datatableTemplate(idCheckedOut, res.data[1].original.data , column, button);
+      DataTableOrderPaid = await datatableTemplate(idPaid, res.data[2].original.data , column, button);
+      DataTableOrdered = await datatableTemplate(idOrdered, res.data[3].original.data , column, button);
+      DataTableCanceled = await datatableTemplate(idCanceled, res.data[4].original.data , column, button);
+
 }
 
 function dataTotalDepartment(res){
   $('#total-data-order-checkout').text(res.data[0]['total-checkouted']);
+  $('#total-data-order-paid').text(res.data[0]['total-paid']);
+  $('#total-data-order-oredered').text(res.data[0]['total-ordered']);
+  $('#total-data-order-canceled').text(res.data[0]['total-canceled']);
+
 }

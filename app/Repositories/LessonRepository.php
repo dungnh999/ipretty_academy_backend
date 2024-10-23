@@ -158,6 +158,7 @@ class LessonRepository extends BaseRepository
       $dataUpdate = Lesson::find($request['lesson_id']);
       $dataUpdate['lesson_name'] = $request->get('lesson_name');
       $dataUpdate['lesson_description'] = $request->get('lesson_description');
+      $dataUpdate['is_demo'] = $request->get('is_demo');
       $dataUpdate['main_attachment'] = $request->get('main_attachment');
       $dataUpdate->save();
       return $dataUpdate;

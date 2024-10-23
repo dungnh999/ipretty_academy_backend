@@ -2,6 +2,7 @@ let idCourse, idChapter, idLesson = 0, player, editorDescriptionChapterCourse;
 
 async function openModalCreateChapterLesson(r) {
   $('#modal-create-chapter-lesson').modal('show');
+  // hideShowSaveCancel(true);
   idCourse = r.data('id');
   getDataChapterforCourse();
   player = new Plyr('#player', {
@@ -14,6 +15,7 @@ async function openModalCreateChapterLesson(r) {
 
   $('.link-youtube').on('change', function () {
     let url = $(this).val();
+
     let videoId = getYouTubeVideoId(url);
     if (videoId) {
       $('#loader-custom').removeClass('hidden-loader');
@@ -122,10 +124,16 @@ async function getDetailLessonCourse(r) {
     },
     data = null ;
   let res = await axiosTemplate(method , url , param , data)
+  console.log(Boolean(res.data.data.is_demo));
+  
   if (res.status === 200) {
     displayFormLessonData();
+    cleanFormCreateUpdateChapterLesson();
+    $('.item-info-chapter-lesson').removeClass('d-none');
+    hideShowSaveCancel(false);
     $('.title-form-update-creat-chapter').text('Cập nhật bài học')
     $('#name-lesson-course').val(res.data.data.lesson_name);
+    $('#demo-lesson').prop('checked', Boolean(res.data.data.is_demo))
     $('#link-yotube-course').val( "https://www.youtube.com/watch?v=" + res.data.data.main_attachment);
     player.source = {
       type: 'video',
@@ -148,14 +156,24 @@ function displayFormLessonData(){
 function addFormChapterCourse(){
   $('.item-info-chapter').removeClass('d-none');
   $('.item-info-chapter-lesson').addClass('d-none');
+  hideShowSaveCancel(false);
 }
 
 function addFormChapterLessonCourse(r){
+  hideShowSaveCancel(false);
   $('.item-info-chapter').addClass('d-none');
   $('.item-info-chapter-lesson').removeClass('d-none');
   $('.accordion-item').find('button').addClass('disabled');
   r.parents('.accordion-item').find('button').removeClass('disabled');
   idChapter = r.parents('.accordion-item').find('.accordion-header').data('id');
+}
+
+function hideShowSaveCancel(action){ 
+   if(!action){
+      $('.form-action-create-chapter').removeClass('d-none')
+   }else{
+      $('.form-action-create-chapter').addClass('d-none')
+   }
 }
 
 function saveCreateChapterLessonCourse(){
@@ -168,6 +186,7 @@ function saveCreateChapterLessonCourse(){
       saveCreateChapterLesson();
     }
   }
+  hideShowSaveCancel(true)
 }
 
 async function saveUpdateChapterLesson(){
@@ -180,7 +199,8 @@ async function saveUpdateChapterLesson(){
       lesson_description : editorDescriptionChapterCourse.root.innerHTML,
       main_attachment: videoId,
       chapter_id : idChapter,
-      lesson_id: idLesson
+      lesson_id: idLesson,
+      is_demo : Number($('#demo-lesson').is(':checked'))
     };
   let res = await axiosTemplateFile(METHOD, URL, PARAM, DATA);
   if (res.status === 200) {
@@ -230,9 +250,10 @@ async function saveCreateChapter() {
 
 function cancelCreateFormCourse(){
   cleanFormCreateUpdateChapterLesson();
+  hideShowSaveCancel(true);
 }
 
-function cleanFormCreateUpdateChapterLesson(){
+function cleanFormCreateUpdateChapterLesson(action){
   $('.item-info-chapter').addClass('d-none');
   $('.item-info-chapter').find('input').val('');
   $('.item-info-chapter-lesson').addClass('d-none');

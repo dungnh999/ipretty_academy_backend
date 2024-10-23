@@ -60,7 +60,8 @@ class LessonShortTermResource extends JsonResource
             'main_attachment_name' => $main_attachment_name,
             'lesson_duration' =>  $this->lesson_duration,
             'learningProcess' => $user ? $this->learningProcess($user->id, $this->lesson_id) : '',
-            'created_at' => $this->created_at->format('Y-m-d H:i')
+            'created_at' => $this->created_at->format('Y-m-d H:i'),
+            'is_demo' => $this->is_demo
         ];
     }
 }

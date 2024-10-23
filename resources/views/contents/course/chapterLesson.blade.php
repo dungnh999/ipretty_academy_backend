@@ -147,7 +147,7 @@
           </div>
           <div class="col-lg-9">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body form-action-create-chapter">
                   <div class="d-flex align-items-center mb-4">
                     <button class="btn p-0 mr-3">
                       <i class='bx bx-left-arrow-alt fs-large'></i>
@@ -180,6 +180,13 @@
                           <div class="form-check form-check-inline mt-4">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" checked value="option1">
                             <label class="form-check-label" for="inlineRadio1">Video từ youtube</label>
+                          </div>
+                        </div>
+                        <div class="mb-4">
+                          <label for="demo-lesson" class="form-label d-block">Học thử </label>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="demo-lesson" id="demo-lesson">
+                            <label class="form-check-label" for="demo-lesson">Cho phép học thử</label>
                           </div>
                         </div>
                         <div class="mb-4">

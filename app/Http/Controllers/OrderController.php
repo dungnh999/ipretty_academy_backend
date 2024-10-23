@@ -33,16 +33,25 @@ class OrderController extends AppBaseController
     $dataOrder = $this->orderRepository->getDataOrder();
     $collect = collect($dataOrder);
     $dataOrderCheckedout = $collect->where('status', 'checkedout')->All();
+    $dataOrderPaid = $collect->where('status', 'paid')->All();
+    $dataOrderOrdered = $collect->where('status', 'ordered')->All();
+    $dataOrderCanceled = $collect->where('status', 'canceled')->All();
+
 
     // DataTable
     $dataTableOrderCheckedout = $this->drawDataTableOrder($dataOrderCheckedout);
-
+    $dataTableOrderPaid = $this->drawDataTableOrder($dataOrderPaid);
+    $dataTableOrderOrderd = $this->drawDataTableOrder($dataOrderOrdered);
+    $dataTableOrderCanceled = $this->drawDataTableOrder($dataOrderCanceled);
 
     // DataTotal
     $dataTotal = [
-      'total-checkouted' =>  count($dataOrderCheckedout)
+      'total-checkouted' =>  count($dataOrderCheckedout),
+      'total-paid' =>  count($dataOrderPaid),
+      'total-ordered' =>  count($dataOrderOrdered),
+      'total-canceled' =>  count($dataOrderCanceled)
     ];
-    return [$dataTotal, $dataTableOrderCheckedout];
+    return [$dataTotal, $dataTableOrderCheckedout, $dataTableOrderPaid , $dataTableOrderOrderd, $dataTableOrderCanceled];
   }
 
 
@@ -56,6 +65,13 @@ class OrderController extends AppBaseController
                       </button>
                   </div>';        
       })
+      ->addColumn('name', function ($row) {
+        $data = $row->getRelation('createdBy');
+        $name = $data['name'];
+        $email = $data['email'];
+        $avatar = ($data['avatar'] != null) ? $data['avatar'] : '';
+        return $this->getNameAvatarDataTable($name,$avatar,$email);
+    })
       ->addColumn('total', function ($row) {
           return $this->formatVND($row['total']);
       })
@@ -63,7 +79,7 @@ class OrderController extends AppBaseController
         return $this->formartDateTime($row['created_at']);
       })
       ->addIndexColumn()
-      ->rawColumns(['action'])
+      ->rawColumns(['action', 'name'])
       ->make(true);
   }
 }

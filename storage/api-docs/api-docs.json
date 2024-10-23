@@ -1,0 +1,214 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Document Ipretty Academy",
+        "description": "Hệ thống api Academy Ipretty",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/get-list-course": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Danh sách khoá học",
+                "description": "Lấy tất cả danh sách khoá học",
+                "operationId": "9a7017bb0b8e2bde5f64453e8685d388",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/SuccessResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "course_id": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "course_name": {
+                                                                "type": "string",
+                                                                "example": "Khoá học mới 01"
+                                                            },
+                                                            "slug_course": {
+                                                                "type": "string",
+                                                                "example": "khoa-hoc-moi-01"
+                                                            },
+                                                            "course_created_by": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "teacher_id": {
+                                                                "type": "integer",
+                                                                "example": 6
+                                                            },
+                                                            "course_feature_image": {
+                                                                "type": "string",
+                                                                "example": "http://localhost:8000/public/6/Screenshot-2023-11-08-at-16.19.38.png"
+                                                            },
+                                                            "course_description": {
+                                                                "type": "string",
+                                                                "example": "NHS"
+                                                            },
+                                                            "count_viewer": {
+                                                                "type": "integer",
+                                                                "example": 153
+                                                            },
+                                                            "category_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "course_version": {
+                                                                "type": "integer",
+                                                                "example": 6
+                                                            },
+                                                            "course_price": {
+                                                                "type": "integer",
+                                                                "example": 100000
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "example": "2023-11-15 04:11"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "example": "2024-01-18T06:05:49.000000Z"
+                                                            },
+                                                            "deleted_at": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "deadline": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "course_type": {
+                                                                "type": "string",
+                                                                "example": "Business"
+                                                            },
+                                                            "is_published": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "status": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "startTime": {
+                                                                "type": "string",
+                                                                "example": "2023-11-16 01:00"
+                                                            },
+                                                            "endTime": {
+                                                                "type": "string",
+                                                                "example": "2023-11-30 02:10"
+                                                            },
+                                                            "course_sale_price": {
+                                                                "type": "integer",
+                                                                "example": 50000
+                                                            },
+                                                            "course_target": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "value": {
+                                                                            "type": "string",
+                                                                            "example": "ĐẠT MỤC TIÊU"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "certificate_image": {
+                                                                "type": "string",
+                                                                "example": "http://localhost:8000/public/7/Screenshot-2023-11-08-at-16.19.38.png"
+                                                            },
+                                                            "isDraft": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "unit_currency": {
+                                                                "type": "string",
+                                                                "example": "VND"
+                                                            },
+                                                            "published_at": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "teacher_name": {
+                                                                "type": "string",
+                                                                "example": "Dr_Kwon"
+                                                            },
+                                                            "category_name": {
+                                                                "type": "string",
+                                                                "example": "LÀM ĐẸP"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "SuccessResponse": {
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "status": {
+                        "type": "integer",
+                        "example": "200"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Nhập Token tại đây",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Courses",
+            "description": "API về khoá học"
+        }
+    ]
+}

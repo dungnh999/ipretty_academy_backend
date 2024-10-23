@@ -172,7 +172,7 @@ class OrderRepository extends BaseRepository
     public function getDataOrder() {
       $query = $this->model->newQuery()
         ->with('createdBy', function($q) {
-          $q->select('name', 'email', 'id');
+          $q->select('name', 'email', 'id', 'avatar');
         })
         // ->with('transaction', function($q) {
         //   $q->select('status');
@@ -205,6 +205,7 @@ class OrderRepository extends BaseRepository
       } else {
         $model = $query->get();
       }
+
       return $model;
     }
 
