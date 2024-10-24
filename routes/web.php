@@ -220,11 +220,13 @@ Route::group(['middleware' => 'auth'], function () {
     ->group(function () {
       Route::get('/', 'index')->name('index');
       Route::get('/get-data-course', 'getDataCourse')->name('index');
+      Route::get('/get-detail-course', 'getDetailCourse')->name('detail');
       Route::get('/get-teacher', 'getDataTeacher')->name('getdata');
       Route::post('/change-status-course', 'changeCourse')->name('getdata');
       Route::post('/change-published-course', 'changePublished')->name('published');
       Route::get('/get-category', 'getDataCategory')->name('getcategory');
       Route::post('/create-course', 'createCourse')->name('create');
+      Route::post('/update-course', 'UpdateCourse')->name('update');
       Route::post('/create-chapter-course', 'createChapterCourse')->name('create');
       Route::post('/update-lesson-course', 'updateLessonCourse')->name('update');
       Route::get('/get-detail-lesson', 'getDetailLessonCourse')->name('lesson');

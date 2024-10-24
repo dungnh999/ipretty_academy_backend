@@ -79,6 +79,7 @@
     </div>
 
     @include('contents.course.create')
+    @include('contents.course.update')
     @include('contents.course.chapterLesson')
     @include('contents.chapter.create')
 @endsection

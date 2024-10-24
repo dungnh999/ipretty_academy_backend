@@ -69,9 +69,7 @@ class CourseRepository extends BaseRepository
 
     public function createCourse($input, $request = null)
     {
-        // dd($input['course_target']);
-        // dd(json_decode($input['courses_resources']));
-        // dd("sss");
+        
         DB::beginTransaction();
 
         $course_version = 1;
@@ -83,7 +81,6 @@ class CourseRepository extends BaseRepository
         if (isset($input["is_published"]) && $input["is_published"]) {
             $is_published = $input["is_published"];
             $now = date(Carbon::now());
-
             $input['published_at'] = $now;
         }
 
@@ -103,8 +100,7 @@ class CourseRepository extends BaseRepository
 
         $input["course_created_by"] = $user->id;
 
-        $input["status"] = 1;
-
+        $input['slug_course'] = CommonBusiness::change_alias($input['course_name']);
 
         $model = $this->model->newInstance($input);
 
@@ -157,6 +153,7 @@ class CourseRepository extends BaseRepository
 
     public function updateCourse($input, $id, $request)
     {
+
         // DB::beginTransaction();
 
         $is_published = false;
@@ -168,20 +165,22 @@ class CourseRepository extends BaseRepository
 
         $model = $query->findOrFail($id);
 
-        $input['course_target'] = json_encode($input['course_target'], JSON_UNESCAPED_UNICODE);
+        // $input['course_target'] = json_encode($input['course_target'], JSON_UNESCAPED_UNICODE);
+
+
 
         $input['course_version'] = $model->course_version + 1;
 
         if (
             empty($input[MEDIA_COLLECTION['COURSE_FEATURE_IMAGE']]) ||
-            $input[MEDIA_COLLECTION['COURSE_FEATURE_IMAGE']] == 'null'
+            $input[MEDIA_COLLECTION['COURSE_FEATURE_IMAGE']] == 'undefined'
         ) {
             $input['course_feature_image'] = $model->course_feature_image;
         }
 
         if (
             empty($input[MEDIA_COLLECTION['CERTIFICATE_IMAGE']]) ||
-            $input[MEDIA_COLLECTION['CERTIFICATE_IMAGE']] == 'null'
+            $input[MEDIA_COLLECTION['CERTIFICATE_IMAGE']] == 'undefined'
         ) {
             $input['certificate_image'] = $model->certificate_image;
         }
@@ -214,140 +213,143 @@ class CourseRepository extends BaseRepository
             $model->handleMedia($request, MEDIA_COLLECTION['CERTIFICATE_IMAGE'], $model);
         }
 
+        $input['slug_course'] = $model->slug_course;
+
+
         $model->save();
 
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
-        if (isset($request->leader_ids) && $model->course_type == 'Group') {
-            // $leader_ids = $request->leader_ids;
-            $leader_ids = [];
-            $deleteLeaders = [];
+        // if (isset($request->leader_ids) && $model->course_type == 'Group') {
+        //     // $leader_ids = $request->leader_ids;
+        //     $leader_ids = [];
+        //     $deleteLeaders = [];
 
-            if (isset($request->leader_ids)) {
-                $leader_ids = explode(',', $request->leader_ids);
-            }
+        //     if (isset($request->leader_ids)) {
+        //         $leader_ids = explode(',', $request->leader_ids);
+        //     }
 
-            $currentLeaders = $model->leaders->toArray();
+        //     $currentLeaders = $model->leaders->toArray();
 
-            if (count($leader_ids)) {
-                $deleteLeaders = array_filter($currentLeaders, function ($var) use ($leader_ids) {
-                    return !in_array($var['id'], $leader_ids);
-                });
-            } else {
-                $deleteLeaders = $currentLeaders;
-            }
-            $events = $model->events;
-            if (count($deleteLeaders)) {
-                foreach ($deleteLeaders as $key => $leader) {
-                    CourseLeader::where('student_id', $leader['id'])
-                        ->where('course_id', $model->course_id)
-                        ->delete();
+        //     if (count($leader_ids)) {
+        //         $deleteLeaders = array_filter($currentLeaders, function ($var) use ($leader_ids) {
+        //             return !in_array($var['id'], $leader_ids);
+        //         });
+        //     } else {
+        //         $deleteLeaders = $currentLeaders;
+        //     }
+        //     $events = $model->events;
+        //     if (count($deleteLeaders)) {
+        //         foreach ($deleteLeaders as $key => $leader) {
+        //             CourseLeader::where('student_id', $leader['id'])
+        //                 ->where('course_id', $model->course_id)
+        //                 ->delete();
 
-                    // $deleteLeader = User::find($leader["id"]);
-                    if (!$leader->hasPermissionTo(PERMISSION['MANAGE_COURSES'])) {
-                        $leader->permissions()->detach();
-                        // $leader->revokePermissionTo(PERMISSION["VIEW_COURSE"]);
-                        // $leader->revokePermissionTo(PERMISSION["MANAGE_STUDENTS"]);
-                    }
-                    $job = new RemoveMemberOutEvent($leader['id'], $model);
+        //             // $deleteLeader = User::find($leader["id"]);
+        //             if (!$leader->hasPermissionTo(PERMISSION['MANAGE_COURSES'])) {
+        //                 $leader->permissions()->detach();
+        //                 // $leader->revokePermissionTo(PERMISSION["VIEW_COURSE"]);
+        //                 // $leader->revokePermissionTo(PERMISSION["MANAGE_STUDENTS"]);
+        //             }
+        //             $job = new RemoveMemberOutEvent($leader['id'], $model);
 
-                    dispatch($job);
-                }
-            }
+        //             dispatch($job);
+        //         }
+        //     }
 
-            if (count($leader_ids)) {
-                foreach ($leader_ids as $key => $leader_id) {
-                    $courses_leaders = CourseLeader::updateOrInsert([
-                        'course_id' => $model->course_id,
-                        'leader_id' => $leader_id,
-                    ]);
+        //     if (count($leader_ids)) {
+        //         foreach ($leader_ids as $key => $leader_id) {
+        //             $courses_leaders = CourseLeader::updateOrInsert([
+        //                 'course_id' => $model->course_id,
+        //                 'leader_id' => $leader_id,
+        //             ]);
 
-                    $leader = User::find($leader_id);
-                    if (!$leader->hasPermissionTo(PERMISSION['MANAGE_COURSES'])) {
-                        $leader->givePermissionTo(PERMISSION['VIEW_COURSE'], PERMISSION['MANAGE_STUDENTS']);
-                        $leader->save();
-                    }
+        //             $leader = User::find($leader_id);
+        //             if (!$leader->hasPermissionTo(PERMISSION['MANAGE_COURSES'])) {
+        //                 $leader->givePermissionTo(PERMISSION['VIEW_COURSE'], PERMISSION['MANAGE_STUDENTS']);
+        //                 $leader->save();
+        //             }
 
-                    $job = new AddMemberIntoEvent($leader_id, $events);
+        //             $job = new AddMemberIntoEvent($leader_id, $events);
 
-                    dispatch($job);
-                }
-            }
-        }
+        //             dispatch($job);
+        //         }
+        //     }
+        // }
 
-        // if (isset($request->student_ids) && $model->course_type == "Group") {
-        if ($model->course_type == 'Group') {
-            $student_ids = [];
-            $student_new = [];
-            $deleteStudents = [];
-            $events = $model->events;
+        // // if (isset($request->student_ids) && $model->course_type == "Group") {
+        // if ($model->course_type == 'Group') {
+        //     $student_ids = [];
+        //     $student_new = [];
+        //     $deleteStudents = [];
+        //     $events = $model->events;
 
-            if (isset($request->student_ids)) {
-                $student_ids = explode(',', $request->student_ids);
-            }
+        //     if (isset($request->student_ids)) {
+        //         $student_ids = explode(',', $request->student_ids);
+        //     }
 
-            $currentStudents = $model->students->toArray();
+        //     $currentStudents = $model->students->toArray();
 
-            $currentStudentIds = $model->students->pluck('id')->toArray(); // th cu
+        //     $currentStudentIds = $model->students->pluck('id')->toArray(); // th cu
 
-            if (count($student_ids)) {
-                $student_new = array_filter($student_ids, function ($var) use ($currentStudentIds) {
-                    return !in_array($var, $currentStudentIds);
-                });
+        //     if (count($student_ids)) {
+        //         $student_new = array_filter($student_ids, function ($var) use ($currentStudentIds) {
+        //             return !in_array($var, $currentStudentIds);
+        //         });
 
-                $deleteStudents = array_filter($currentStudents, function ($var) use ($student_ids) {
-                    return !in_array($var['id'], $student_ids);
-                });
-            } else {
-                $deleteStudents = $currentStudents;
-            }
+        //         $deleteStudents = array_filter($currentStudents, function ($var) use ($student_ids) {
+        //             return !in_array($var['id'], $student_ids);
+        //         });
+        //     } else {
+        //         $deleteStudents = $currentStudents;
+        //     }
 
-            if (count($deleteStudents)) {
-                foreach ($deleteStudents as $key => $student) {
-                    CourseStudent::where('student_id', $student['id'])
-                        ->where('course_id', $model->course_id)
-                        ->delete();
-                    $job = new RemoveMemberOutEvent($student['id'], $model);
+        //     if (count($deleteStudents)) {
+        //         foreach ($deleteStudents as $key => $student) {
+        //             CourseStudent::where('student_id', $student['id'])
+        //                 ->where('course_id', $model->course_id)
+        //                 ->delete();
+        //             $job = new RemoveMemberOutEvent($student['id'], $model);
 
-                    dispatch($job);
-                }
-            }
+        //             dispatch($job);
+        //         }
+        //     }
 
-            if (count($student_ids)) {
-                foreach ($student_ids as $key => $student_id) {
-                    $courses_students = CourseStudent::updateOrInsert([
-                        'course_id' => $model->course_id,
-                        'student_id' => $student_id,
-                    ]);
-                    $job = new AddMemberIntoEvent($student_id, $events);
+        //     if (count($student_ids)) {
+        //         foreach ($student_ids as $key => $student_id) {
+        //             $courses_students = CourseStudent::updateOrInsert([
+        //                 'course_id' => $model->course_id,
+        //                 'student_id' => $student_id,
+        //             ]);
+        //             $job = new AddMemberIntoEvent($student_id, $events);
 
-                    dispatch($job);
-                }
-            }
-        }
+        //             dispatch($job);
+        //         }
+        //     }
+        // }
 
-        $courses_resources = $input['courses_resources'];
-        $isInValidField = $this->checkValidCourseResources($courses_resources, $is_published);
+        // $courses_resources = $input['courses_resources'];
+        // $isInValidField = $this->checkValidCourseResources($courses_resources, $is_published);
 
-        if (
-            !$isInValidField['validJson'] ||
-            count($isInValidField['isRequiredField']) ||
-            count($isInValidField['isNotFoundField']['chapters']) ||
-            count($isInValidField['isNotFoundField']['lessons']) ||
-            count($isInValidField['isNotFoundField']['surveys'])
-        ) {
-            DB::rollBack();
-            return $isInValidField;
-        } else {
-            $this->insertOrUpdateCourseResouces($courses_resources, $model, $id, $request);
-        }
+        // if (
+        //     !$isInValidField['validJson'] ||
+        //     count($isInValidField['isRequiredField']) ||
+        //     count($isInValidField['isNotFoundField']['chapters']) ||
+        //     count($isInValidField['isNotFoundField']['lessons']) ||
+        //     count($isInValidField['isNotFoundField']['surveys'])
+        // ) {
+        //     DB::rollBack();
+        //     return $isInValidField;
+        // } else {
+        //     $this->insertOrUpdateCourseResouces($courses_resources, $model, $id, $request);
+        // }
 
-        DB::commit();
+        // DB::commit();
 
-        $isInValidField['model'] = $model;
-        $isInValidField['student_new'] = isset($student_new) ? $student_new : [];
+        // $isInValidField['model'] = $model;
+        // $isInValidField['student_new'] = isset($student_new) ? $student_new : [];
 
-        return $isInValidField;
+        return $model;
     }
 
     public function checkValidCourseResources($courses_resources, $is_published = false)
@@ -1477,7 +1479,7 @@ class CourseRepository extends BaseRepository
             ->where('course_id', $course_id)
             ->first();
 
-        if ($course) {
+            if ($course) {
             if ($course->course_target != null) {
                 $course_target = json_decode($course->course_target);
                 if (count($course_target->course_target) > 0) {
@@ -1489,7 +1491,6 @@ class CourseRepository extends BaseRepository
                 }
             }
         }
-        // dd($course);
         return $course;
     }
 

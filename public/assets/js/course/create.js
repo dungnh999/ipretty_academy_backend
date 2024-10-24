@@ -73,18 +73,23 @@ async function getDataCategoryCourse() {
 
 async function saveCreateCourse() {
     const data = new FormData()
+    let target = {
+        "course_target" :
+        [
+            {
+                "value": "ĐẠT MỤC TIÊU"
+            },
+            {
+                "value": "ĐẠT MỤC TIÊU"
+            }
+        ]
+    };
+    
     data.append('course_name', $('#name-course-create').val());
     data.append('teacher_id', $('#select-teacher-create-course').val());
     data.append('category_id', $('#course-category-create').val());
     data.append('course_price', $('#course-price-create').val());
-    data.append('course_target', [
-        {
-            "value": "ĐẠT MỤC TIÊU"
-        },
-        {
-            "value": "ĐẠT MỤC TIÊU"
-        }
-    ]);
+    data.append('course_target', JSON.stringify(target));
     data.append('course_price_sale', $('#course-price-sale-create').val());
     data.append('course_description', editorDescriptionCourse.root.innerHTML);
     data.append('course_feature_image', fileBannerCourse);

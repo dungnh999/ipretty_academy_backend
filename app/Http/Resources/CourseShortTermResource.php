@@ -40,7 +40,10 @@ class CourseShortTermResource extends JsonResource
 
         $numberLearning = LearningProcess::where('course_id', '=', $this->course_id)->where('isPassed', true)->count();
 
-        $percentDoneLear = number_format(($numberLearning / $number_course_lesson ) * 100 , 2);
+        $percentDoneLear = 0;
+        if($number_course_lesson > 0 ){
+            $percentDoneLear = number_format(($numberLearning / $number_course_lesson ) * 100 , 2);
+        }
 
         $learningProcess = ($user) ? User::find($user->id)->learningProcess($this->course_id): [];
 

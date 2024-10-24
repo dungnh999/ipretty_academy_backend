@@ -131,7 +131,7 @@ class CourseController extends AppBaseController
                           </button>
                           <button class="btn-sm rounded-pill btn-icon bg-label-warning align-middle border-0" data-id="' .
                             $course_id .
-                            '" onclick="openModalUpdateCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa</span>">
+                            '" onclick="openModalUpdateCourse($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa</span>">
                               <i class="bx bx-edit"></i>
                           </button>
                           <button class="btn-sm rounded-pill btn-icon bg-label-success align-middle border-0" data-id="' .
@@ -154,7 +154,7 @@ class CourseController extends AppBaseController
                             </button>
                             <button class="btn-sm rounded-pill btn-icon bg-label-warning align-middle border-0" data-id="' .
                             $course_id .
-                            '" onclick="openModalUpdateCoursesCategory($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa</span>">
+                            '" onclick="openModalUpdateCourse($(this))" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa</span>">
                                 <i class="bx bx-edit"></i>
                             </button>
                             <button class="btn-sm rounded-pill btn-icon bg-label-info align-middle border-0" data-id="' .
@@ -174,7 +174,7 @@ class CourseController extends AppBaseController
                     return '<div class="d-inline-block text-nowrap" >
                        <button class="btn-sm rounded-pill btn-icon bg-label-warning align-middle border-0" data-id="' .
                         $course_id .
-                        '" onclick="openModalUpdateCoursesCategory($(this))">
+                        '" onclick="openModalUpdateCourse($(this))">
                           <i class="bx bx-edit"></i>
                       </button>
                        <button class="btn-sm rounded-pill btn-icon bg-label-success align-middle border-0" data-id="' .
@@ -295,6 +295,16 @@ class CourseController extends AppBaseController
         );
     }
 
+
+    public function getDetailCourse(Request $request)
+    {
+        $params = request()->query();
+        $chapter = $this->courseRepository->getDetail($params['course_id']);
+        return $this->sendSuccess(
+            __('messages.saved', ['model' => __('models/userDepartments.singular')]), new CourseResource($chapter)
+        );
+    }
+
     public function createChapterCourse(Request $request)
     {
         $chapter = $this->chapterRepository->create($request);
@@ -309,6 +319,17 @@ class CourseController extends AppBaseController
         $LessonsDetail = $this->lessonRepository->detail($request);
         return $this->sendResponse(
             new LessonResource($LessonsDetail),
+            __('messages.saved', ['model' => __('models/userDepartments.singular')])
+        );
+    }
+
+    public function UpdateCourse(Request $request)
+    {
+        $id = $request->get('course_id');
+        $input = $request->all();
+        $updateDetail = $this->courseRepository->updateCourse($input, $id , $request );
+        return $this->sendResponse(
+            new CourseResource($updateDetail),
             __('messages.saved', ['model' => __('models/userDepartments.singular')])
         );
     }

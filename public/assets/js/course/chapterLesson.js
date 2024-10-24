@@ -213,10 +213,10 @@ async function saveUpdateChapterLesson(){
 /**
  * Tạo bài giảng
  * */
-async function saveCreateChapterLesson() {
+async function saveCreateChapterLesson() {  
   let videoId = getYouTubeVideoId($('#link-yotube-course').val());
   let METHOD = 'POST',
-    URL = '/course/create-course',
+    URL = '/course/create-chapter-course',
     PARAM = '',
     DATA = {
       lessons_name : $('#name-lesson-course').val(),
