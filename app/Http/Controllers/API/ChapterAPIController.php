@@ -46,6 +46,7 @@ class ChapterAPIController extends AppBaseController
 
         $chapter = $this->chapterRepository->create($input);
 
+        
         return $this->sendResponse(
             new ChapterResource($chapter),
             __('messages.saved', ['model' => __('models/chapters.singular')])

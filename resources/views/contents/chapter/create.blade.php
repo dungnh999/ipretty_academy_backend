@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-create-chapter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+{{-- <div class="modal fade" id="modal-create-chapter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
   <div class="modal-dialog modal-md modal-simple modal-edit-user">
     <div class="modal-content p-3">
       <div class="modal-body">
@@ -25,4 +25,4 @@
 </div>
 @push('pricing-script')
   <script src="{{asset('assets/js/chapter/create.js')}}"></script>
-@endpush
+@endpush --}}

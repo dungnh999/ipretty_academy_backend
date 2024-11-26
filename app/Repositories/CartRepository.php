@@ -80,7 +80,6 @@ class CartRepository extends BaseRepository
         $model = $model->where('id', $cart_id)->whereHas('cartItems', function($q) use($course_id, $isUsed) {
             $q->where('course_id', $course_id)->where('isUsed', $isUsed);
         })->first();
-
         return $model;
     }
 

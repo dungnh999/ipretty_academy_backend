@@ -314,6 +314,18 @@ class CourseController extends AppBaseController
         );
     }
 
+    public function updateChapterCourse(Request $request)
+    {
+        $input = $request->all();
+        $chapter = $this->chapterRepository->update($input , $request->get('chapter_id'));
+        return $this->sendResponse(
+            new ChapterResource($chapter),
+            message: __('messages.saved', ['model' => __('models/userDepartments.singular')])
+        );
+    }
+
+    
+
     public function getDetailLessonCourse(Request $request)
     {
         $LessonsDetail = $this->lessonRepository->detail($request);
@@ -343,6 +355,22 @@ class CourseController extends AppBaseController
         );
     }
 
+    public function createLessonCourse(Request $request)
+    {
+        $input = $request->all();
+        $lesson = $this->lessonRepository->create($input, $request);
+
+        ChapterLesson::create([
+            'chapter_id' => $request->get('chapter_id'),
+            'lesson_id' => $lesson['lesson_id'],
+            'number_order' => $lesson['number_order'] ? $lesson['number_order'] : 0,
+        ]);
+
+        return $this->sendResponse(
+            new LessonResource($lesson),
+            __('messages.saved', ['model' => __('models/userDepartments.singular')])
+        );
+    }
 
     public function changeCourse(Request $request)
     {

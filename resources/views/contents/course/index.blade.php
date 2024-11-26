@@ -82,6 +82,11 @@
     @include('contents.course.update')
     @include('contents.course.chapterLesson')
     @include('contents.chapter.create')
+    @include('contents.course.chapter.create')
+    @include('contents.course.chapter.update')
+    @include('contents.course.lesson.create')
+    @include('contents.course.lesson.update')
+
 @endsection
 @push('pricing-script')
     <script src="{{asset('assets/js/course/index.js')}}"></script>

@@ -99,7 +99,7 @@ class CartAPIController extends AppBaseController
         return $this->sendResponse(
             new CartResource($cart),
             __('messages.retrieved', ['model' => __('models/carts.singular')])
-        );
+        );      
     }
 
     /**

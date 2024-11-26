@@ -69,69 +69,74 @@ class LessonRepository extends BaseRepository
 
         $model->save();
 
-        $mainAttachment = CommonBusiness::handleMedia($model, $request, MEDIA_COLLECTION["LESSON_MAIN_ATTACHMENT"], true);
+        if($request->get('type_update') != true){
+            $mainAttachment = CommonBusiness::handleMedia($model, $request, MEDIA_COLLECTION["LESSON_MAIN_ATTACHMENT"], true);
 
-        if ($mainAttachment) {
-            $pathInfo = pathinfo($mainAttachment->file_name);
+            if ($mainAttachment) {
+                $pathInfo = pathinfo($mainAttachment->file_name);
 
-            // $durationInSeconds = 0;
+                $durationInSeconds = 0;
 
-            // if (
-            //     $pathInfo["extension"] == 'mp4'
-            //     || $pathInfo["extension"] == 'wmv'
-            //     || $pathInfo["extension"] == 'avi'
-            //     ) {
-            //     $path = $mainAttachment->id . '/' . $mainAttachment->file_name;
+                if (
+                    $pathInfo["extension"] == 'mp4'
+                    || $pathInfo["extension"] == 'wmv'
+                    || $pathInfo["extension"] == 'avi'
+                    ) {
+                    $path = $mainAttachment->id . '/' . $mainAttachment->file_name;
 
-            //     $media = FFMpeg::fromDisk('public')->open($path);
+                    $media = FFMpeg::fromDisk('public')->open($path);
 
-            //     $durationInSeconds = $media->getDurationInSeconds();
+                    $durationInSeconds = $media->getDurationInSeconds();
 
-            // }
+                }
 
-            // var_dump($mainAttachment->getUrl());
+                var_dump($mainAttachment->getUrl());
 
-            $model->main_attachment = $mainAttachment->getUrl();
+                $model->main_attachment = $mainAttachment->getUrl();
 
-            // $model->lesson_duration = $durationInSeconds;
+                $model->lesson_duration = $durationInSeconds;
 
-            $model->save(); //remember to save again
+                $model->save(); //remember to save again
 
-            $response["main_media"] = true;
+                $response["main_media"] = true;
 
-        } else {
+            } else {
 
-            $model->main_attachment = null;
+                $model->main_attachment = null;
 
-            $model->save();
+                $model->save();
 
-            $response["main_media"] = false;
+                $response["main_media"] = false;
 
-        }
+            }
 
-        $lessonAttachments = CommonBusiness::handleMedia($model, $request, MEDIA_COLLECTION["LESSON_ATTACHMENT"]);
+            $lessonAttachments = CommonBusiness::handleMedia($model, $request, MEDIA_COLLECTION["LESSON_ATTACHMENT"]);
 
-        if ($lessonAttachments) {
+            if ($lessonAttachments) {
 
-            $model->lesson_attachment = $lessonAttachments;
+                $model->lesson_attachment = $lessonAttachments;
 
-            $model->save(); //remember to save again
+                $model->save(); //remember to save again
 
+                $response["media"] = true;
+
+            } else {
+
+                $model->lesson_attachment = null;
+
+                $model->save();
+
+                $response["media"] = false;
+
+            }
+        }else{
+            $model->main_attachment = $request->get('main_attachment');
             $response["media"] = true;
-
-        } else {
-
-            $model->lesson_attachment = null;
-
-            $model->save();
-
-            $response["media"] = false;
-
         }
 
         $response["lesson"] = $model;
 
-        return $response;
+        return $model;
     }
 
     public function allLesson($params = null) {

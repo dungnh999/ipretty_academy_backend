@@ -1,51 +1,10 @@
-let idCourse, idChapter, idLesson = 0, player, editorDescriptionChapterCourse;
+let idChapterLessonCourse, idLesson = 0, editorDescriptionChapterCourse;
 
 async function openModalCreateChapterLesson(r) {
   $('#modal-create-chapter-lesson').modal('show');
   // hideShowSaveCancel(true);
-  idCourse = r.data('id');
+  idChapterLessonCourse = r.data('id');
   getDataChapterforCourse();
-  player = new Plyr('#player', {
-    controls: ['play', 'progress', 'volume', 'fullscreen'],
-    settings: ['captions', 'quality', 'speed'],
-    youtube: {
-      noCookie: true // Sử dụng "https://www.youtube-nocookie.com"
-    }
-  });
-
-  $('.link-youtube').on('change', function () {
-    let url = $(this).val();
-
-    let videoId = getYouTubeVideoId(url);
-    if (videoId) {
-      $('#loader-custom').removeClass('hidden-loader');
-      // Cập nhật video với Plyr
-      player.source = {
-        type: 'video',
-        sources: [
-          {
-            src: videoId,
-            provider: 'youtube'
-          }
-        ]
-      };
-    } else {
-      alert('Vui lòng nhập một URL YouTube hợp lệ.');
-    }
-
-    player.on('canplay', function () {
-      console.log('Video đang đợi dữ liệu.');
-      $('#loader-custom').removeClass('hidden-loader');
-    });
-
-    player.on('canplaythrough', function () {
-      // Ẩn loader khi video đã sẵn sàng
-      console.log('Video săẵn sàng dữ liệu.');
-      $('#loader-custom').addClass('hidden-loader');
-    });
-  });
-
-  editorDescriptionChapterCourse = await editorTemplate('#editor-lesson-chapter', '#toolbar-lesson-chapter');
 }
 
 // Hàm để lấy ID video từ URL YouTube
@@ -60,31 +19,31 @@ async function getDataChapterforCourse() {
   let method = 'GET',
     url = '/course/get-data-chapter-course',
     param = {
-      course_id: idCourse
+      course_id: idChapterLessonCourse
     },
     data = null;
   let res = await axiosTemplate(method, url, param, data);
   if (res.status === 200) {
     let dataChapter = res.data.data.course_resources.chapters;
-    let elListChapter = '';
+    let elListChapter = (dataChapter.length > 0) ? ' ' : '<div class="text-center text-white">Chưa có chương trình học</div>' ;
     dataChapter.map(function (item, index) {
       elListChapter += ` <div class="accordion-item ${index === 0 ? 'active' : ''} mb-2">
                             <div class="accordion-header p-3 border-bottom" id="chapter-${item['chapter_id']}" data-id="${item['chapter_id']}">
                               <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex gap-2">
+                                <div class="d-flex gap-2 align-items-center">
                                   <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#chapter-lesson-${
                                     item['chapter_id']
-                                  }" aria-expanded="false" aria-controls="chapterOne"></button>
+                                  }" aria-expanded="false" aria-controls="chapterOne">${index + 1}</button>
                                   <span class="d-flex flex-column">
                                     <span class="h5 mb-0">${item['chapter_name']}</span>
                                     <span class="text-body fw-normal"> ${
                                       item['lessons'].length
                                     } Bài học | 4.4 min</span>
                                   </span>
+                                  <button type="button" class="btn btn-sm btn-icon btn-warning" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa chương trình</span>"   onclick="openModalUpdateChapter($(this))"><i class="bx bx-pencil"></i></button>
                                 </div>
                                 <div class="toolbox">
-                                    <button type="button" onclick="addFormChapterLessonCourse($(this))" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Thêm bài học</span>"><i class="bx bx-plus"></i></button>
-                                    <button type="button" class="btn btn-sm btn-icon btn-warning" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa chương trình</span>"><i class="bx bx-pencil"></i></button>
+                                    <button type="button" onclick="openModalCreateLesson($(this))" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Thêm bài học</span>"><i class="bx bx-plus"></i></button>
                                 </div>
                               </div>
                             </div>
@@ -95,13 +54,19 @@ async function getDataChapterforCourse() {
                                 ${
                                   item['lessons'].length > 0
                                     ? item['lessons'].map(function (lessons) {
-                                        return `<div class="d-flex align-items-center gap-1 mb-3">
+                                        return `<div class="d-flex align-items-center justify-content-between mb-3">
+                                                  <div class="d-flex align-items-center gap-3">
                                                       <i class="bx bx-laptop fs-xlarge"></i>
-                                                      <label for="defaultCheck1" class="form-check-label ms-4" onclick="getDetailLessonCourse($(this))" data-idchapter="${item['chapter_id']}" data-id="${lessons['lesson_id']}">
+                                                      <label for="defaultCheck1" class="form-check-label" onclick="getDetailLessonCourse($(this))" data-idchapter="${item['chapter_id']}" data-id="${lessons['lesson_id']}">
                                                         <span class="mb-0 h6">${lessons['lesson_name']}</span>
                                                         <small class="text-body d-block">10 câu hỏi</small>
                                                       </label>
-                                                    </div>`
+                                                      <button type="button" class="btn btn-sm btn-icon btn-info" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<span>Chỉnh sửa bài học</span>" data-id="${lessons['lesson_id']}" onclick="openModalUpdateLesson($(this))"><i class="bx bx-pencil"></i></button>
+                                                  </div>
+                                                  <div>
+                                                    ${ lessons['is_demo'] ? '<span class="badge bg-label-info">Học thử</span>' : ''}
+                                                  </div>
+                                                </div>`
                                       }).join('')
                                     : '<div>Chưa có bài học</div>'
                                 }
@@ -114,39 +79,6 @@ async function getDataChapterforCourse() {
   }
 }
 
-async function getDetailLessonCourse(r) {
-  idLesson = r.data('id')
-  idChapter = r.data('idchapter')
-  let method = 'GET',
-    url = '/course/get-detail-lesson',
-    param = {
-        lesson_id: idLesson
-    },
-    data = null ;
-  let res = await axiosTemplate(method , url , param , data)
-  console.log(Boolean(res.data.data.is_demo));
-  
-  if (res.status === 200) {
-    displayFormLessonData();
-    cleanFormCreateUpdateChapterLesson();
-    $('.item-info-chapter-lesson').removeClass('d-none');
-    hideShowSaveCancel(false);
-    $('.title-form-update-creat-chapter').text('Cập nhật bài học')
-    $('#name-lesson-course').val(res.data.data.lesson_name);
-    $('#demo-lesson').prop('checked', Boolean(res.data.data.is_demo))
-    $('#link-yotube-course').val( "https://www.youtube.com/watch?v=" + res.data.data.main_attachment);
-    player.source = {
-      type: 'video',
-      sources: [
-        {
-          src: res.data.data.main_attachment,
-          provider: 'youtube'
-        }
-      ]
-    };
-  }
-}
-
 
 function displayFormLessonData(){
   $('.item-info-chapter').addClass('d-none');
@@ -154,18 +86,11 @@ function displayFormLessonData(){
 }
 
 function addFormChapterCourse(){
-  $('.item-info-chapter').removeClass('d-none');
-  $('.item-info-chapter-lesson').addClass('d-none');
-  hideShowSaveCancel(false);
-}
-
-function addFormChapterLessonCourse(r){
-  hideShowSaveCancel(false);
-  $('.item-info-chapter').addClass('d-none');
-  $('.item-info-chapter-lesson').removeClass('d-none');
-  $('.accordion-item').find('button').addClass('disabled');
-  r.parents('.accordion-item').find('button').removeClass('disabled');
-  idChapter = r.parents('.accordion-item').find('.accordion-header').data('id');
+  // $('.item-info-chapter').removeClass('d-none');
+  // $('.item-info-chapter-lesson').addClass('d-none');
+  // hideShowSaveCancel(false);
+  openModalCreateChapter();
+  closeModalCreateChapterLesson();
 }
 
 function hideShowSaveCancel(action){ 
@@ -189,27 +114,6 @@ function saveCreateChapterLessonCourse(){
   hideShowSaveCancel(true)
 }
 
-async function saveUpdateChapterLesson(){
-  let videoId = getYouTubeVideoId($('#link-yotube-course').val());
-  let METHOD = 'POST',
-    URL = '/course/update-lesson-course',
-    PARAM = '',
-    DATA = {
-      lesson_name : $('#name-lesson-course').val(),
-      lesson_description : editorDescriptionChapterCourse.root.innerHTML,
-      main_attachment: videoId,
-      chapter_id : idChapter,
-      lesson_id: idLesson,
-      is_demo : Number($('#demo-lesson').is(':checked'))
-    };
-  let res = await axiosTemplateFile(METHOD, URL, PARAM, DATA);
-  if (res.status === 200) {
-    getDataChapterforCourse();
-    cleanFormCreateUpdateChapterLesson();
-    successSwalNotify("Cập nhật thành công");
-  }
-}
-
 /**
  * Tạo bài giảng
  * */
@@ -225,22 +129,6 @@ async function saveCreateChapterLesson() {
       chapter_id : idChapter
     };
   let res = await axiosTemplateFile(METHOD, URL, PARAM, DATA);
-  if (res.status === 200) {
-    getDataChapterforCourse();
-    cleanFormCreateUpdateChapterLesson();
-    successSwalNotify("Thêm mới thành công");
-  }
-}
-
-async function saveCreateChapter() {
-  let method = 'POST',
-    url = '/course/create-chapter-course',
-    param = {
-      chapter_name: $('#name-create-chapter-course').val(),
-      course_id: idCourse
-    },
-    data = null;
-  let res = await axiosTemplate(method, url, param, data);
   if (res.status === 200) {
     getDataChapterforCourse();
     cleanFormCreateUpdateChapterLesson();

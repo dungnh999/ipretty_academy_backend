@@ -228,7 +228,9 @@ Route::group(['middleware' => 'auth'], function () {
       Route::post('/create-course', 'createCourse')->name('create');
       Route::post('/update-course', 'UpdateCourse')->name('update');
       Route::post('/create-chapter-course', 'createChapterCourse')->name('create');
-      Route::post('/update-lesson-course', 'updateLessonCourse')->name('update');
+      Route::post('/update-chapter-course', 'updateChapterCourse')->name('create');
+      Route::post('/update-lesson-course', 'updateLessonCourse')->name('update');      
+      Route::post('/create-lesson-course', 'createLessonCourse')->name('create-lesson');
       Route::get('/get-detail-lesson', 'getDetailLessonCourse')->name('lesson');
       Route::get('/get-data-chapter-course', 'getDataChapterCourse')->name('chapter');
     });

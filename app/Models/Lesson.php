@@ -31,6 +31,7 @@ class Lesson extends Model implements HasMedia
         'lesson_name',
         'lesson_description',
         'lesson_content',
+        'is_demo',
         'lesson_attachment',
         'lesson_author',
         'main_attachment',
@@ -49,6 +50,7 @@ class Lesson extends Model implements HasMedia
         'lesson_content' => 'string',
         'lesson_attachment' => 'array',
         'main_attachment' => 'string',
+        'is_demo' => 'integer',
         'lesson_author' => 'integer',
         'lesson_duration' => 'string',
         'created_at' => 'datetime:Y-m-d H:i',
@@ -111,7 +113,6 @@ class Lesson extends Model implements HasMedia
             //throw $th;
             return false;
         }
-        
     }
 
     public function user() {

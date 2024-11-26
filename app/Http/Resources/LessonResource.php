@@ -17,7 +17,6 @@ class LessonResource extends JsonResource
     public function toArray($request)
     {
         $author = User::find($this->lesson_author);
-        
         $lesson_attachments = $this->getMedia(MEDIA_COLLECTION["LESSON_ATTACHMENT"]);
 
         if (count($lesson_attachments)) {
@@ -40,7 +39,6 @@ class LessonResource extends JsonResource
         if ($chapter_lesson) {
             $number_order = $chapter_lesson->number_order;
         }
-        // dd($this->lesson_attachment);
         return [
             'lesson_id' => $this->lesson_id,
             'lesson_name' => $this->lesson_name,
