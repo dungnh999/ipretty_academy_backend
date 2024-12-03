@@ -11,8 +11,7 @@ function openModalUpdateCoursesCategory(r){
   let $select = $('#course-category-types-update').select2({
     dropdownParent: '#modal-update-category-course',
   });
-  $select.data('select2').$container.addClass('w-100');
-  getCategoryTypes();
+  getDetail();
 }
 
 async function getDetail(){

@@ -69,10 +69,10 @@ class CourseCategory extends Model implements HasMedia
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function categoryType()
-    {
-        return $this->belongsTo(CourseCategoryTypes::class, 'category_type_id');
-    }
+    // public function categoryType()
+    // {
+    //     return $this->belongsTo(CourseCategoryTypes::class, 'category_type_id');
+    // }
 
     public function registerMediaCollections(): void
     {

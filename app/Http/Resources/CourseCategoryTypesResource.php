@@ -15,7 +15,7 @@ class CourseCategoryTypesResource extends JsonResource
     public function toArray($request)
     {
       return [
-        'category_type_id' => $this->id,
+        // 'category_type_id' => $this->id,
         'category_type_name' => $this->category_type_name,
         'isPublished' => $this->isPublished,
         'category_type_description' => $this->category_type_description,

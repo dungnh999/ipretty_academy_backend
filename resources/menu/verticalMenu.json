@@ -22,18 +22,6 @@
       "slug": "department.index"
     },
     {
-      "name": "Nhóm quyền",
-      "url": "/role",
-      "icon": "menu-icon tf-icons bx bx-group",
-      "slug": "role.index"
-    },
-    {
-      "name": "Quyền",
-      "url": "/users",
-      "icon": "menu-icon tf-icons bx bx-check-shield",
-      "slug": "users"
-    },
-    {
       "menuHeader": "Quản lý khoá học"
     },
     {
@@ -65,18 +53,6 @@
       "url": "/banner",
       "icon": "menu-icon tf-icons bx bx-image",
       "slug": "banner.index"
-    },
-    {
-      "name": "Thanh toán",
-      "url": "/payment",
-      "icon": "menu-icon tf-icons bx bx-credit-card",
-      "slug": "payment"
-    },
-    {
-      "name": "Hệ thống",
-      "url": "/setting",
-      "icon": "menu-icon tf-icons bx bx-cog",
-      "slug": "setting"
     }
   ]
 }
