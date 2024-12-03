@@ -16,10 +16,10 @@ class ApiAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        // Kiểm tra xem header 'X-Api-Access' có tồn tại và có giá trị 'allowed' không
-        if ($request->header('X-Api-Access') !== 'allowed' && env('APP_ENV') != 'local') {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        // // Kiểm tra xem header 'X-Api-Access' có tồn tại và có giá trị 'allowed' không
+        // if ($request->header('X-Api-Access') !== 'allowed' && env('APP_ENV') != 'local') {
+        //     return response()->json(['error' => 'Unauthorized'], 401);
+        // }
 
         return $next($request);
     }
