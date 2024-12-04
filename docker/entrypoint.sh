@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "ENTRYPOINT script is running"
 
 if [ ! -f "vendor/autoload.php" ]; then
     composer install --ignore-platform-req=ext-zip --ignore-platform-req=ext-zip --no-progress --no-interaction --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-gd --ignore-platform-req=ext-exif --ignore-platform-req=ext-exif --ignore-platform-req=ext-gd
@@ -17,6 +18,7 @@ php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
 php artisan route:clear
+php artisan queue:work
 
 php-fpm -D
 nginx -g "daemon off;"
