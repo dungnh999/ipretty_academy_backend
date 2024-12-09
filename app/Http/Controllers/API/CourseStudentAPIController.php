@@ -365,8 +365,8 @@ class CourseStudentAPIController extends AppBaseController
 
     }
 
-    public function getListCommentAndRatingByCourse(){
-        $reponse = $this->courseStudentRepository->getCommentAndRatingByCourse();
+    public function getListCommentAndRatingByCourse(Request $request){
+        $reponse = $this->courseStudentRepository->getCommentAndRatingByCourse($request->all());
         return $this->sendSuccess(
             __('messages.get_list_comment_and_rating'), $reponse
         );

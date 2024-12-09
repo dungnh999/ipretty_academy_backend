@@ -123,37 +123,38 @@ class CourseStudentRepository extends BaseRepository
         return $feedbacks;
     }
 
-    public function getCommentAndRatingByCourse() {
+    public function getCommentAndRatingByCourse($param) {
+        $course_id = $param['course_id'];
         $subQuery = CourseStudent::selectRaw('MAX(id) as max_id')
             ->whereNotNull('comment')
             ->groupBy('student_id');
 
-        $totalRating = CourseStudent::where('course_id', 9)
+        $totalRating = CourseStudent::where('course_id', $course_id)
             ->whereNotNull('comment')
             ->count('rating'); // Tổng điểm đánh giá của khóa học
 
         // Tính toán số lượng feedbacks theo từng mức sao
-        $star1 = CourseStudent::where('course_id', 9)
+        $star1 = CourseStudent::where('course_id', $course_id)
             ->whereNotNull('comment')
             ->where('rating', 1)
             ->count();
 
-        $star2 = CourseStudent::where('course_id', 9)
+        $star2 = CourseStudent::where('course_id', $course_id)
             ->whereNotNull('comment')
             ->where('rating', 2)
             ->count();
 
-        $star3 = CourseStudent::where('course_id', 9)
+        $star3 = CourseStudent::where('course_id', $course_id)
             ->whereNotNull('comment')
             ->where('rating', 3)
             ->count();
 
-        $star4 = CourseStudent::where('course_id', 9)
+        $star4 = CourseStudent::where('course_id', $course_id)
             ->whereNotNull('comment')
             ->where('rating', 4)
             ->count();
 
-        $star5 = CourseStudent::where('course_id', 9)
+        $star5 = CourseStudent::where('course_id', $course_id)
             ->whereNotNull('comment')
             ->where('rating', 5)
             ->count();
@@ -177,7 +178,7 @@ class CourseStudentRepository extends BaseRepository
                 'users.avatar as user_avatar'
             )
             ->join('users', 'courses_students.student_id', '=', 'users.id')
-            ->where('courses_students.course_id', '=' , 9)
+            ->where('courses_students.course_id', '=' , $course_id)
             ->paginate(2); // Số lượng feedbacks mỗi trang là 10
 
         return [
