@@ -13,11 +13,15 @@
           <div class="col-lg-7">
             <div class="grop-form-create-course">
               <div class="mt-2">
-                <label class="form-label" for="username">Tên khoá học</label>
+                <label class="form-label" for="name-course-create">Tên khoá học</label>
                 <input type="text" id="name-course-create" class="form-control" placeholder="Bài học mới"/>
               </div>
+              <div class="mt-2">
+                <label class="form-label" for="link-course-create">link khoá học</label>
+                <input type="text" id="link-course-create" class="form-control" placeholder="abc-acd-abc"/>
+              </div>
                {{-- Giá bán và giá giảm --}}
-               <div class="row mt-2">
+              <div class="row mt-2">
                 <div class="col-lg-6">
                   <label class="form-label" for="username">Giá bán</label>
                   <input type="number" id="course-price-create" class="form-control" placeholder="Giá bán"/>
@@ -78,6 +82,12 @@
                 </label>
                 <input type="file" id="input-certificate-create-course" hidden="">
               </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="mt-2">
+              <label class="form-label" for="link-course-create">Mục tiêu</label>
+              <input id="target-course-create" class="form-control" placeholder=""></textarea>
             </div>
           </div>
         </div>

@@ -18,6 +18,7 @@
 <script src="{{ asset(mix('assets/vendor/libs/sortablejs/Sortable.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/select2/js/select2.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/jkanban/js/jkanban.js'))}}"></script>
+<script src="{{ asset(mix('assets/vendor/libs/tagify/js/tagify.js'))}}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/plyr/js/plyr.js'))}}"></script>
 
 <script src="{{ asset('assets/template/axios.js') }}"></script>

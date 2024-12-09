@@ -205,6 +205,11 @@ mix.copy(
   'node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css',
   'public/assets/vendor/libs/dataTable/css/dataTables.bootstrap5.css'
 );
+
+// tagify
+mix.copy('node_modules/@yaireo/tagify/dist/tagify.js', 'public/assets/vendor/libs/tagify/js/tagify.js');
+mix.copy('node_modules/@yaireo/tagify/dist/tagify.css', 'public/assets/vendor/libs/tagify/css/tagify.css');
+
 mix.copy('node_modules/datatables.net/js/jquery.dataTables.js', 'public/assets/vendor/libs/dataTable/dataTables.js');
 mix.copy('node_modules/jquery/dist/jquery.js', 'public/assets/vendor/libs/jquery/jquery.js');
 mix.copy('node_modules/axios/dist/axios.js', 'public/assets/vendor/libs/axios/axios.js');

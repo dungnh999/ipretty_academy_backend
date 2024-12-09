@@ -70,6 +70,7 @@ class CourseRepository extends BaseRepository
     public function createCourse($input, $request = null)
     {
         
+
         DB::beginTransaction();
 
         $course_version = 1;
@@ -96,11 +97,9 @@ class CourseRepository extends BaseRepository
         //     $input["is_approved"] = false;
         // }
         // var_dump($input['course_target']);
-        $input['course_target'] = json_encode($input['course_target'], JSON_UNESCAPED_SLASHES);
+        // $input['course_target'] = json_encode($input['course_target'], JSON_UNESCAPED_SLASHES);
 
         $input["course_created_by"] = $user->id;
-
-        $input['slug_course'] = CommonBusiness::change_alias($input['course_name']);
 
         $model = $this->model->newInstance($input);
 
@@ -212,9 +211,6 @@ class CourseRepository extends BaseRepository
         ) {
             $model->handleMedia($request, MEDIA_COLLECTION['CERTIFICATE_IMAGE'], $model);
         }
-
-        $input['slug_course'] = $model->slug_course;
-
 
         $model->save();
 
@@ -884,161 +880,169 @@ class CourseRepository extends BaseRepository
 
         $mainRole = $this->checkRoleForUser($user);
 
-        if ($mainRole == 'admin') {
-            $model = [];
-            return $model;
-        }
+//        if ($mainRole == 'admin') {
+//            $model = [];
+//            return $model;
+//        }
 
         $query = $this->model
             ->newQuery()
-            ->with('studentResults')
+            ->with(['studentResult' => function ($q) use ($user) {
+                $q->where('student_id', $user->id);
+            }])
             ->with('category', function ($q) {
                 $q->select('category_id', 'category_name');
             })
             ->with('teacher', function ($q) {
                 $q->select('id', 'name', 'email', 'avatar');
             })
-            ->orderBy("$table.created_at", 'desc');
+            ->whereHas('students', function ($q) use ($user) {
+                $q->where('student_id', $user->id); // Lọc theo ID sinh viên
+            })
+            ->orderBy($this->model->getTable() . '.created_at', 'desc');
 
-        if (isset($params['course_status']) && $params['course_status'] != null) {
-            $course_status = $params['course_status'];
-            $now = date(Carbon::now());
 
-            if ($course_status == 'learning') {
-                // $query = $query->where(function ($q) use ($now, $user) {
-                //     $q->orwhere(function ($w) use ($now) {
-                //         $w->whereNotNull('startTime')
-                //             ->whereNotNull('endTime')
-                //             ->where('startTime', '<', $now)
-                //             ->where('endTime', '>', $now);
-                //     })
-                //         ->orwhere(function ($w) use ($now) {
-                //             $w->whereNotNull('deadline')
-                //                 ->where('deadline', '>', $now);
-                //         });
-                // });
-                $query = $query->where(function ($where) use ($user) {
-                    $where->whereHas('studentsLearning', function ($q) use ($user) {
-                        $q->where('users.id', '=', $user->id);
-                    });
-                });
-            } elseif ($course_status = 'finished') {
-                $query = $query->where(function ($q) use ($now, $user) {
-                    // $q->orwhere(function ($w) use ($now) {
-                    //     $w->whereNotNull('endTime')
-                    //         ->where('endTime', '<', $now);
-                    // })
-                    // ->orwhere(function ($w) use ($now) {
-                    //     $w->whereNotNull('deadline')
-                    //         ->where('deadline', '<', $now);
-                    // })
-                    $q->orwhere(function ($where) use ($user) {
-                        $where = $where->whereHas('studentsFinish', function ($q) use ($user) {
-                            $q->where('users.id', '=', $user->id);
-                        });
-                    });
-                });
-                // $query = $query->where(function ($where) use ($user) {
-                //     $where = $where->whereHas('studentsFinish', function ($q) use ($user) {
-                //         $q->where('users.id', '=', $user->id);
-                //     });
-                // });
-            }
-        } else {
-            $query = $query->where(function ($where) use ($user, $mainRole) {
-                $where
-                    ->orwhere(function ($q) use ($user) {
-                        $q->where('course_type', 'Business')
-                            ->where('course_price', 0)
-                            ->where(function ($w) use ($user) {
-                                $w->orwhere(function ($ow) {
-                                    $ow->where('is_published', 1)->where('isDraft', 0);
-                                })->orwhereHas('students', function ($q) use ($user) {
-                                    $q->where('users.id', '=', $user->id);
-                                });
-                            });
-                    })
-                    ->orwhere(function ($q) use ($user) {
-                        $q->where('course_type', 'Group')->where(function ($w) use ($user) {
-                            $w->orwhere(function ($ow) use ($user) {
-                                $ow
-                                    ->where('is_published', 1)
-                                    ->where('isDraft', 0)
-                                    ->whereHas('students', function ($q) use ($user) {
-                                        $q->where('users.id', '=', $user->id);
-                                    });
-                            })->orwhere(function ($ow) use ($user) {
-                                $ow
-                                    ->where('is_published', 1)
-                                    ->where('isDraft', 1)
-                                    ->whereHas('students', function ($q) use ($user) {
-                                        $q->where('users.id', '=', $user->id);
-                                    });
-                            });
-                        });
-                    });
-                if ($mainRole != 'user') {
-                    $where = $where->orwhere('course_type', 'Local')->where(function ($w) use ($user) {
-                        $w->orwhere(function ($ow) use ($user) {
-                            $ow
-                                ->where('is_published', 1)
-                                ->where('isDraft', 0)
-                                ->where(function ($q) use ($user) {
-                                    $q->orwhereHas('students', function ($q) use ($user) {
-                                        $q->where('users.id', '!=', $user->id);
-                                    })->orWhereDoesntHave('students');
-                                });
-                            // ->whereHas('students', function ($q) use ($user) {
-                            //     $q->where('users.id', '=', $user->id);
-                            // });
-                        })->orwhere(function ($ow) use ($user) {
-                            $ow
-                                ->where('is_published', 1)
-                                ->where('isDraft', 1)
-                                ->whereHas('students', function ($q) use ($user) {
-                                    $q->where('users.id', '=', $user->id);
-                                });
-                        });
-                    });
-                }
-            });
 
-            // $query = $query->with(['studentResult' => function ($query) use ($user) {
-            //         $query->where(['student_id' => $user->id]);
-            //     }]) ;
+//        if (isset($params['course_status']) && $params['course_status'] != null) {
+//            $course_status = $params['course_status'];
+//            $now = date(Carbon::now());
+//
+//            if ($course_status == 'learning') {
+//                // $query = $query->where(function ($q) use ($now, $user) {
+//                //     $q->orwhere(function ($w) use ($now) {
+//                //         $w->whereNotNull('startTime')
+//                //             ->whereNotNull('endTime')
+//                //             ->where('startTime', '<', $now)
+//                //             ->where('endTime', '>', $now);
+//                //     })
+//                //         ->orwhere(function ($w) use ($now) {
+//                //             $w->whereNotNull('deadline')
+//                //                 ->where('deadline', '>', $now);
+//                //         });
+//                // });
+//                $query = $query->where(function ($where) use ($user) {
+//                    $where->whereHas('studentsLearning', function ($q) use ($user) {
+//                        $q->where('users.id', '=', $user->id);
+//                    });
+//                });
+//            } elseif ($course_status = 'finished') {
+//                $query = $query->where(function ($q) use ($now, $user) {
+//                    // $q->orwhere(function ($w) use ($now) {
+//                    //     $w->whereNotNull('endTime')
+//                    //         ->where('endTime', '<', $now);
+//                    // })
+//                    // ->orwhere(function ($w) use ($now) {
+//                    //     $w->whereNotNull('deadline')
+//                    //         ->where('deadline', '<', $now);
+//                    // })
+//                    $q->orwhere(function ($where) use ($user) {
+//                        $where = $where->whereHas('studentsFinish', function ($q) use ($user) {
+//                            $q->where('users.id', '=', $user->id);
+//                        });
+//                    });
+//                });
+//                // $query = $query->where(function ($where) use ($user) {
+//                //     $where = $where->whereHas('studentsFinish', function ($q) use ($user) {
+//                //         $q->where('users.id', '=', $user->id);
+//                //     });
+//                // });
+//            }
+//        } else {
+//            $query = $query->where(function ($where) use ($user, $mainRole) {
+//                $where
+//                    ->orwhere(function ($q) use ($user) {
+//                        $q->where('course_type', 'Business')
+//                            ->where('course_price', 0)
+//                            ->where(function ($w) use ($user) {
+//                                $w->orwhere(function ($ow) {
+//                                    $ow->where('is_published', 1)->where('isDraft', 0);
+//                                })->orwhereHas('students', function ($q) use ($user) {
+//                                    $q->where('users.id', '=', $user->id);
+//                                });
+//                            });
+//                    })
+//                    ->orwhere(function ($q) use ($user) {
+//                        $q->where('course_type', 'Group')->where(function ($w) use ($user) {
+//                            $w->orwhere(function ($ow) use ($user) {
+//                                $ow
+//                                    ->where('is_published', 1)
+//                                    ->where('isDraft', 0)
+//                                    ->whereHas('students', function ($q) use ($user) {
+//                                        $q->where('users.id', '=', $user->id);
+//                                    });
+//                            })->orwhere(function ($ow) use ($user) {
+//                                $ow
+//                                    ->where('is_published', 1)
+//                                    ->where('isDraft', 1)
+//                                    ->whereHas('students', function ($q) use ($user) {
+//                                        $q->where('users.id', '=', $user->id);
+//                                    });
+//                            });
+//                        });
+//                    });
+//                if ($mainRole != 'user') {
+//                    $where = $where->orwhere('course_type', 'Local')->where(function ($w) use ($user) {
+//                        $w->orwhere(function ($ow) use ($user) {
+//                            $ow
+//                                ->where('is_published', 1)
+//                                ->where('isDraft', 0)
+//                                ->where(function ($q) use ($user) {
+//                                    $q->orwhereHas('students', function ($q) use ($user) {
+//                                        $q->where('users.id', '!=', $user->id);
+//                                    })->orWhereDoesntHave('students');
+//                                });
+//                            // ->whereHas('students', function ($q) use ($user) {
+//                            //     $q->where('users.id', '=', $user->id);
+//                            // });
+//                        })->orwhere(function ($ow) use ($user) {
+//                            $ow
+//                                ->where('is_published', 1)
+//                                ->where('isDraft', 1)
+//                                ->whereHas('students', function ($q) use ($user) {
+//                                    $q->where('users.id', '=', $user->id);
+//                                });
+//                        });
+//                    });
+//                }
+//            });
+//
+//            // $query = $query->with(['studentResult' => function ($query) use ($user) {
+//            //         $query->where(['student_id' => $user->id]);
+//            //     }]) ;
+//
+//            // $query = $query->with('avgRating');
+//        }
+//        $query = $query->with([
+//            'studentResult' => function ($query) use ($user) {
+//                $query->where(['student_id' => $user->id])->first();
+//            },
+//        ]);
 
-            // $query = $query->with('avgRating');
-        }
+//        dd($query);
 
-        $query = $query->with([
-            'studentResult' => function ($query) use ($user) {
-                $query->where(['student_id' => $user->id]);
-            },
-        ]);
+//        $query = $query->withAvg(['studentResultRatingAvg as student_result_avg_rating'], 'rating');
+//
+//        if (!empty($params['keyword'])) {
+//            $query = CommonBusiness::searchInCollection(
+//                $query,
+//                $this->fieldSearchable,
+//                $params['keyword'],
+//                ['name'],
+//                ['teacher']
+//            );
+//        }
 
-        $query = $query->withAvg(['studentResultRatingAvg as student_result_avg_rating'], 'rating');
-
-        if (!empty($params['keyword'])) {
-            $query = CommonBusiness::searchInCollection(
-                $query,
-                $this->fieldSearchable,
-                $params['keyword'],
-                ['name'],
-                ['teacher']
-            );
-        }
-
-        if (isset($params['paging']) && $params['paging'] == true) {
-            if (isset($params['perpage']) && $params['perpage'] != null) {
-                $perpage = $params['perpage'];
-
-                $model = $query->paginate($perpage);
-            } else {
-                $model = $query->paginate(PERPAGE);
-            }
-        } else {
+//        if (isset($params['paging']) && $params['paging'] == true) {
+//            if (isset($params['perpage']) && $params['perpage'] != null) {
+//                $perpage = $params['perpage'];
+//
+//                $model = $query->paginate($perpage);
+//            } else {
+//                $model = $query->paginate(PERPAGE);
+//            }
+//        } else {
             $model = $query->get();
-        }
+//        }
         // foreach($model as $course){
         //     $get_list_rating = CourseStudent::where('course_id', $course->course_id)->whereNotNull('rating')->selectRaw('AVG(rating) as rating_course')->first();
         //     $course->avg_rating_course = $get_list_rating->rating_course ? $get_list_rating->rating_course : 0;
@@ -1478,19 +1482,20 @@ class CourseRepository extends BaseRepository
             ->withAvg(['studentResultRatingAvg as student_result_avg_rating'], 'rating')
             ->where('course_id', $course_id)
             ->first();
-
+        
             if ($course) {
-            if ($course->course_target != null) {
-                $course_target = json_decode($course->course_target);
-                if (count($course_target->course_target) > 0) {
-                    $course_target_new = [];
-                    foreach ($course_target->course_target as $line) {
-                        $course_target_new[] = $line->value;
+                if ($course->course_target != null) {
+                    $course_target = json_decode($course->course_target);
+
+                    if (count($course_target) > 0) {
+                        $course_target_new = [];
+                        foreach ($course_target as $line) {
+                            $course_target_new[] = $line->value;
+                        }
+                        $course->course_target_new = $course_target_new;
                     }
-                    $course->course_target_new = $course_target_new;
                 }
             }
-        }
         return $course;
     }
 

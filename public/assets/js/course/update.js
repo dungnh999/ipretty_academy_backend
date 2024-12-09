@@ -36,6 +36,9 @@ async function openModalUpdateCourse(r) {
         $('#preview-certificate-update-course').attr('src', url);
     });
 
+    let tagify = new Tagify($('#target-course-update').get(0))
+
+
     // Lấy danh sách giảng viên
     getDataTeacherUpdate();
 
@@ -61,7 +64,8 @@ async function getDetailUpdateCourse(){
     $('#preview-banner-update-course').attr('src' , res.data.data.course_feature_image);
     $('#preview-certificate-update-course').attr('src' , res.data.data.certificate_image);
     $('#course-category-update').val(res.data.data.category_id).trigger('change.select2');
-    $('#select-teacher-update-course').val(res.data.data.teacher.id).trigger('change.select2');
+    $('#select-teacher-update-course').val(res.data.data.teacher.id).trigger('change.select2');    
+    $('#target-course-update').val(JSON.stringify(res.data.data.course_target));
   }else{
     errorSwalNotify('Lỗi rồi '+ res);
   }
@@ -86,23 +90,12 @@ async function getDataCategoryCourseUpdate() {
 
 async function saveUpdateCourses(){
     const dataUpdate = new FormData();
-    let targetUpdate = {
-        "course_target" :
-        [
-            {
-                "value": "ĐẠT MỤC TIÊU"
-            },
-            {
-                "value": "ĐẠT MỤC TIÊU"
-            }
-        ]
-    };
     dataUpdate.append('course_name', $('#name-course-update').val());
     dataUpdate.append('teacher_id', $('#select-teacher-update-course').val());
     dataUpdate.append('course_id',  thisButtonUpdateCourse.data('id'));
     dataUpdate.append('category_id', $('#course-category-update').val());
     dataUpdate.append('course_price', $('#course-price-update').val());
-    dataUpdate.append('course_target', JSON.stringify(targetUpdate));
+    dataUpdate.append('course_target', $('#target-course-update').val());
     dataUpdate.append('course_sale_price', $('#course-price-sale-update').val());
     dataUpdate.append('course_description', editorDescriptionCourse.root.innerHTML);
     dataUpdate.append('course_feature_image', fileBannerUpdateCourse);

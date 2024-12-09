@@ -80,6 +80,12 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-12">
+              <div class="mt-2">
+                <label class="form-label" for="link-course-update">Mục tiêu</label>
+                <input id="target-course-update" class="form-control" placeholder=""></textarea>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">

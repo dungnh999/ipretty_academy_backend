@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/quill/css/quill.snow.css'))}}">
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/select2/css/select2.css'))}}">
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/jkanban/css/jkanban.css'))}}">
+<link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/tagify/css/tagify.css'))}}">
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/plyr/css/plyr.css'))}}">
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/css/core.css')) }}"/>
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/css/theme-default.css')) }}"/>

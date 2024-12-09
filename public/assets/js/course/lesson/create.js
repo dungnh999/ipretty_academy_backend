@@ -40,6 +40,10 @@ async function openModalCreateLesson(r) {
           console.log('Video săẵn sàng dữ liệu.');
           $('#loader-custom').addClass('hidden-loader');
         });
+
+        player.on('ready', () => {
+            console.log('Thời lượng video:', player.duration, 'giây');
+        });
       });
     
       editorDescriptionChapterCourse = await editorTemplate('#editor-lesson-chapter', '#toolbar-lesson-chapter');
@@ -62,6 +66,7 @@ async function saveCreateLesson() {
             main_attachment: videoId,
             chapter_id : idCreateChapter,
             type_update : type,
+            lesson_duration: player.duration
         };
     let res = await axiosTemplateFile(METHOD, URL, PARAM, DATA);
     if (res.status === 200) {

@@ -60,6 +60,8 @@
     "/assets/vendor/libs/jkanban/js/jkanban.js": "/assets/vendor/libs/jkanban/js/jkanban.js?id=3cb3341c3f7840fedd6710ea51b54aef",
     "/assets/vendor/libs/jkanban/css/jkanban.css": "/assets/vendor/libs/jkanban/css/jkanban.css?id=5668e47665eb676e5ef6941b1e301c1c",
     "/assets/vendor/libs/dataTable/css/dataTables.bootstrap5.css": "/assets/vendor/libs/dataTable/css/dataTables.bootstrap5.css?id=f44c0c5e9cfda1e5621d3aa1dbb9baeb",
+    "/assets/vendor/libs/tagify/js/tagify.js": "/assets/vendor/libs/tagify/js/tagify.js?id=2c9cf6ba217abc774fc77309b356a142",
+    "/assets/vendor/libs/tagify/css/tagify.css": "/assets/vendor/libs/tagify/css/tagify.css?id=2ce5496032c82e673aac37b1f25ebfcb",
     "/assets/vendor/libs/dataTable/dataTables.js": "/assets/vendor/libs/dataTable/dataTables.js?id=83528c312cc4510f4795c3672e1b746b",
     "/assets/vendor/libs/axios/axios.js": "/assets/vendor/libs/axios/axios.js?id=d15dc396ee656dcb917df10c83347b44"
 }

@@ -6,6 +6,7 @@ use App\Contract\CommonBusiness;
 use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -40,6 +41,7 @@ class Course extends Model implements HasMedia
         'course_version',
         'course_price',
         'certificate_image',
+        'slug_course',
         'startTime',
         'endTime',
         'deadline',
@@ -61,6 +63,7 @@ class Course extends Model implements HasMedia
         'course_id' => 'integer',
         'course_name' => 'string',
         'course_feature_image' => 'string',
+        'slug_course' => 'string',
         'course_created_by' => 'integer',
         'course_type' => 'string',
         // 'course_target' => 'string',
@@ -207,14 +210,17 @@ class Course extends Model implements HasMedia
         return $this->belongsToMany('App\Models\User', 'courses_students', 'course_id', 'student_id')->wherePivot('isPassed', 1);
     }
 
+
     public function studentResultById($student_id)
     {
         return $this->hasMany('App\Models\CourseStudent', 'course_id')->where('student_id', $student_id)->first();
     }
 
+
     public function studentResult()
     {
-        return $this->hasMany('App\Models\CourseStudent', 'course_id');
+        return $this->hasOne('App\Models\CourseStudent', 'course_id', 'course_id')
+            ->where('student_id', Auth::id());  // Lọc kết quả theo sinh viên hiện tại
     }
 
     public function studentResults()

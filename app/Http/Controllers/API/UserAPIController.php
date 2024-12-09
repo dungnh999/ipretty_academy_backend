@@ -87,11 +87,8 @@ class UserAPIController extends AppBaseController
                 __('messages.errors.unauthorized')
             );
         }
-
         $userId = Auth::user()->id;
-
         $user = $this->userRepository->updateAvatar($userId, $request);
-
         return $this->sendResponse(new UserResource($user), __('auth.users.avatar_update_success') );
     }
 
@@ -265,9 +262,8 @@ class UserAPIController extends AppBaseController
 
         $courses = $this->courseRepository->getCoursesByCondition($params);
 
-        return $this->sendResponse(
-            $courses,
-            __('messages.retrieved', ['model' => __('models/courses.singular')])
+        return $this->sendSuccess(
+            __('messages.retrieved', ['model' => __('models/courses.singular')]),$courses
         );
     }
 

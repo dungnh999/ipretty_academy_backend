@@ -75,7 +75,7 @@
               "Firefox >= 38",
               "Edge >= 12",
               "Explorer >= 10",
-              "iOS >= 9",
+              "iOS >= 9", 
               "Safari >= 9",
               "Android >= 4.4",
               "Opera >= 30"
@@ -87,6 +87,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@yaireo/tagify": "^4.32.1",
     "apexcharts-clevision": "^3.28.5",
     "bootstrap": "~5.3.2",
     "boxicons": "~2.1.4",
