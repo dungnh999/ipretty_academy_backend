@@ -15,7 +15,9 @@ class CourseCategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $course = Course::where('category_id', $this->category_id)->count();
+        $course = Course::where('category_id', $this->category_id)
+                          ->where('is_published', 1)
+                          ->count();
         return [
             'category_id' => $this->category_id,
             'category_name' => $this->category_name,

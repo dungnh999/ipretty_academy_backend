@@ -98,6 +98,7 @@ Route::middleware(['api.access'])->group(function(){
         Route::get('frequently_asked_questions/{faq_id}/faq_question/{question_id}', 'FrequentlyAskedQuestionsAPIController@getQuestionById');
 
         Route::post('courses', 'CourseAPIController@store');
+        Route::get('course/category', 'CourseAPIController@getListCourseByCategory');
         Route::post('clone-courses/{id}', 'CourseAPIController@cloneCouse');
         Route::post('courses/{id}', 'CourseAPIController@update');
         Route::get('courses/{id}', 'CourseAPIController@show');
@@ -108,6 +109,7 @@ Route::middleware(['api.access'])->group(function(){
         Route::post('questions/{id}/media', 'QuestionAPIController@deleteQuestionAttachment');
         Route::post('options/{id}/media', 'QuestionOptionAPIController@deleteOptionAttachment');
         Route::post('courses/{id}/change-publish', 'CourseAPIController@changePublishCourse');
+        Route::get('feedback', 'CourseStudentAPIController@getListCommentAndRating');
 
         Route::post('surveys', 'SurveyAPIController@store');
         Route::get('surveys/{id}', 'SurveyAPIController@show');
@@ -234,6 +236,7 @@ Route::middleware(['api.access'])->group(function(){
     Route::get('course-categories-menu', [CourseCategoryAPIController::class, 'getCategoryMenu']);
     Route::get('course-detail-by-slug', 'CourseAPIController@getDetailCourseOfUserBySlug');
     Route::get('course-detail/{id}', 'CourseAPIController@getDetailCourseOfUser');
+    Route::get('rating-comment-course', 'CourseStudentAPIController@getListCommentAndRatingByCourse');
 
 
     Route::get('user-by-role', [UserAPIController::class, 'getUserByRole']);

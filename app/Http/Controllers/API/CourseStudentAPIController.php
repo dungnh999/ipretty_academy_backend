@@ -364,4 +364,19 @@ class CourseStudentAPIController extends AppBaseController
         );
 
     }
+
+    public function getListCommentAndRatingByCourse(){
+        $reponse = $this->courseStudentRepository->getCommentAndRatingByCourse();
+        return $this->sendSuccess(
+            __('messages.get_list_comment_and_rating'), $reponse
+        );
+    }
+
+
+    public function getListCommentAndRating(){
+        $reponse = $this->courseStudentRepository->getCommentAndRating();
+        return $this->sendSuccess(
+            __('messages.get_list_comment_and_rating'), $reponse
+        );
+    }
 }

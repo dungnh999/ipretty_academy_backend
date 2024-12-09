@@ -29,7 +29,6 @@ class CourseShortTermResource extends JsonResource
 
         $chapters = Chapter::where('course_id', $this->course_id)->with('lessons')->with('survey')->get();
 
-
         $course_resources["chapters"] = ChapterShortTermResource::collection($chapters);
 
         $studentCourse = CourseStudent::where('student_id', '=', $user->id)->where('course_id', '=', $this->course_id)->first();
@@ -106,6 +105,7 @@ class CourseShortTermResource extends JsonResource
             'number_learning' => $numberLearning,
             'percent_done' => $percentDoneLear,
             'step_learning' => $stepLearning,
+            'total_duration' => $this->total_duration,
             'is_register' => ($studentCourse) ? (int)true : (int)false
         ];
 

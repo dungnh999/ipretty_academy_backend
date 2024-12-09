@@ -104,6 +104,12 @@ class Course extends Model implements HasMedia
 
     }
 
+    public function totalDuration()
+    {
+        return $this->hasManyThrough(Lesson::class, Chapter::class)
+            ->sum('lesson_duration');
+    }
+
     // remember to save before run this method
     public function handleMedia($request = null, $collectionName = null, $collection = null): void
     {

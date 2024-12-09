@@ -124,6 +124,8 @@ class CourseCategoryRepository extends BaseRepository
         } else {
             $model = $query->get();
         }
+//        dd($model);
+
         return $model;
     }
 

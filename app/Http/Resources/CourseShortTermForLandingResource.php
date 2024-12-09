@@ -48,6 +48,7 @@ class CourseShortTermForLandingResource extends JsonResource
             'number_of_students' => count($students),
             'scoreRating' => $scoreRating->scoreRating,
             'rating_round' => $scoreRating->rating_round,
+            'total_duration' => $this->total_duration,
         ];
 
         $response["course_price"] = $this->course_price;

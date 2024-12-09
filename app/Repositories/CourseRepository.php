@@ -756,12 +756,30 @@ class CourseRepository extends BaseRepository
 
     public function getAllCourse($params = null, $category_id = null)
     {
-        $course = Course::join('users', 'courses.teacher_id', '=', 'users.id')
-            ->join('course_categories', 'courses.category_id', '=', 'course_categories.category_id')
-            ->select('courses.*', 'users.name as teacher_name', 'course_categories.category_name as category_name')
-            ->where('status', 1)
-            ->where('is_published', 1)
+//        $course = Course::join('users', 'courses.teacher_id', '=', 'users.id')
+//            ->join('course_categories', 'courses.category_id', '=', 'course_categories.category_id')
+//            ->select('courses.*', 'users.name as teacher_name', 'course_categories.category_name as category_name')
+//            ->where('status', 1)
+//            ->where('is_published', 1)
+//            ->get();
+
+        $course = DB::table('courses as c')
+            ->join('users as u', 'c.teacher_id', '=', 'u.id')
+            ->join('course_categories as cc', 'c.category_id', '=', 'cc.category_id')
+            ->leftJoin('chapters as ch', 'ch.course_id', '=', 'c.course_id')
+            ->leftJoin('chapters_lessons as cl', 'cl.chapter_id', '=', 'ch.chapter_id')
+            ->leftJoin('lessons as l', 'l.lesson_id', '=', 'cl.lesson_id')
+            ->select(
+                'c.*',
+                'u.name as teacher_name',
+                'cc.category_name as category_name',
+                DB::raw('SUM(l.lesson_duration) as total_duration')  // Tính tổng thời gian khóa học
+            )
+            ->where('c.is_published', 1)
+            ->where('c.status', 1)
+            ->groupBy('c.course_id', 'u.name', 'cc.category_name')  // Nhóm theo course_id và các trường liên quan
             ->get();
+
 
         //        $query = $this->model->newQuery()->withAvg(['studentResultRatingAvg as student_result_avg_rating'], 'rating');
         //        if ($category_id) {
@@ -869,6 +887,19 @@ class CourseRepository extends BaseRepository
         //        }
 
         //        $model = $course->get();
+
+        return $course;
+    }
+
+    public function getCourseByCategory($request)
+    {
+        $course = Course::join('users', 'courses.teacher_id', '=', 'users.id')
+            ->join('course_categories', 'courses.category_id', '=', 'course_categories.category_id')
+            ->select('courses.*', 'users.name as teacher_name', 'course_categories.category_name as category_name')
+            ->where('status', 1)
+            ->where('is_published', 1)
+            ->where('courses.category_id', $request['category_id'])
+            ->get();
 
         return $course;
     }
@@ -2311,7 +2342,16 @@ class CourseRepository extends BaseRepository
 
     public function getDetailCourseBySlug($slug)
     {
-        return Course::where('slug_course', $slug)->firstOrFail();
+        $course = Course::where('slug_course', $slug)->firstOrFail();
+        $totalDuration = Chapter::where('course_id', $course['course_id']) // Lọc các chương thuộc khóa học có ID = 8
+        ->join('chapters_lessons', 'chapters_lessons.chapter_id', '=', 'chapters.chapter_id') // Kết nối với bảng trung gian 'chapters_lessons'
+        ->join('lessons', 'lessons.lesson_id', '=', 'chapters_lessons.lesson_id') // Kết nối với bảng 'lessons'
+        ->whereNull('lessons.deleted_at') // Kiểm tra các bài học không bị xóa
+        ->whereNull('chapters.deleted_at') // Kiểm tra các chương không bị xóa
+        ->sum('lessons.lesson_duration'); // Tính tổng thời gian các bài học
+
+        $course->total_duration = $totalDuration;
+        return $course;
     }
 
 

@@ -193,6 +193,7 @@ return [
   'comment_course_successfully' => 'Bình luận và đánh giá khóa học thành công.',
   'get_list_rank_course_category_successfully' => 'Lấy danh sách danh mục nổi bật thành công.',
   'get_list_rank_course_successfully' => 'Lấy danh sách khóa học nổi bật thành công.',
+  'get_list_comment_and_rating' => 'Lấy danh sách đánh giá khóa học thành công',
   'clone_course_successfully' => 'Sao chép khóa học thành công.',
   'not_join_course' => 'Bạn chưa đăng ký khoá học này.',
   'invalid_format_pw' => 'Mật khẩu gồm 8 ký tự có chữ cái viết thường, viết hoa, số và kí tự đặc biệt',

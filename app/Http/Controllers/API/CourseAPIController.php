@@ -588,7 +588,7 @@ class CourseAPIController extends AppBaseController
                 __('messages.not_found', ['model' => __('models/courses.singular')])
             );
         }
-        $new_course = $this->courseRepository->updateViewCount($course);
+//        $new_course = $this->courseRepository->updateViewCount($course);
         if (Auth::guard('api')->user()) {
             return $this->sendResponse(
                 new CourseShortTermResource($course),
@@ -732,7 +732,6 @@ class CourseAPIController extends AppBaseController
         );
     }
 
-
     public function featureCourses()
     {
         $params = request()->query();
@@ -808,7 +807,6 @@ class CourseAPIController extends AppBaseController
         );
     }
 
-
     public function statisticalCourses(Request $request)
     {
         $params = request()->query();
@@ -822,13 +820,9 @@ class CourseAPIController extends AppBaseController
             mkdir(storage_path('/app/' . $folder_file), 0700);
 
             if (count($statisticalCourses)) {
-
                 (new StatistialCourseExport($statisticalCourses))->store($folder_file . '/' . "-statistical-course-export.xlsx");
-
             }
-
             return response()->file(storage_path('/app/' . $folder_file . '/' . "-statistical-course-export.xlsx"))->deleteFileAfterSend(true);
-
         }
 
         return $this->sendResponse(
@@ -877,5 +871,14 @@ class CourseAPIController extends AppBaseController
         }
         $certificate_url = $course->getMedia(MEDIA_COLLECTION["CERTIFICATE_IMAGE"]);
         return response()->download($certificate_url[0]->getPath(), $certificate_url[0]->file_name);
+    }
+
+    public function getListCourseByCategory(Request $request) {
+        $input = $request->all();
+        $courses = $this->courseRepository->getCourseByCategory($input);
+        return $this->sendResponse(
+            $courses,
+            __('messages.retrieved', ['model' => __('models/courses.plural')])
+        );
     }
 }
