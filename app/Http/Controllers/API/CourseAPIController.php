@@ -688,6 +688,7 @@ class CourseAPIController extends AppBaseController
             );
         }
 
+//        dd($user->id, $course->course_id);
         $courseStudent = $this->courseStudentRepository->isJoined($user->id, $course->course_id);
         if (empty($courseStudent)) {
 //            if (($course->course_type == "Business" && $course->course_price > 0) || $course->course_type == "Group") {
@@ -715,7 +716,7 @@ class CourseAPIController extends AppBaseController
         }
 
         return $this->sendSuccess(
-            __('messages.start_learning')
+            __('messages.start_learning'), $courseStudent
         );
     }
 

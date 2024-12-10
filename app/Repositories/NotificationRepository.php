@@ -77,12 +77,12 @@ class NotificationRepository extends BaseRepository
                 $targetTime = Carbon::parse($noti['updated_at']);
                 $currentTime = Carbon::now();
                 $timeDifference = $targetTime->diff($currentTime);
-                if ($timeDifference->days > 0) {
-                    $noti['time_notification'] =  $timeDifference->days . " ngày ";
-                }
-                if ($timeDifference->h > 0) {
-                    $noti['time_notification'] = $timeDifference->h . " giờ";
-                }
+//                if ($timeDifference->days > 0) {
+//                    $noti['time_notification'] =  $timeDifference->days . " ngày ";
+//                }
+//                if ($timeDifference->h > 0) {
+//                    $noti['time_notification'] = $timeDifference->h . " giờ";
+//                }
                 $noti['avatar'] = ($noti['info']['avatar'] == "") ? $this->generateAvatar('NO') : $noti['info']['avatar'];
             }
         }

@@ -126,13 +126,9 @@ class LearningProcessRepository extends BaseRepository
         }
 
         if ($course) {
-
             $job = (new PushNotificationJoinCourse($course, $student_id));
-
             dispatch($job);
-    
-            // event(new \App\Events\PushNotification($student_id));
-
+            event(new \App\Events\PushNotification($student_id));
         }
 
     }

@@ -772,6 +772,7 @@ class CourseRepository extends BaseRepository
             ->select(
                 'c.*',
                 'u.name as teacher_name',
+                'u.avatar as teacher_avatar',
                 'cc.category_name as category_name',
                 DB::raw('SUM(l.lesson_duration) as total_duration')  // Tính tổng thời gian khóa học
             )
