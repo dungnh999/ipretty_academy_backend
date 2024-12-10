@@ -46,15 +46,6 @@
       "slug": "order.index"
     },
     {
-      "menuHeader": "Quản lý bài viết"
-    },
-    {
-      "url": "/posts",
-      "name": "Bài viết",
-      "icon": "menu-icon tf-icons bx bx-book-open",
-      "slug": "posts.index"
-    },
-    {
       "menuHeader": "Thiết Lập"
     },
     {
