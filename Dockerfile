@@ -78,4 +78,5 @@ RUN groupmod --gid 1001 www-data
 RUN chmod +x docker/entrypoint.sh
 
 # Run the entrypoint file.
-ENTRYPOINT ["docker/entrypoint.sh" ]
+#ENTRYPOINT ["docker/entrypoint.sh" ]
+RUN  ./docker/entrypoint.sh
