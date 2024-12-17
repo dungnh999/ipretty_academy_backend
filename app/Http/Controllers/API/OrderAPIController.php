@@ -75,6 +75,7 @@ class OrderAPIController extends AppBaseController
      */
     public function store(CreateOrderAPIRequest $request)
     {
+//        dd($request);
 
         // $input = $request->all();
         $user = auth()->user();

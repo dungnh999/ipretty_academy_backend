@@ -50,7 +50,7 @@ async function createUserIpretty(){
       closeModalCreateUsers();
       openModalInfoUsers();
     }else {
-      errorSwalNotify('Lỗi rồi '+ res);
+      errorSwalNotify(res.data.message);
     }
 }
 

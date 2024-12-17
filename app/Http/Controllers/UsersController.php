@@ -279,10 +279,9 @@ class UsersController extends AppBaseController
         }
         $input = $request->all();
         $newUser = $this->authenticationRepository->register($input, $request);
-        if (isset($newUser['isExist'])) {
-            return $this->sendResponseWithError([], __('auth.registration.exist'), 200);
+        if (isset($newUser['is-exist'])) {
+            return $this->sendError(__('auth.registration.exist'), 400);
         }
-
         $job = (new PushNotificationWhenNewAccount($newUser));
         dispatch($job);
 

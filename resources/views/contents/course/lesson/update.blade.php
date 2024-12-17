@@ -48,11 +48,22 @@
                           </div>
                         </div>
                         <div class="col-lg-6 position-relative">
-                          <div class="loader-custom hidden-loader" id="loader-custom"></div>
-                          <video id="player-update" poster="https://via.placeholder.com/640x360/000000/FFFFFF?text=No+Video" playsinline controls>
-                            <!-- Video giả để hiển thị poster đen -->
-                            <source src="" type="video/mp4" />
-                          </video>
+                          <div>
+                            <div class="loader-custom hidden-loader" id="loader-custom"></div>
+                            <video id="player-update" poster="https://via.placeholder.com/640x360/000000/FFFFFF?text=No+Video" playsinline controls>
+                              <!-- Video giả để hiển thị poster đen -->
+                              <source src="" type="video/mp4" />
+                            </video>
+                          </div>
+                          <div class="row mt-5">
+                            <label class="form-label" for="email">Tài liệu</label>
+                            <div class="upload">
+                                <label></label>
+                            </div>
+                            <div class="border">
+                                Không có file
+                            </div>
+                          </div>
                         </div>
                       </div>
                 </div>

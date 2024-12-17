@@ -18,12 +18,16 @@
                           <div class="mb-4" id="create-type-upload-video-lesson">
                             <label for="inlineRadioOptions"  class="form-label d-block">Video bài học</label>
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="type-upload-video" id="inlineRadio3" value="0" disabled="">
+                              <input class="form-check-input" type="radio" name="type-upload-video" id="inlineRadio3" value="1" disabled="">
                               <label class="form-check-label" for="inlineRadio3">Tải video từ máy (Đang phát triển)</label>
                             </div>
                             <div class="form-check form-check-inline mt-4">
-                              <input class="form-check-input" type="radio" name="type-upload-video" id="inlineRadio1" checked value="1">
+                              <input class="form-check-input" type="radio" name="type-upload-video" id="inlineRadio1" checked value="0">
                               <label class="form-check-label" for="inlineRadio1">Video từ youtube</label>
+                            </div>
+                            <div class="form-check form-check-inline mt-4">
+                              <input class="form-check-input" type="radio" name="type-upload-video" id="inlineRadio1" checked value="0">
+                              <label class="form-check-label" for="inlineRadio1">Bài viết</label>
                             </div>
                           </div>
                           <div class="mb-4">
