@@ -80,19 +80,19 @@ class OrderAPIController extends AppBaseController
         // $input = $request->all();
         $user = auth()->user();
         $course_ids = collect($request->get('data'))->pluck('course_id')->toArray();
-        $ordered = $user->coursesOrdered->where('status', 'ordered')->pluck('courses')->toArray();
-        $coursesOrderedUser = [];
-
-        foreach ($ordered as $key => $order) {
-            foreach ($order as $key => $item) {
-                array_push($coursesOrderedUser, $item);
-            }
-        }
-
-
-        $orderedCourses = array_filter($coursesOrderedUser, function($courseOrdered) use ($course_ids) {
-            return in_array($courseOrdered['course_id'], $course_ids);
-        });
+//        $ordered = $user->coursesOrdered->where('status', 'ordered')->pluck('courses')->toArray();
+//        $coursesOrderedUser = [];
+//
+//        foreach ($ordered as $key => $order) {
+//            foreach ($order as $key => $item) {
+//                array_push($coursesOrderedUser, $item);
+//            }
+//        }
+//
+//
+//        $orderedCourses = array_filter($coursesOrderedUser, function($courseOrdered) use ($course_ids) {
+//            return in_array($courseOrdered['course_id'], $course_ids);
+//        });
 
 
 //
