@@ -149,8 +149,6 @@ class OrderAPIController extends AppBaseController
 //            $removeCartItem = $this->cartItemRepository->removeCartItemOrdered($request->cart_id, $course_ids);
 //        }
 
-
-
         return $this->sendResponse(
             new OrderResource($order),
             __('messages.saved', ['model' => __('models/orders.singular')])

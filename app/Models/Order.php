@@ -82,7 +82,7 @@ class Order extends Model
     {   
         // return $this->hasManyThrough('App\Models\Course', 'App\Models\CartItem', 'cart_id', 'course_id', 'id', 'course_id')
         return $this->hasManyThrough('App\Models\Course', 'App\Models\OrderItem', 'order_id', 'course_id', 'order_id', 'course_id')
-        ->select('courses.course_id', '.courses.course_name', 'courses.course_price', 'courses.course_feature_image');
+        ->select('courses.course_id', 'courses.course_name', 'courses.course_price', 'courses.course_feature_image');
     }
     
     public function transaction()
