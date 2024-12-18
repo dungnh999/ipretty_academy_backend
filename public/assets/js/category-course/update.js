@@ -26,7 +26,7 @@ async function getDetail(){
     $('#name-update-category-course-ipretty').val(res.data.data.category_name)
     $('#image-preview-update-category-course').attr( 'src' ,res.data.data.course_category_attachment)
     $('#description-update-category-course').val(res.data.data.category_description)
-    $('#course-category-types-update').val(res.data.data.category_type.id).trigger('change.select2')
+    // $('#course-category-types-update').val(res.data.data.category_type.id).trigger('change.select2')
     $('#name-update-category-code-course-ipretty').val(res.data.data.category_code)
   }else {
     console.log('lỗi rồi', res);
@@ -58,7 +58,7 @@ async function saveUpdateCoursesCategory() {
     URL = '/courses-category/update',
     PARAM = null,
     DATA = formData;
-  let res = await axiosTemplate(METHOD, URL , PARAM, DATA )
+  let res = await axiosTemplateFile(METHOD, URL , PARAM, DATA )
   if(res.status == 200) {
     successSwalNotify("Cập nhật thành công")
     loadData();

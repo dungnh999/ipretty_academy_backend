@@ -32,7 +32,6 @@ class CourseCategory extends Model implements HasMedia
         'category_description',
         'category_code',
         'created_by',
-        'category_type_id',
         'course_category_attachment',
         'created_at',
         'updated_at',
