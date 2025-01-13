@@ -180,7 +180,7 @@ class LessonRepository extends BaseRepository
 
         if($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])){
             $lessonFile = CommonBusiness::handleMediaJsonFull($model, $request, MEDIA_COLLECTION["LESSON_MATERIAL"]);
-            if($dataUpdate['lesson_material'] == ''){
+            if($dataUpdate['lesson_material']){
                 $model->lesson_material = $lessonFile;
                 $model->save(); //remember to save again
             }else{
