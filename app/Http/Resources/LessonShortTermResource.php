@@ -55,6 +55,7 @@ class LessonShortTermResource extends JsonResource
             'lesson_attachments' => count($lesson_attachments) ? MediaResource::collection($lesson_attachments) : [],
             'lesson_author' => $this->lesson_author,
             'lesson_author_info' => new AuthorResource($author),
+            'lesson_document' => json_decode($this->lesson_material, true),
             // 'lesson_status' => $this->lesson_status,
             'main_attachment' => $this->main_attachment,
             'main_attachment_name' => $main_attachment_name,
