@@ -184,7 +184,7 @@ trait CommonBusiness
                 $new_file = [];
     
                 foreach ( $files as $file ) {
-    
+
                     $newMedia = $model->addMediaFromUrl($file)
                         ->usingFileName(
                             Str::random()
@@ -196,7 +196,6 @@ trait CommonBusiness
                     array_push($new_file, $mediaUrl);
 
                     return implode(',', $new_file);
-
                 }
             } else {
 
@@ -221,7 +220,7 @@ trait CommonBusiness
         
     }
 
-    public static function handleMedia ($model, $request, $collectionName, $getMedia = false) {
+    public static function handleMediaJsonFull ($model, $request, $collectionName, $getMedia = false) {
         if ($request->file($collectionName) == null) {
             return true;
         }
@@ -235,15 +234,25 @@ trait CommonBusiness
                         CommonBusiness::change_alias($file->getClientOriginalName())
                     )
                     ->toMediaCollection($collectionName);
-                        // dd($newMedia->getUrl());
-                        
-                if ($getMedia) {
-                    return $newMedia;
-                }
-                return $model->getFirstMediaUrl($collectionName);
- 
+
+                $fileName = $newMedia->file_name; // Tên file
+                $fileUrl = $newMedia->getFullUrl(); // URL đầy đủ của file
+                $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION); // Phần mở rộng file                if ($getMedia) {
+                dd(1);
+
+                return json_encode([
+                    'name' => $fileName,
+                    'url' => $fileUrl,
+                    'extension' => $fileExtension
+                ]);
+                // dd($newMedia->getUrl());
+//                if ($getMedia) {
+//                    return $newMedia;
+//                }
+//                return $model->getFirstMediaUrl($collectionName);
+
             } else if ($request->hasFile($collectionName) && is_array($request->file($collectionName)) && count($request->file($collectionName)) > 0) {
-                
+
                 $files = $request->file($collectionName);
 
                 $results = [];
@@ -255,10 +264,67 @@ trait CommonBusiness
                             CommonBusiness::change_alias($file->getClientOriginalName())
                         )
                         ->toMediaCollection($collectionName);
+                    $fileName = $newMedia->file_name; // Tên file
+                    $fileUrl = $newMedia->getFullUrl(); // URL đầy đủ của file
+                    $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION); // Phần mở rộng file
 
                     // $mediaUrl = Media::all()->last()->getUrl();
                     $mediaUrl = $newMedia->getUrl();
 
+                    array_push($results, [
+                        'name' => $fileName,
+                        'url' => $fileUrl,
+                        'extension' => $fileExtension
+                    ]);
+                }
+                return json_encode($results);
+            }
+        } catch (\Throwable $th) {
+
+            return false;
+            //throw $th;
+        }
+    }
+
+
+    public static function handleMedia ($model, $request, $collectionName, $getMedia = false) {
+        if ($request->file($collectionName) == null) {
+            return false;
+        }
+        try {
+            if ($request->hasFile($collectionName) && !is_array($request->file($collectionName)) && $request->file($collectionName)->isValid()) {
+
+                $file = $request->file($collectionName);
+
+                $newMedia = $model->addMedia($file)
+                    ->usingFileName(
+                        CommonBusiness::change_alias($file->getClientOriginalName())
+                    )
+                    ->toMediaCollection($collectionName);
+                        // dd($newMedia->getUrl());
+                if ($getMedia) {
+                    return $newMedia;
+                }
+                return $model->getFirstMediaUrl($collectionName);
+ 
+            } else if ($request->hasFile($collectionName) && is_array($request->file($collectionName)) && count($request->file($collectionName)) > 0) {
+                $files = $request->file($collectionName);
+
+                $results = [];
+
+                foreach ($files as $key => $file) {
+
+                    $newMedia = $model->addMedia($file)
+                        ->usingFileName(
+                            CommonBusiness::change_alias($file->getClientOriginalName())
+                        )
+                        ->toMediaCollection($collectionName);
+                    $fileName = $newMedia->file_name; // Tên file
+                    $fileUrl = $newMedia->getFullUrl(); // URL đầy đủ của file
+                    $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION); // Phần mở rộng file
+
+                    // $mediaUrl = Media::all()->last()->getUrl();
+                    $mediaUrl = $newMedia->getUrl();
                     array_push($results, $mediaUrl);
                 }
 

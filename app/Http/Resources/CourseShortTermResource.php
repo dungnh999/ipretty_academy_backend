@@ -24,7 +24,6 @@ class CourseShortTermResource extends JsonResource
     public function toArray($request)
     {
 
-
         $user = Auth::guard('api')->user();
 
         $chapters = Chapter::where('course_id', $this->course_id)->with('lessons')->with('survey')->get();

@@ -13,6 +13,7 @@ defined('MEDIA_COLLECTION') or define('MEDIA_COLLECTION', [
   'CERTIFICATE_IMAGE' => 'certificate_image',
   'COURSE_FEATURE_IMAGE' => 'course_feature_image',
   'LESSON_ATTACHMENT' => 'lesson_attachment',
+  'LESSON_MATERIAL' => 'lesson_material_file',
   'LESSON_MAIN_ATTACHMENT' => 'main_attachment',
   'COURSE_CATEGORY_ATTACHMENT' => 'course_category_attachment',
   'USER_AVATAR' => 'avatar',

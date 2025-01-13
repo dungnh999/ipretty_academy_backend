@@ -55,13 +55,19 @@
                               <source src="" type="video/mp4" />
                             </video>
                           </div>
-                          <div class="row mt-5">
+                          <div class="row mt-5 gap-4 ">
                             <label class="form-label" for="email">Tài liệu</label>
                             <div class="upload">
-                                <label></label>
+                              <button class="btn btn-primary">
+                                <label for="upload-file-update-lesson-course">Tải ảnh lên</label>
+                                <input type="file" id="upload-file-update-lesson-course" class="d-none" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+text/plain, application/pdf" multiple>
+                              </button>
                             </div>
-                            <div class="border">
-                                Không có file
+                            <div class="box-file-upload">
+                              <div class="d-flex flex-column gap-2 group-file-lesson" id="group-file-update-lesson-course">
+                                <h6>Không có tài liệu</h6>
+                              </div>
                             </div>
                           </div>
                         </div>

@@ -40,4 +40,23 @@
 }
 
 
+.text-ellipsis {
+  width: 100%;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 
+.box-file-upload{
+  background: #e3e3e3;
+  border-radius: 12px;
+  padding: 10px;
+  height: 40vh;
+  color: black;
+}
+
+.box-file-upload .group-file-lesson{
+    max-height: 100%;
+  overflow: auto;
+}

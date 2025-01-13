@@ -31,10 +31,8 @@ class ChapterController extends AppBaseController
     $params = request()->query();
     $courses = $this->courseRepository->allCourses($params);
     $collect = collect($courses);
-
     $dataCourseActive = $collect->where('is_published', ENUM_ACTIVE)->all();
     $dataTableActive = $this->drawDataTableCourse($dataCourseActive);
-
     return [$dataTableActive];
   }
 
@@ -43,17 +41,14 @@ class ChapterController extends AppBaseController
     $params = request()->query();
     $chapter = $this->chapterRepository->getAllChapterCourse($params);
     $course = Course::where('course_id', $params['course_id'])->first();
-
     $collection = collect($chapter);
     $customArray = $collection
       ->map(function ($course) {
         return [
           'title' =>
-            '  <div class="row" style="text-align: left;">
-                  <h5>' .
-            $course['chapter_name'] .
-            '</h5>
-                </div>',
+            '<div class="row" style="text-align: left;">
+                  <h5>'.  $course['chapter_name'] .'</h5>
+            </div>',
         ];
       })
       ->toArray();

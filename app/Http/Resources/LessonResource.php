@@ -16,9 +16,11 @@ class LessonResource extends JsonResource
      */
     public function toArray($request)
     {
+
+
         $author = User::find($this->lesson_author);
         $lesson_attachments = $this->getMedia(MEDIA_COLLECTION["LESSON_ATTACHMENT"]);
-
+        $lesson_material = json_decode($this->lesson_material, true);
         if (count($lesson_attachments)) {
             foreach ($lesson_attachments as $key => $lesson_attachment) {
                 $lesson_attachment->url = $lesson_attachment->getUrl();
@@ -39,6 +41,8 @@ class LessonResource extends JsonResource
         if ($chapter_lesson) {
             $number_order = $chapter_lesson->number_order;
         }
+
+
         return [
             'lesson_id' => $this->lesson_id,
             'lesson_name' => $this->lesson_name,
@@ -50,6 +54,7 @@ class LessonResource extends JsonResource
             'lesson_author' => $this->lesson_author,
             'lesson_author_info' => new AuthorResource($author),
             // 'lesson_status' => $this->lesson_status,
+            'lesson_material'=> $lesson_material,
             'main_attachment' => $this->main_attachment,
             'main_attachment_name' => $main_attachment_name,
             'is_demo' => $this->is_demo,

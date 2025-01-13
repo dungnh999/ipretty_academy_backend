@@ -61,6 +61,7 @@ class LessonRepository extends BaseRepository
 
     public function create ($input, $request = null) {
 
+
         $model = $this->model->newInstance($input);
 
         $user = auth()->user();
@@ -71,7 +72,6 @@ class LessonRepository extends BaseRepository
 
         if($request->get('type_update') != true){
             $mainAttachment = CommonBusiness::handleMedia($model, $request, MEDIA_COLLECTION["LESSON_MAIN_ATTACHMENT"], true);
-
             if ($mainAttachment) {
                 $pathInfo = pathinfo($mainAttachment->file_name);
 
@@ -132,6 +132,13 @@ class LessonRepository extends BaseRepository
         }else{
             $model->main_attachment = $request->get('main_attachment');
             $response["media"] = true;
+        }
+
+        if($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])){
+
+            $lessonFile = CommonBusiness::handleMediaJsonFull($model, $request, MEDIA_COLLECTION["LESSON_MATERIAL"]);
+            $model->lesson_material = $lessonFile;
+            $model->save(); //remember to save again
         }
 
         $response["lesson"] = $model;

@@ -24,13 +24,15 @@ class Lesson extends Model implements HasMedia
 
     protected $mediaCollection = [
         "lesson_attachment" =>  MEDIA_COLLECTION["LESSON_ATTACHMENT"],
-        "main_attachment" =>  MEDIA_COLLECTION["LESSON_MAIN_ATTACHMENT"]
+        "main_attachment" =>  MEDIA_COLLECTION["LESSON_MAIN_ATTACHMENT"],
+        "lesson_material" => MEDIA_COLLECTION["LESSON_MATERIAL"]
     ];
     
     public $fillable = [
         'lesson_name',
         'lesson_description',
         'lesson_content',
+        'lesson_material',
         'is_demo',
         'lesson_attachment',
         'lesson_author',
@@ -47,6 +49,7 @@ class Lesson extends Model implements HasMedia
         'lesson_id' => 'integer',
         'lesson_name' => 'string',
         'lesson_description' => 'string',
+        'lesson_material' => 'string',
         'lesson_content' => 'string',
         'lesson_attachment' => 'array',
         'main_attachment' => 'string',
@@ -72,7 +75,10 @@ class Lesson extends Model implements HasMedia
             ->singleFile(); // !!! ONLY use singleFile() for single file in media collection;
 
         $this->addMediaCollection($this->mediaCollection["lesson_attachment"]);
-            // ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif',
+
+        $this->addMediaCollection($this->mediaCollection["lesson_material"]);
+
+        // ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif',
             //  'application/pdf', 'application/xls', 'application/xlsx', 'application/doc',
             //  'application/docx', 'application/ppt', 'application/pptx', 'application/zip',
             //  'application/msword',

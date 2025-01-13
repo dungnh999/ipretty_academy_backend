@@ -1,4 +1,6 @@
 let idCreateChapter = null, player;
+let listFile = '', fileMaterial ,  fileMaterialHtml = '';
+
 async function openModalCreateLesson(r) {
     $('#modal-create-lesson').modal('show');
     idCreateChapter = r.parents('.accordion-item').find('.accordion-header').data('id');
@@ -45,8 +47,41 @@ async function openModalCreateLesson(r) {
             console.log('Thời lượng video:', player.duration, 'giây');
         });
       });
-    
-      editorDescriptionChapterCourse = await editorTemplate('#editor-lesson-chapter', '#toolbar-lesson-chapter');
+
+    $('#upload-image-create-lesson-course').on('change', function () {
+        let files = this.files;
+        $.each(files, function (index, file) {
+            const fileName = file.name; // Tên file
+            const fileExtension = fileName.split('.').pop().toLowerCase(); // Lấy đuôi file
+            listFile += `<div class="d-flex border p-3 rounded w-full gap-3">
+                            <div class="icon"><i class='bx bxs-file-doc fs-4'></i></div>
+                            <div class="name text-ellipsis">${fileName}</div>
+                         </div>`
+        });
+        $('#group-file-create-lesson-course').html(listFile);
+    });
+
+    $('#upload-file-create-lesson-course').on('change', function () {
+        let files = this.files;
+        fileMaterial = this.files;
+        $.each(files, function (index, file) {
+            const fileName = file.name; // Tên file
+            fileMaterialHtml += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
+                            <div class="item-file-lesson__icon ">
+                                <i class='bx bxs-file-doc'></i>
+                            </div>
+                            <div class="item-file-lesson__name flex-grow-1 text-truncate text-primaryColor">${fileName}</div>
+                            <div class="item-file-lesson__tool">
+                                <a href="javascript:void(0)">
+                                    <i class='bx bxs-download' ></i>
+                                </a>
+                            </div>
+                        </div>`
+        });
+        $('#group-file-create-lesson-course').html(fileMaterialHtml);
+    });
+
+    editorDescriptionChapterCourse = await editorTemplate('#editor-lesson-chapter', '#toolbar-lesson-chapter');
 }
 
 
@@ -66,7 +101,8 @@ async function saveCreateLesson() {
             main_attachment: videoId,
             chapter_id : idCreateChapter,
             type_update : type,
-            lesson_duration: player.duration
+            lesson_duration: player.duration,
+            lesson_material_file : fileMaterial
         };
     let res = await axiosTemplateFile(METHOD, URL, PARAM, DATA);
     if (res.status === 200) {

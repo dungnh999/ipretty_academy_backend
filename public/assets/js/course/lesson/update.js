@@ -13,7 +13,6 @@ async function openModalUpdateLesson(r) {
     
     $('.link-youtube').on('change', function () {
         let url = $(this).val();
-    
         let videoId = getYouTubeVideoId(url);
         if (videoId) {
           $('#loader-custom').removeClass('hidden-loader');
@@ -81,13 +80,27 @@ async function getDetailLessonCourse(r) {
       },
       data = null ;
     let res = await axiosTemplate(method , url , param , data)
-    console.log(Boolean(res.data.data.is_demo));
-    
     if (res.status === 200) {
       $('.title-form-update-creat-chapter').text('Cập nhật bài học')
       $('#name-update-lesson-course').val(res.data.data.lesson_name);
       $('#demo-update-lesson').prop('checked', Boolean(res.data.data.is_demo))
       $('#link-update-yotube-course').val(res.data.data.main_attachment);
+      let dataFileLesson = '';
+      let fileMaterial  = res.data.data.lesson_material;
+      for (let i = 0  ; i < fileMaterial.length ; i++ ){
+          dataFileLesson += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
+                                <div class="item-file-lesson__icon ">
+                                    <i class='bx bxs-file-doc'></i>
+                                </div>
+                                <div class="item-file-lesson__name flex-grow-1 text-truncate text-primaryColor">${fileMaterial[i].name}</div>
+                                <div class="item-file-lesson__tool">
+                                    <a href="${fileMaterial[i].url}" target="_blank">
+                                        <i class='bx bxs-download' ></i>
+                                    </a>
+                                </div>
+                            </div>`
+      }
+      $('#group-file-update-lesson-course').html(dataFileLesson);
       player_update.source = {
         type: 'video',
         sources: [
@@ -105,5 +118,9 @@ async function getDetailLessonCourse(r) {
 async function closeModalUpdateLesson() {
     player_update.destroy();
     $('#modal-update-lesson').modal('hide');
+    $('#name-update-lesson-course').val('');
+    $('#link-update-yotube-course').val('');
+    $('#group-file-update-lesson-course').html('<h6>Không có tài liệu</h6>');
+
     openModalCreateChapterLesson();
 }
