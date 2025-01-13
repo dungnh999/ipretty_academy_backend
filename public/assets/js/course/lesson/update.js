@@ -107,10 +107,10 @@ async function getDetailLessonCourse(r) {
       $('.title-form-update-creat-chapter').text('Cập nhật bài học')
       $('#name-update-lesson-course').val(res.data.data.lesson_name);
       $('#demo-update-lesson').prop('checked', Boolean(res.data.data.is_demo))
-      $('#link-update-yotube-course').val(res.data.data.main_attachment);
-      let fileMaterial  = res.data.data.lesson_material;
-      for (let i = 0  ; i < fileMaterial.length ; i++ ){
-          fileUpdateMaterialHtml += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
+      if(res.data.data.lesson_material){
+          let fileMaterial  = res.data.data.lesson_material;
+          for (let i = 0  ; i < fileMaterial.length ; i++ ){
+              fileUpdateMaterialHtml += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
                                         <div class="item-file-lesson__icon ">
                                             <i class='bx bxs-file-doc'></i>
                                         </div>
@@ -121,8 +121,9 @@ async function getDetailLessonCourse(r) {
                                             </a>
                                         </div>
                                     </div>`
+          }
+          $('#group-file-update-lesson-course').html(fileUpdateMaterialHtml);
       }
-      $('#group-file-update-lesson-course').html(fileUpdateMaterialHtml);
       player_update.source = {
         type: 'video',
         sources: [
