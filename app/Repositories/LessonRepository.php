@@ -168,11 +168,27 @@ class LessonRepository extends BaseRepository
 
     public function updateLesson($request) {
       $dataUpdate = Lesson::find($request['lesson_id']);
+
+      $query = $this->model->newQuery();
+
+      $model = $query->findOrFail($request['lesson_id']);
+
       $dataUpdate['lesson_name'] = $request->get('lesson_name');
       $dataUpdate['lesson_description'] = $request->get('lesson_description');
       $dataUpdate['is_demo'] = $request->get('is_demo');
       $dataUpdate['main_attachment'] = $request->get('main_attachment');
-      $dataUpdate->save();
+
+        if($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])){
+            $listFileOld = json_decode($dataUpdate['lesson_material'], true);
+
+            $lessonFile = CommonBusiness::handleMediaJsonFull($model, $request, MEDIA_COLLECTION["LESSON_MATERIAL"]);
+            $listfileNew = json_decode($lessonFile, true);
+            $listFileSave = array_merge($listFileOld, $listfileNew );
+            $model->lesson_material = json_encode($listFileSave);
+            $model->save(); //remember to save again
+        }
+//
+//      $dataUpdate->save();
       return $dataUpdate;
     }
 

@@ -1,4 +1,4 @@
-let player_update = null, editorDescriptionChapterCourseUpdate;
+let player_update = null, editorDescriptionChapterCourseUpdate, fileUpdateMaterial, fileUpdateMaterialHtml;
 async function openModalUpdateLesson(r) {
     $('#modal-update-lesson').modal('show');
     // idChapter = r.parents('.accordion-item').find('.accordion-header').data('id');
@@ -42,6 +42,27 @@ async function openModalUpdateLesson(r) {
         });
     });
 
+
+    $('#upload-file-update-lesson-course').on('change', function () {
+        let files = this.files;
+        fileUpdateMaterial = this.files;
+        $.each(files, function (index, file) {
+            const fileName = file.name; // Tên file
+            fileUpdateMaterialHtml += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
+                                    <div class="item-file-lesson__icon ">
+                                        <i class='bx bxs-file-doc'></i>
+                                    </div>
+                                    <div class="item-file-lesson__name flex-grow-1 text-truncate text-primaryColor">${fileName}</div>
+                                    <div class="item-file-lesson__tool">
+                                        <a href="javascript:void(0)">
+                                            <i class='bx bxs-download' ></i>
+                                        </a>
+                                    </div>
+                                </div>`
+        });
+        $('#group-file-update-lesson-course').html(fileUpdateMaterialHtml);
+    });
+
     editorDescriptionChapterCourseUpdate = await editorTemplate('#editor-update-lesson-chapter', '#toolbar-update-lesson-chapter');
     getDetailLessonCourse(r);
 }
@@ -58,7 +79,8 @@ async function saveUpdateChapterLesson(){
         main_attachment: $('#link-update-yotube-course').val(),
         chapter_id : idChapter,
         lesson_id: idLesson,
-        is_demo : Number($('#demo-update-lesson').is(':checked'))
+        is_demo : Number($('#demo-update-lesson').is(':checked')),
+        lesson_material_file : fileUpdateMaterial
       };
     let res = await axiosTemplateFile(METHOD, URL, PARAM, DATA);
     if (res.status === 200) {
@@ -71,6 +93,7 @@ async function saveUpdateChapterLesson(){
 
 
 async function getDetailLessonCourse(r) {
+    fileUpdateMaterialHtml = '';
     idLesson = r.data('id')
     idChapter = r.data('idchapter')
     let method = 'GET',
@@ -85,22 +108,21 @@ async function getDetailLessonCourse(r) {
       $('#name-update-lesson-course').val(res.data.data.lesson_name);
       $('#demo-update-lesson').prop('checked', Boolean(res.data.data.is_demo))
       $('#link-update-yotube-course').val(res.data.data.main_attachment);
-      let dataFileLesson = '';
       let fileMaterial  = res.data.data.lesson_material;
       for (let i = 0  ; i < fileMaterial.length ; i++ ){
-          dataFileLesson += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
-                                <div class="item-file-lesson__icon ">
-                                    <i class='bx bxs-file-doc'></i>
-                                </div>
-                                <div class="item-file-lesson__name flex-grow-1 text-truncate text-primaryColor">${fileMaterial[i].name}</div>
-                                <div class="item-file-lesson__tool">
-                                    <a href="${fileMaterial[i].url}" target="_blank">
-                                        <i class='bx bxs-download' ></i>
-                                    </a>
-                                </div>
-                            </div>`
+          fileUpdateMaterialHtml += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
+                                        <div class="item-file-lesson__icon ">
+                                            <i class='bx bxs-file-doc'></i>
+                                        </div>
+                                        <div class="item-file-lesson__name flex-grow-1 text-truncate text-primaryColor">${fileMaterial[i].name}</div>
+                                        <div class="item-file-lesson__tool">
+                                            <a href="${fileMaterial[i].url}" target="_blank">
+                                                <i class='bx bxs-download' ></i>
+                                            </a>
+                                        </div>
+                                    </div>`
       }
-      $('#group-file-update-lesson-course').html(dataFileLesson);
+      $('#group-file-update-lesson-course').html(fileUpdateMaterialHtml);
       player_update.source = {
         type: 'video',
         sources: [
