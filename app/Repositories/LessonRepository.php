@@ -179,16 +179,18 @@ class LessonRepository extends BaseRepository
       $dataUpdate['main_attachment'] = $request->get('main_attachment');
 
         if($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])){
-            $listFileOld = json_decode($dataUpdate['lesson_material'], true);
-
             $lessonFile = CommonBusiness::handleMediaJsonFull($model, $request, MEDIA_COLLECTION["LESSON_MATERIAL"]);
-            $listfileNew = json_decode($lessonFile, true);
-            $listFileSave = array_merge($listFileOld, $listfileNew );
-            $model->lesson_material = json_encode($listFileSave);
-            $model->save(); //remember to save again
+            if($dataUpdate['lesson_material'] == ''){
+                $model->lesson_material = $lessonFile;
+                $model->save(); //remember to save again
+            }else{
+                $listFileOld = json_decode($dataUpdate['lesson_material'], true);
+                $listfileNew = json_decode($lessonFile, true);
+                $listFileSave = array_merge($listFileOld, $listfileNew );
+                $model->lesson_material = json_encode($listFileSave);
+                $model->save(); //remember to save again
+            }
         }
-//
-//      $dataUpdate->save();
       return $dataUpdate;
     }
 
