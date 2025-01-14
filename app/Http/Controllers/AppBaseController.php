@@ -51,7 +51,6 @@ class AppBaseController extends Controller
         return Response::json(ResponseUtil::makeError($error, $data, $code), 200);
     }
 
-
     /**
      * @OA\Schema(
      *     schema="SuccessResponse",

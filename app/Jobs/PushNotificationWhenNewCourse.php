@@ -52,7 +52,6 @@ class PushNotificationWhenNewCourse implements ShouldQueue
 
                 Notification::send($admin, new NewCourse($this->course, $message));
                 event(new \App\Events\PushNotification($admin->id));
-
             }
         }
 

@@ -10,6 +10,7 @@ use App\Models\LearningProcess;
 use App\Models\Lesson;
 use App\Repositories\BaseRepository;
 use Carbon\Carbon;
+
 // use FFMpeg;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -18,10 +19,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @package App\Repositories
  * @version September 8, 2021, 5:13 pm UTC
  */
-
 class LessonRepository extends BaseRepository
 {
     use CommonBusiness;
+
     /**
      * @var array
      */
@@ -59,7 +60,8 @@ class LessonRepository extends BaseRepository
         return Lesson::class;
     }
 
-    public function create ($input, $request = null) {
+    public function create($input, $request = null)
+    {
 
 
         $model = $this->model->newInstance($input);
@@ -70,7 +72,7 @@ class LessonRepository extends BaseRepository
 
         $model->save();
 
-        if($request->get('type_update') != true){
+        if ($request->get('type_update') != true) {
             $mainAttachment = CommonBusiness::handleMedia($model, $request, MEDIA_COLLECTION["LESSON_MAIN_ATTACHMENT"], true);
             if ($mainAttachment) {
                 $pathInfo = pathinfo($mainAttachment->file_name);
@@ -81,7 +83,7 @@ class LessonRepository extends BaseRepository
                     $pathInfo["extension"] == 'mp4'
                     || $pathInfo["extension"] == 'wmv'
                     || $pathInfo["extension"] == 'avi'
-                    ) {
+                ) {
                     $path = $mainAttachment->id . '/' . $mainAttachment->file_name;
 
                     $media = FFMpeg::fromDisk('public')->open($path);
@@ -129,12 +131,12 @@ class LessonRepository extends BaseRepository
                 $response["media"] = false;
 
             }
-        }else{
+        } else {
             $model->main_attachment = $request->get('main_attachment');
             $response["media"] = true;
         }
 
-        if($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])){
+        if ($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])) {
 
             $lessonFile = CommonBusiness::handleMediaJsonFull($model, $request, MEDIA_COLLECTION["LESSON_MATERIAL"]);
             $model->lesson_material = $lessonFile;
@@ -146,7 +148,8 @@ class LessonRepository extends BaseRepository
         return $model;
     }
 
-    public function allLesson($params = null) {
+    public function allLesson($params = null)
+    {
 
         $query = $this->model->newQuery()->with('user')->orderBy('created_at', 'desc');
 
@@ -160,38 +163,39 @@ class LessonRepository extends BaseRepository
 
     }
 
-    public function detail($request){
-      $query = $this->model->newQuery();
-      return$query->findOrFail($request['lesson_id']);
+    public function detail($request)
+    {
+        $query = $this->model->newQuery();
+        return $query->findOrFail($request['lesson_id']);
     }
 
 
-    public function updateLesson($request) {
-      $dataUpdate = Lesson::find($request['lesson_id']);
-
-      $query = $this->model->newQuery();
-
-      $model = $query->findOrFail($request['lesson_id']);
-
-      $dataUpdate['lesson_name'] = $request->get('lesson_name');
-      $dataUpdate['lesson_description'] = $request->get('lesson_description');
-      $dataUpdate['is_demo'] = $request->get('is_demo');
-      $dataUpdate['main_attachment'] = $request->get('main_attachment');
-
-        if($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])){
+    public function updateLesson($request)
+    {
+        $dataListFileOld = $request->get('lesson_material_file_old');
+        $query = $this->model->newQuery();
+        $model = $query->findOrFail($request['lesson_id']);
+        $model->lesson_name = $request->get('lesson_name');
+        $model->lesson_description = $request->get('lesson_description');
+        $model->lesson_description = $request->get('is_demo');
+        $model->main_attachment = $request->get('main_attachment');
+        if ($request->file(MEDIA_COLLECTION['LESSON_MATERIAL'])) {
             $lessonFile = CommonBusiness::handleMediaJsonFull($model, $request, MEDIA_COLLECTION["LESSON_MATERIAL"]);
-            if(!$dataUpdate['lesson_material']){
+            if(!$dataListFileOld) {
                 $model->lesson_material = $lessonFile;
                 $model->save(); //remember to save again
-            }else{
-                $listFileOld = json_decode($dataUpdate['lesson_material'], true);
+            } else {
+                $listFileOld = $dataListFileOld;
                 $listfileNew = json_decode($lessonFile, true);
-                $listFileSave = array_merge($listFileOld, $listfileNew );
+                $listFileSave = array_merge($listFileOld, $listfileNew);
                 $model->lesson_material = json_encode($listFileSave);
                 $model->save(); //remember to save again
             }
+        } else {
+            $model->lesson_material = json_encode($dataListFileOld);
+            $model->save(); //remember to save again
         }
-      return $dataUpdate;
+        return $model;
     }
 
 
@@ -279,7 +283,7 @@ class LessonRepository extends BaseRepository
         return $response;
     }
 
-    public function destroyMedia ($media, $id)
+    public function destroyMedia($media, $id)
     {
         $query = $this->model->newQuery();
 
@@ -300,7 +304,8 @@ class LessonRepository extends BaseRepository
         return $model;
     }
 
-    public function finishLesson ($input, $learning_process) {
+    public function finishLesson($input, $learning_process)
+    {
 
         $user = auth()->user();
 
@@ -320,7 +325,7 @@ class LessonRepository extends BaseRepository
             $duration = $model->lesson_duration;
             $view_duration = $input["view_duration"];
 
-            if ( ($view_duration + 10) < $duration ) {
+            if (($view_duration + 10) < $duration) {
 
                 $response["finished"] = false;
                 return $response;

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Notification;
+use App\Models\Users;
 use App\Repositories\BaseRepository;
 use DateInterval;
 use DateTime;
@@ -48,7 +49,7 @@ class NotificationRepository extends BaseRepository
     {
         $user = auth()->user();
         $now = new DateTime();
-        $date = $now->sub(new DateInterval('P15D'));
+        $date = $now->sub(new DateInterval('P5M'));
         $noti_unread = $this->model->where('notifiable_id', $user->id)->whereNull('read_at')->where('created_at', '>=', $date)->get();
         $count_unread = count($noti_unread);
         $noti_unchecked = $this->model->where('notifiable_id', $user->id)->where('checked', false)->where('created_at', '>=', $date)->get();
@@ -74,16 +75,19 @@ class NotificationRepository extends BaseRepository
         if(count($model) > 0 ) {
             foreach($model as $noti) {
                 $noti['info'] = json_decode($noti['data'], true);
-                $targetTime = Carbon::parse($noti['updated_at']);
-                $currentTime = Carbon::now();
-                $timeDifference = $targetTime->diff($currentTime);
+//                $targetTime = Carbon::parse($noti['updated_at']);
+//                $currentTime = Carbon::now();
+//                $timeDifference = $targetTime->diff($currentTime);
 //                if ($timeDifference->days > 0) {
 //                    $noti['time_notification'] =  $timeDifference->days . " ngày ";
 //                }
 //                if ($timeDifference->h > 0) {
-//                    $noti['time_notification'] = $timeDifference->h . " giờ";
+                $noti['time_notification'] = $this->timeDiffForHumans($noti['created_at']);
 //                }
                 $noti['avatar'] = ($noti['info']['avatar'] == "") ? $this->generateAvatar('NO') : $noti['info']['avatar'];
+//                dd($noti['data']);
+//                $noti['user'] = Users::where('id', $noti['info']['user_id'])->first();
+
             }
         }
 //        if (isset($count_unread)) {

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -224,5 +225,10 @@ abstract class BaseRepository
 
         // Trả về HTML cho ảnh
         return (string) $img->encode('data-url');
+    }
+
+    public function timeDiffForHumans($time)
+    {
+        return Carbon::parse($time)->diffForHumans();
     }
 }

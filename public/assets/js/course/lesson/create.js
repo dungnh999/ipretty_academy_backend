@@ -1,5 +1,5 @@
 let idCreateChapter = null, player;
-let listFile = '', fileMaterial ,  fileMaterialHtml = '';
+let listFile = '', fileMaterial = [];
 
 async function openModalCreateLesson(r) {
     $('#modal-create-lesson').modal('show');
@@ -12,7 +12,7 @@ async function openModalCreateLesson(r) {
         }
       });
     
-      $('.link-youtube').on('change', function () {
+    $('.link-youtube').on('change', function () {
         let url = $(this).val();
     
         let videoId = $(this).val();
@@ -59,31 +59,41 @@ async function openModalCreateLesson(r) {
                          </div>`
         });
         $('#group-file-create-lesson-course').html(listFile);
+
     });
 
     $('#upload-file-create-lesson-course').on('change', function () {
-        let files = this.files;
-        fileMaterial = this.files;
-        $.each(files, function (index, file) {
-            const fileName = file.name; // Tên file
-            fileMaterialHtml += `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
-                            <div class="item-file-lesson__icon ">
-                                <i class='bx bxs-file-doc'></i>
-                            </div>
-                            <div class="item-file-lesson__name flex-grow-1 text-truncate text-primaryColor">${fileName}</div>
-                            <div class="item-file-lesson__tool">
-                                <a href="javascript:void(0)">
-                                    <i class='bx bxs-download' ></i>
-                                </a>
-                            </div>
-                        </div>`
-        });
-        $('#group-file-create-lesson-course').html(fileMaterialHtml);
+        let files = Array.from(this.files); // Chuyển FileList thành mảng
+        fileMaterial = fileMaterial.concat(files); // Thêm các tệp mới vào mảng
+        updateFileCreateList();
+        $(this).val(''); // Reset input để có thể chọn lại cùng tệp
     });
 
+    $(document).on('click', '.remove-file-create', function (){
+        const index = $(this).data('index'); // Lấy chỉ số của tệp
+        fileMaterial.splice(index, 1); // Xóa tệp khỏi mảng
+        updateFileCreateList(); // Cập nhật danh sách hiển thị
+    })
+
+    function updateFileCreateList() {
+        $('#group-file-create-lesson-course').html('');
+        $.each(fileMaterial, function (index, file) {
+            const fileItem = `<div class="item-file-lesson d-flex gap-2 bg-white p-3 rounded">
+                                <div class="item-file-lesson__icon ">
+                                    <i class='bx bxs-file-doc'></i>
+                                </div>
+                                <div class="item-file-lesson__name flex-grow-1 text-truncate text-primaryColor">${file.name}</div>
+                                <div class="item-file-lesson__tool">
+                                    <a href="javascript:void(0)" class="remove-file-create" data-index="${index}">
+                                      <i class='bx bx-trash'></i>
+                                    </a>
+                                </div>
+                            </div>`
+            $('#group-file-create-lesson-course').append(fileItem);
+        });
+    }
     editorDescriptionChapterCourse = await editorTemplate('#editor-lesson-chapter', '#toolbar-lesson-chapter');
 }
-
 
 /**
  * Tạo bài giảng

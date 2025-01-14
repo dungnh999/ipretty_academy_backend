@@ -33,9 +33,17 @@
                               <label class="form-check-label" for="demo-update-lesson">Cho phép học thử</label>
                             </div>
                           </div>
+{{--                          <div class="mb-4">--}}
+{{--                            <label for="exampleFormControlInput1" class="form-label">Link youtube</label>--}}
+{{--                            <input type="text" class="form-control link-youtube" id="link-update-yotube-course"  placeholder="Nhập link bài học từ youtube">--}}
+{{--                          </div>--}}
                           <div class="mb-4">
-                            <label for="exampleFormControlInput1" class="form-label">Link youtube</label>
-                            <input type="text" class="form-control link-youtube" id="link-update-yotube-course"  placeholder="Nhập link bài học từ youtube">
+                            <label class="form-label" for="basic-icon-default-email">Link youtube</label>
+                            <div class="input-group input-group-merge">
+                              <span id="basic-icon-default-email2" class="form-control link-youtube input-group-text" style="padding-right: 25px" >https://www.youtube.com/watch?v=</span>
+                              <input type="text" id="link-update-yotube-course" class="form-control link-update-youtube" placeholder="ID khóa học" aria-label="ID khóa học" aria-describedby="basic-icon-default-email2">
+                            </div>
+                            <div class="form-text"> Lấy ID Youtube : https://www.youtube.com/watch?v={ID} </div>
                           </div>
                           <div class="mb-4">
                             <label class="form-label" for="email">Mô tả bài học</label>
