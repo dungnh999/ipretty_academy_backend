@@ -250,6 +250,12 @@ class CourseAPIController extends AppBaseController
         );
     }
 
+    public function tracks(Request $request)
+    {
+        $course = $this->courseRepository->tracks($request);
+        return $course;
+    }
+
     public function checkCourseForMe(Request $request)
     {
         $course = $this->courseRepository->checkCouseForMe($request);

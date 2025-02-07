@@ -169,7 +169,6 @@ class LessonRepository extends BaseRepository
         return $query->findOrFail($request['lesson_id']);
     }
 
-
     public function updateLesson($request)
     {
         $dataListFileOld = $request->get('lesson_material_file_old');
@@ -197,7 +196,6 @@ class LessonRepository extends BaseRepository
         }
         return $model;
     }
-
 
     public function update($input, $id, $request = null)
     {
@@ -372,5 +370,11 @@ class LessonRepository extends BaseRepository
             }
             return $response;
         }
+    }
+
+    public function step($request) {
+            return 1;
+//        $query = $this->model->newQuery();
+//        return $query->where('uuid', '=', $request->get('id'))->first();
     }
 }

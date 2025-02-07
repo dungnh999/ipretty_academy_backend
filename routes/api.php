@@ -60,6 +60,7 @@ Route::middleware(['api.access'])->group(function(){
         Route::post('course_categories/{category_id}', 'CourseCategoryAPIController@update');
         Route::post('course_categories/{category_id}/change-published', 'CourseCategoryAPIController@changePublished');
 
+        Route::get('steps', 'LessonAPIController@step');
 
         Route::post('lessons', 'LessonAPIController@store');
         Route::get('lessons', 'LessonAPIController@index');
@@ -70,6 +71,7 @@ Route::middleware(['api.access'])->group(function(){
         Route::post('finish-lesson', 'LessonAPIController@finishLesson');
 
         Route::get('courses', 'CourseAPIController@index');
+        Route::get('tracks', 'CourseAPIController@tracks');
         Route::get('related_courses/{id}', 'CourseAPIController@getRelatedCourses');
         Route::get('search-courses', 'CourseAPIController@searchCourse');
 

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contract\CommonBusiness;
+use App\Http\Resources\TracksResource;
 use App\Jobs\AddMemberIntoEvent;
 use App\Jobs\RemoveMemberOutEvent;
 use App\Models\Chapter;
@@ -2377,6 +2378,16 @@ class CourseRepository extends BaseRepository
             $model->save();
         }
         return $model;
-    } 
+    }
+
+    public function tracks($requset){
+        $slug = 'gioi-thieu-ve-chuong-truong';
+        $course = Course::where('slug_course', $slug)->first();
+        $chapters = Chapter::where('course_id', $course->course_id)->with('lessons')->with('survey')->orderBy('number_order', 'asc')->get();
+        $course_resources = $course;
+        $course_resources['chapters'] = ChapterResource::collection($chapters);
+//        $course_resources["chapters"] = ChapterResource::collection($chapters);
+        return new TracksResource($course);
+    }
 
 }

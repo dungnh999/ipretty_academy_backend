@@ -277,7 +277,6 @@ class CourseStudentAPIController extends AppBaseController
             $students,
             __('messages.added_students')
         );
-
     }
 
     public function commentAndRatingCourse(Request $request, $course_id)

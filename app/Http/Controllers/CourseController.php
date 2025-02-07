@@ -7,6 +7,7 @@ use App\Jobs\PushNotificationWhenNewCourse;
 use App\Models\Chapter;
 use App\Models\ChapterLesson;
 use App\Models\Course;
+use App\Models\CourseLessonChapter;
 use App\Models\Lesson;
 use App\Repositories\CourseCategoryRepository;
 use App\Repositories\LessonRepository;
@@ -21,6 +22,8 @@ use Yajra\DataTables\DataTables;
 use App\Http\Resources\ChapterResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\LessonResource;
+use Illuminate\Support\Str;
+
 
 class CourseController extends AppBaseController
 {
@@ -359,11 +362,15 @@ class CourseController extends AppBaseController
     {
         $input = $request->all();
         $lesson = $this->lessonRepository->create($input, $request);
-
-        ChapterLesson::create([
+        $chapter = Chapter::find($request->get('chapter_id'))->first();
+        CourseLessonChapter::create([
+            'course_id' => $chapter['course_id'],
             'chapter_id' => $request->get('chapter_id'),
+            'uuid' => Str::uuid(),
             'lesson_id' => $lesson['lesson_id'],
-            'number_order' => $lesson['number_order'] ? $lesson['number_order'] : 0,
+            'priority' => 1,
+            'position' => CourseLessonChapter::where('chapter_id', $request->get('chapter_id'))
+                    ->max('position') + 1,
         ]);
 
         return $this->sendResponse(

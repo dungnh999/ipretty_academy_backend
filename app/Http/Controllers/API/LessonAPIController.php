@@ -6,12 +6,14 @@ use App\Http\Requests\API\CreateLessonAPIRequest;
 use App\Http\Requests\API\UpdateLessonAPIRequest;
 use App\Models\Lesson;
 use App\Repositories\LessonRepository;
+use App\Repositories\CourseLessonChapterReposity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\DeleteLessonAPIRequest;
 use App\Http\Requests\API\FinishLessonAPIRequest;
 use App\Http\Resources\LearningProcessResource;
 use App\Http\Resources\LessonResource;
+use App\Http\Resources\LessonStepResource;
 use App\Models\LearningProcess;
 use App\Repositories\LearningProcessRepository;
 use App\Repositories\MediaRepository;
@@ -26,10 +28,11 @@ class LessonAPIController extends AppBaseController
 {
     /** @var  LessonRepository */
     private $lessonRepository;
+    private $courseLessonChapterRepository;
     private $mediaRepository;
     private $learningProcessRepository;
 
-    public function __construct(LessonRepository $lessonRepo, MediaRepository $mediaRepository, LearningProcessRepository $learningProcessRepository)
+    public function __construct(CourseLessonChapterReposity $courseLessonChapterRepository ,LessonRepository $lessonRepo, MediaRepository $mediaRepository, LearningProcessRepository $learningProcessRepository)
     {
         $this->middleware(function ($request, $next) {
 
@@ -42,6 +45,7 @@ class LessonAPIController extends AppBaseController
         $this->lessonRepository = $lessonRepo;
         $this->mediaRepository = $mediaRepository;
         $this->learningProcessRepository = $learningProcessRepository;
+        $this->courseLessonChapterRepository = $courseLessonChapterRepository;
     }
 
     public function index(Request $request)
@@ -54,6 +58,15 @@ class LessonAPIController extends AppBaseController
         return $this->sendResponse(
             $lessons,
             __('messages.retrieved', ['model' => __('models/lessons.plural')])
+        );
+    }
+
+    public function step(Request $request)
+    {
+        $lesson = $this->courseLessonChapterRepository->step($request);
+        return $this->sendResponse(
+            new LessonStepResource($lesson),
+            __('messages.retrieved', ['model' => __('models/lessons.singular')])
         );
     }
 
