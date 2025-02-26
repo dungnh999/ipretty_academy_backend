@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contract\CommonBusiness;
 use App\Models\PostCategory;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class PostCategoryRepository
@@ -96,6 +97,22 @@ class PostCategoryRepository extends BaseRepository
 
         return $model;
 
+    }
+
+    public function handleCreatePostCategory($input){
+        DB::beginTransaction();
+        try {
+            $input['category_slug'] = CommonBusiness::change_alias($input['category_name']);
+            $model = $this->model->newInstance($input);
+            $model->save();
+
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollBack();
+//            Log::error("Error creating category: " . $e->getMessage());
+            return response()->json(['error' => 'Lỗi khi tạo danh mục'], 500);
+        }
     }
 
     public function handleUpdatePostCategory($input, $category_id){

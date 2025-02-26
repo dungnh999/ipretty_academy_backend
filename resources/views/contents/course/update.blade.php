@@ -31,10 +31,6 @@
   
                 <div class="col-sm-12 mt-2">
                   <label class="form-label" for="email">Mô tả bài học</label>
-                  <div id="description-tool-update-course">
-                    <button class="ql-bold">Bold</button>
-                    <button class="ql-italic">Italic</button>
-                  </div>
                   <!-- update the editor container -->
                   <div id="description-update-course" style="height: 200px"></div>
                 </div>

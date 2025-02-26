@@ -9555,7 +9555,7 @@ form select.selectpicker.is-invalid ~ .btn {
 }
 
 .modal-footer {
-  padding: 0.25rem 1.5rem 1.5rem;
+  /*padding: 0.25rem 1.5rem 1.5rem;*/
 }
 
 .modal-dialog-scrollable .btn-close,

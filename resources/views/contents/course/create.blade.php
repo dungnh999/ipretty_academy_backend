@@ -35,10 +35,6 @@
 
               <div class="col-sm-12 mt-2">
                 <label class="form-label" for="email">Mô tả bài học</label>
-                <div id="toolbar">
-                  <button class="ql-bold">Bold</button>
-                  <button class="ql-italic">Italic</button>
-                </div>
                 <!-- Create the editor container -->
                 <div id="editor" style="height: 200px"></div>
               </div>

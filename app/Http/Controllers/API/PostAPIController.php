@@ -40,7 +40,8 @@ class PostAPIController extends AppBaseController
         $this->mediaRepository = $mediaRepository;
     }
 
-    public function index(){
+    public function index()
+    {
 
         $params = request()->query();
 
@@ -52,25 +53,25 @@ class PostAPIController extends AppBaseController
         );
     }
 
-    public function storePost(CreatePostAPIRequest $request){
+    public function storePost(CreatePostAPIRequest $request)
+    {
 
         $input = $request->all();
-        
-        $result = $this->postRepository->handleStorePost($input, $request);
 
+        $result = $this->postRepository->handleStorePost($input, $request);
         if ($result) {
             return $this->sendResponse(
                 new PostResource($result),
                 __('messages.saved', ['model' => __('models/posts.singular')])
             );
         }
-
     }
 
-    public function createBanner(CreateBannerAPIRequest $request){
+    public function createBanner(CreateBannerAPIRequest $request)
+    {
 
         $input = $request->all();
-        
+
         $result = $this->postRepository->handleStorePost($input, $request);
 
         if ($result) {
@@ -82,8 +83,9 @@ class PostAPIController extends AppBaseController
 
     }
 
-    public function detailPost($post_id){
-        
+    public function detailPost($post_id)
+    {
+
         /** @var Lesson $lesson */
         $post = $this->postRepository->find($post_id);
 
@@ -97,10 +99,31 @@ class PostAPIController extends AppBaseController
             new PostResource($post),
             __('messages.retrieved', ['model' => __('models/posts.singular')])
         );
-        
+
     }
 
-    public function updatePost(UpdatePostAPIRequest $request, $post_id){
+
+    public function detailPostSlug(Request $request)
+    {
+
+        /** @var Lesson $lesson */
+        $post = $this->postRepository->getDetailPostBySlug($request->get('slug'));
+
+        if (empty($post)) {
+            return $this->sendError(
+                __('messages.not_found', ['model' => __('models/posts.singular')])
+            );
+        }
+
+        return $this->sendResponse(
+            new PostResource($post),
+            __('messages.retrieved', ['model' => __('models/posts.singular')])
+        );
+
+    }
+
+    public function updatePost(UpdatePostAPIRequest $request, $post_id)
+    {
 
         $input = $request->all();
 
@@ -119,7 +142,7 @@ class PostAPIController extends AppBaseController
                 new PostResource($result),
                 __('messages.updated', ['model' => __('models/posts.singular')])
             );
-        } else{
+        } else {
             return $this->sendError(
                 __('messages.errors.can_not_upload_banner', ['model' => __('models/posts.singular')])
             );
@@ -127,7 +150,8 @@ class PostAPIController extends AppBaseController
 
     }
 
-    public function updateBanner(UpdateBannerAPIRequest $request, $post_id){
+    public function updateBanner(UpdateBannerAPIRequest $request, $post_id)
+    {
 
         $input = $request->all();
 
@@ -146,7 +170,7 @@ class PostAPIController extends AppBaseController
                 new PostResource($result),
                 __('messages.updated', ['model' => __('models/posts.fields.bannerUrl')])
             );
-        } else{
+        } else {
             return $this->sendError(
                 __('messages.errors.can_not_upload_banner', ['model' => __('models/posts.singular')])
             );
@@ -164,13 +188,13 @@ class PostAPIController extends AppBaseController
 
         $foundPosts = [];
 
-        foreach($postIds as $id) {
+        foreach ($postIds as $id) {
 
             $post = $this->postRepository->find($id);
 
             if (empty($post)) {
                 array_push($notFoundPosts, $id);
-            }else {
+            } else {
                 array_push($foundPosts, $post);
             }
         }
@@ -182,8 +206,8 @@ class PostAPIController extends AppBaseController
                 404,
                 $notFoundPosts
             );
-            
-        }            
+
+        }
 
         if (count($foundPosts)) {
             foreach ($foundPosts as $post) {
@@ -200,7 +224,8 @@ class PostAPIController extends AppBaseController
         );
     }
 
-    public function deleteBanner ($post_id, Request $request) {
+    public function deleteBanner($post_id, Request $request)
+    {
 
         $post = $this->postRepository->find($post_id);
 
@@ -211,13 +236,13 @@ class PostAPIController extends AppBaseController
         }
 
         $media = $this->mediaRepository->findByModelAndId($post_id, $request->media_id);
-        
+
 
         if (empty($media)) {
             return $this->sendError(
                 __('messages.not_found', ['model' => __('models/posts.fields.bannerUrl')])
             );
-        }  
+        }
 
         $deletemedia = $this->postRepository->destroyMedia($media, $post_id);
 
@@ -228,7 +253,8 @@ class PostAPIController extends AppBaseController
 
     }
 
-    public function changePublishedPost($post_id, Request $request) {
+    public function changePublishedPost($post_id, Request $request)
+    {
         $post = $this->postRepository->find($post_id);
 
         if (empty($post)) {
@@ -236,7 +262,7 @@ class PostAPIController extends AppBaseController
                 __('messages.not_found', ['model' => __('models/posts.singular')])
             );
         }
-        
+
         $published_post = $this->postRepository->publishedPost($post_id, $request->is_active);
 
         $message = 'messages.unpublished';
@@ -251,16 +277,18 @@ class PostAPIController extends AppBaseController
         );
     }
 
-    public function getOpinions(Request $request) {
+    public function getOpinions(Request $request)
+    {
         $opinion = $this->postRepository->getCommentUser();
-        
+
         return $this->sendResponse(
             $opinion,
             __('messages.retrieved', ['model' => __('models/posts.singular')])
-        ); 
+        );
     }
 
-    public function getAllBanner(Request $request){
+    public function getAllBanner(Request $request)
+    {
         $banner = $this->postRepository->getBanner();
         return $this->sendResponse(
             $banner,

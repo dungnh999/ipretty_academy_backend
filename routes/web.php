@@ -197,6 +197,39 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
     /**
+     * ================== Quản lý bài viết =============================================
+     */
+
+    /**
+     *  Danh mục bài viết
+     */
+
+    Route::controller('PostsCategoryController')
+        ->prefix('posts-category')
+        ->as('postscategory.')
+        ->group(function () {
+            Route::GET('/', 'index')->name('index');
+            Route::GET('/get-data-posts-category', 'getListPostsCategory')->name('index');
+            Route::POST('/create', 'createPostsCategory')->name('create');
+            Route::POST('/change-status', 'changeStatus')->name('change-status');
+        });
+
+
+    /**
+     *  Danh mục bài viết
+     */
+
+    Route::controller('PostsController')
+        ->prefix('posts')
+        ->as('posts.')
+        ->group(function () {
+            Route::GET('/', 'index')->name('index');
+            Route::get('/get-data-posts', 'getListPosts');
+            Route::get('/get-posts-category', 'getListPostCategorys');
+            Route::POST('/create', 'create');
+        });
+
+    /**
      *  Quản lý banner
      */
     Route::controller('BannerController')

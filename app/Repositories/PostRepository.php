@@ -89,12 +89,18 @@ class PostRepository extends BaseRepository
             })
             ->orderBy('created_at', 'desc');
 
-        if (isset($params['isBanner']) && $params['isBanner'] == 1) {
-            $query = $query->where('is_banner', $params['isBanner'])->where('isTrademark', 0);
-        } else if (isset($params['isTrademark']) && $params['isTrademark'] == 1) {
-            $query = $query->where('isTrademark', 1)->where('is_banner', 0);
-        } else {
-            $query = $query->where('isTrademark', 0)->where('is_banner', 0);
+//        if (isset($params['isBanner']) && $params['isBanner'] == 1) {
+//            $query = $query->where('is_banner', $params['isBanner'])->where('isTrademark', 0);
+//        } else if (isset($params['isTrademark']) && $params['isTrademark'] == 1) {
+//            $query = $query->where('isTrademark', 1)->where('is_banner', 0);
+//        } else {
+//            $query = $query->where('isTrademark', 0)->where('is_banner', 0);
+//        }
+
+        if(isset($params['type'])){
+            $query = $query->where('type', $params['type']);
+        }else{
+            $query = $query->where('type', true);
         }
 
         if (isset($params['status']) && $params['status'] != null) {
@@ -320,5 +326,11 @@ class PostRepository extends BaseRepository
         return $post_by_category;
     }
 
-
+    public function getDetailPostBySlug($slug)
+    {
+        return $this->model
+            ->where('slug', $slug)
+            ->orderBy('posts.created_by', 'DESC')
+            ->first();
+    }
 }

@@ -47,10 +47,6 @@
                           </div>
                           <div class="mb-4">
                             <label class="form-label" for="email">Mô tả bài học</label>
-                            <div id="toolbar-lesson-chapter">
-                              <button class="ql-bold">Bold</button>
-                              <button class="ql-italic">Italic</button>
-                            </div>
                             <!-- Create the editor container -->
                             <div id="editor-lesson-chapter" style="height: 200px"></div>
                           </div>

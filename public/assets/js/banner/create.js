@@ -11,7 +11,6 @@ function openModalCreateBanner(){
 }
 
 async function saveCreateBanner(){
-  console.log(fileName);
   let formData = new FormData();
   formData.append('bannerUrl', fileName);
   formData.append('is_banner', 1);

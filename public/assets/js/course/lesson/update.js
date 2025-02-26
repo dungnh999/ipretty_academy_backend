@@ -63,7 +63,7 @@ async function openModalUpdateLesson(r) {
         $(this).val(''); // Reset input để có thể chọn lại cùng tệp
     });
 
-    editorDescriptionChapterCourseUpdate = await editorTemplate('#editor-update-lesson-chapter', '#toolbar-update-lesson-chapter');
+    editorDescriptionChapterCourseUpdate = await editorTemplate('#editor-update-lesson-chapter');
     getDetailLessonCourse(r);
 }
 

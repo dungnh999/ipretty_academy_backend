@@ -80,7 +80,7 @@
 }
 
 .light-style .select2-container--default .select2-selection--single {
-  height: calc(1.53em + .875rem + 2px)
+  height: calc(1.53em + .875rem + 4px)
 }
 
 .light-style .select2-container--default .select2-selection--single .select2-selection__clear {

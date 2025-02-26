@@ -46,7 +46,28 @@
       "slug": "order.index"
     },
     {
+      "menuHeader": "Quản lý bài viết"
+    },
+    {
+      "name": "Danh mục bài viết",
+      "url": "/posts-category",
+      "icon": "menu-icon tf-icons bx bx-category-alt",
+      "slug": "postscategory.index"
+    },
+    {
+      "name": "Bài viết",
+      "url": "/posts",
+      "icon": "menu-icon tf-icons bx bx-book-open",
+      "slug": "posts.index"
+    },
+    {
       "menuHeader": "Thiết Lập"
+    },
+    {
+      "name": "Đối tác",
+      "url": "/banner",
+      "icon": "menu-icon tf-icons bx bx-image",
+      "slug": "banner.index"
     },
     {
       "name": "Banner",
