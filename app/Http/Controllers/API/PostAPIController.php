@@ -57,7 +57,6 @@ class PostAPIController extends AppBaseController
     {
 
         $input = $request->all();
-
         $result = $this->postRepository->handleStorePost($input, $request);
         if ($result) {
             return $this->sendResponse(
@@ -189,9 +188,7 @@ class PostAPIController extends AppBaseController
         $foundPosts = [];
 
         foreach ($postIds as $id) {
-
             $post = $this->postRepository->find($id);
-
             if (empty($post)) {
                 array_push($notFoundPosts, $id);
             } else {
@@ -200,7 +197,6 @@ class PostAPIController extends AppBaseController
         }
 
         if (count($notFoundPosts)) {
-
             return $this->sendError(
                 __('messages.not_found', ['model' => __('models/posts.singular')]),
                 404,

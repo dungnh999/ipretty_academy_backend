@@ -48,5 +48,14 @@ class MediaRepository extends BaseRepository
         
         return $model;
     }
- 
+
+    public function getAllMedia($request)
+    {
+        $perPage = $request->input('per_page', 10); // Mặc định lấy 10 item trên mỗi trang
+        $query = $this->model->newQuery();
+        return $query->where('mime_type', 'LIKE', 'image/%')
+                     ->where('collection_name', '!=', 'bannerUrl')
+                     ->paginate($perPage);
+    }
+
 }

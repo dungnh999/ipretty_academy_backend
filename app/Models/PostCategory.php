@@ -27,7 +27,7 @@ class PostCategory extends Model
     const course_training = 'Khoá học và đào tạo';
 
     protected $fillable = [
-        'category_slug', 'category_name', 'description', 'created_at', 'updated_at', 'isPublished'
+        'category_slug', 'category_name', 'description', 'created_at', 'updated_at', 'isPublished',
     ];
 
     protected $casts = [

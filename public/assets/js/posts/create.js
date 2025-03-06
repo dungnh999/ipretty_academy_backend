@@ -18,6 +18,7 @@ async function saveCreatePost(){
 
     dataRequest.append('bannerUrl', fileAvatarPostCreate);
     dataRequest.append('title', $('#title-create-post-ipretty').val());
+    dataRequest.append('type', Number($('#type-create-post-ipretty').val()));
     dataRequest.append('content', editorContentPostCreate.root.innerHTML);
     dataRequest.append('external_url', $('#url-create-post-ipretty').val());
     dataRequest.append('category_id', $('#category-create-post-ipretty').val());

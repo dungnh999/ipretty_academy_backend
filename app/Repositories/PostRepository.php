@@ -55,6 +55,7 @@ class PostRepository extends BaseRepository
 
     public function handleStorePost($input, $request = null)
     {
+
         $user = auth()->user();
 
         $input["created_by"] = $user->id;
@@ -100,7 +101,7 @@ class PostRepository extends BaseRepository
         if(isset($params['type'])){
             $query = $query->where('type', $params['type']);
         }else{
-            $query = $query->where('type', true);
+            $query = $query->where('type', '!=' , '0');
         }
 
         if (isset($params['status']) && $params['status'] != null) {
@@ -225,6 +226,7 @@ class PostRepository extends BaseRepository
             ->join('post_categories', 'post_categories.category_id', 'posts.category_id')
             ->where('is_banner', 1)
             ->where('is_active', 1)
+            ->where('type', 0)
             ->where('post_categories.category_slug', $slug)
             ->get();
 
@@ -249,6 +251,7 @@ class PostRepository extends BaseRepository
     {
         $banners = $this->model
             ->where('is_active', '1')
+            ->where('type', '0')
             ->orderBy('created_at', 'DESC')
             ->limit(3)
             ->get();
@@ -286,7 +289,7 @@ class PostRepository extends BaseRepository
 
     public function getDataNews()
     {
-        $news = $this->model->join('post_categories', 'post_categories.category_id', 'posts.category_id')
+        return $this->model->join('post_categories', 'post_categories.category_id', 'posts.category_id')
             ->with('createdBy')
             ->where('post_categories.category_name', '!=', PostCategory::about_us_category)
             ->where('post_categories.category_name', '!=', PostCategory::recruitment_category)
@@ -299,15 +302,14 @@ class PostRepository extends BaseRepository
             ->where('posts.isTrademark', '0')
             ->orderBy('posts.created_at', 'DESC')
             ->paginate(5);
-        return $news;
     }
 
     public function getDetailPost($post_id)
     {
-        $post = $this->model->with('createdBy')
+        return $this->model->with('createdBy')
             ->where('post_id', $post_id)
             ->first();
-        return $post;
+
     }
 
     public function getPostRelated($post_id)

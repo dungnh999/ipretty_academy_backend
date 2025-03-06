@@ -21,6 +21,14 @@
                                        placeholder="Họ và tên">
                             </div>
                             <div class="mb-4 d-flex flex-column">
+                                <label class="form-label" for="category-create-post-ipretty">Thể loại </label>
+                                <select id="type-create-post-ipretty" class="form-select">
+                                    <option selected disabled>---- Vui lòng chọn ----</option>
+                                    <option value="1" >Bài viết</option>
+                                    <option value="2" >Tin tức</option>
+                                </select>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
                                 <label class="form-label" for="category-create-post-ipretty">Danh mục </label>
                                 <select id="category-create-post-ipretty" class="form-select">
                                     <option selected disabled>Dữ liệu rỗng</option>

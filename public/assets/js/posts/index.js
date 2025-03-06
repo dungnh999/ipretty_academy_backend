@@ -7,6 +7,10 @@ $(async function (){
         dropdownParent: '#modal-create-post',
     });
 
+    $('#type-create-post-ipretty').select2({
+        dropdownParent: '#modal-create-post',
+    });
+
     editorContentPostCreate = await editorTemplate('#editor-content-posts-create', '#modal-create-post');
 })
 

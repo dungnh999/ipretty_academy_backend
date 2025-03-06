@@ -32,6 +32,7 @@ class Post extends Model implements HasMedia
         'bannerUrl',
         'external_url',
         'slug',
+        'type',
         'introduction',
         'sub_introduction',
         'color_introduction',
@@ -69,6 +70,7 @@ class Post extends Model implements HasMedia
         'is_banner' => 'boolean',
         'isTrademark' => 'boolean',
         'created_at' => 'datetime:Y-m-d H:i',
+        'type' => 'integer',
     ];
 
     public static $rules = [

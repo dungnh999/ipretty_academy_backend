@@ -5,6 +5,7 @@ use App\Http\Controllers\API\PostCategoryAPIController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\API\CourseCategoryAPIController;
 use App\Http\Controllers\API\UserDepartmentAPIController;
+use App\Http\Controllers\API\MediaAPIController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -237,7 +238,6 @@ Route::middleware(['api.access'])->group(function(){
 
 
     Route::get('user-by-role', [UserAPIController::class, 'getUserByRole']);
-    Route::get('banners', 'PostAPIController@getAllBanner');
 
 
 // /*
@@ -246,10 +246,10 @@ Route::middleware(['api.access'])->group(function(){
 
 // Route::post('/upload-file', 'UploadS3Controller@uploadFile');
 // Route::get('/get-link', 'UploadS3Controller@getPresignedUrl');
-
-
-    Route::post('upload', 'UploadFileController@upload');
-    Route::get('image/{filename}', 'UploadFileController@getImage');
+//
+//
+//    Route::post('upload', 'UploadFileController@upload');
+//    Route::get('image/{filename}', 'UploadFileController@getImage');
 
 // Route::resource('order_items', OrderItemAPIController::class);
 
@@ -257,11 +257,12 @@ Route::middleware(['api.access'])->group(function(){
     Route::get('posts', [PostAPIController::class, 'index']);
     Route::post('posts', [PostAPIController::class, 'storePost']);
     Route::post('posts/{post_id}', [PostAPIController::class, 'updatePost']);
-//    Route::get('posts/{post_id}', [PostAPIController::class, 'detailPost']);
+//  Route::get('posts/{post_id}', [PostAPIController::class, 'detailPost']);
     Route::get('posts/posts-slug', [PostAPIController::class, 'detailPostSlug']);
     Route::post('posts/{post_id}/change-published', [PostAPIController::class, 'changePublishedPost']);
     Route::post('posts/{post_id}/media', [PostAPIController::class, 'deleteBanner']);
     Route::post('delete-posts', [PostAPIController::class, 'destroy']);
+    Route::get('banners', [PostAPIController::class, 'getAllBanner']);
 
 
     //post-category api
@@ -270,4 +271,9 @@ Route::middleware(['api.access'])->group(function(){
     Route::post('post-categories/{category_id}', 'PostCategoryAPIController@updatePostCategory');
     Route::get('post-categories/{category_id}', [PostCategoryAPIController::class, 'detailPostCategory']);
     Route::post('delete-post-categories', [PostCategoryAPIController::class, 'destroy']);
+
+
+    // Media
+    Route::get('media', [MediaAPIController::class, 'index']);
+
 });
